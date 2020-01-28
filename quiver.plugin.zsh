@@ -71,7 +71,7 @@ __RDNS=
 
 alias qq-util-to-csv="paste -s -d, -"
 alias qq-util-get-ip="curl icanhazip.com"
-
+qq-sort-file="clean() {cat $1 | sort -u -o $1}"
 
 
 
@@ -82,7 +82,9 @@ alias qq-util-get-ip="curl icanhazip.com"
 # Recon
 #############################################################
 
-
+qq-recon-asns-by-org-browser() {
+  __info https://bgp.he.net/
+}
 
 
 qq-recon-asns-by-org-amass() {
@@ -115,7 +117,6 @@ qq-recon-domains-by-domain-subfinder() {
   print -z "subfinder -d ${d} -nW -silent >> domains.txt"
 }
 
-
 qq-recon-domains-crt.sh-httprobe() {
   local s && read "s?Search: "
   print -z "curl -s https://crt.sh/\?q\=\%.${s}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | httprobe "
@@ -131,8 +132,7 @@ qq-recon-active-web-whatweb() {
 
 
 
-#gobuster dns -d paypal.com -w all.txt
-#gobuster dns -d paypal.com -w commonspeak.txt
+
 
 
 ############################################################# 
@@ -142,6 +142,14 @@ qq-recon-active-web-whatweb() {
 qq-enum-web-scope-burp() {
   print -z ".*\.domain\.com$"
 }
+
+qq-enum-web-dirs-wfuzz() {
+
+  print -z "wfuzz -c -z file,/root/necromancer/thing.txt — hc 404 http://192.168.56.102/amagicbridgeappearsatthechasm/FUZZ"
+}
+
+#gobuster dns -d paypal.com -w all.txt
+#gobuster dns -d paypal.com -w commonspeak.txt
 
 #sudo masscan -p4443,2075,2076,6443,3868,3366,8443,8080,9443,9091,3000,8000,5900,8081,6000,10000,8181,3306,5000,4000,8888,5432,15672,9999,161,4044,7077,4040,9000,8089,443,744$}
 
