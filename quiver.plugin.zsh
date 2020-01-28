@@ -12,13 +12,8 @@ echo "[*] quiver loading..."
 autoload colors; colors
 
 # exports
-export __DOMAIN=
 export __UA="Googlebot/2.1 (+http://www.google.com/bot.html)"
-export __RHOST=
-export __LHOST=
-export __IF=
-export __URL=
-export __WORDS=
+
 
 # source all qq scripts
 # for f in ${0:A:h}/qq-* ; do
@@ -26,16 +21,13 @@ export __WORDS=
 #   source $f;
 # done
 
-# meta Functions
-qq-update() source $ZSH/custom/plugins/quiver/quiver.plugin.zsh
-qq-zshrc() source ~/.zshrc
 
 # output functions
-__info() echo "$fg[white]$bg[blue]   \u2691   $bg[default]$fg[blue]\ue0b0$reset_color $1"
-__ok()   echo "$fg[white]$bg[green]   \u2714   $bg[default]$fg[green]\ue0b0$reset_color $1"
+__info() echo "$fg[white]$bg[blue]  \u2691  $bg[default]$fg[blue]$reset_color $1"
+__ok()   echo "$fg[white]$bg[green]  \u2714  $bg[default]$fg[green]$reset_color $1"
 __ok-clip() __ok "The command was copied to the clipboard."
-__warn() echo "$fg[white]$bg[yellow]   \u2731   $bg[default]$fg[yellow]\ue0b0$reset_color $1"
-__err()  echo "$fg[white]$bg[red]   \u2716   $bg[default]$fg[red]\ue0b0$reset_color $1"
+__warn() echo "$fg[white]$bg[yellow]  \u2731  $bg[default]$fg[yellow]$reset_color $1"
+__err()  echo "$fg[white]$bg[red]  \u2716  $bg[default]$fg[red]$reset_color $1"
 __clip() xclip -selection c
 __note() {
   echo " "
@@ -47,7 +39,7 @@ __note() {
 }
 
 # validation functions
-__check() { if [[ -z "$1" ]]; then return 0; fi; return 1 }
+__check1() { if [[ -z "$1" ]]; then return 0; fi; return 1 }
 __usage() { __warn " usage: ${FUNCNAME[1]} <$1> " }
 
 # notify
@@ -69,9 +61,13 @@ __RDNS=
 # Util
 #############################################################
 
-alias qq-util-to-csv="paste -s -d, -"
-alias qq-util-get-ip="curl icanhazip.com"
-alias qq-sort-file="clean() {cat $1 | sort -u -o $1}"
+qq-util-zshrc() source ~/.zshrc
+
+qq-util-to-csv() paste -s -d, -
+
+qq-util-get-ip() curl icanhazip.com
+
+qq-util-sort-file() cat $1 | sort -u -o $1
 
 
 
@@ -87,10 +83,22 @@ qq-recon-asns-by-org-browser() {
 }
 
 
+
 qq-recon-asns-by-org-amass() {
   local org && read "org?Org: "
   print -z "amass intel -org $org | cut -d, -f1 >> asn.txt"
 }
+
+
+qq-recon-cidr-by-asn() {
+  if [ __check1 ]
+  then
+    for asn in $(cat $1); do curl https://api.hackertarget.com/aslookup/\?q\=AS$asn && echo "" ; done
+  else
+    __usage "<path_to_asn.txt>"
+  fi 
+}
+
 
 qq-recon-domains-by-whois-amass() {
   local d && read "d?Domain: "
