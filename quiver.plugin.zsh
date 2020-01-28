@@ -71,7 +71,7 @@ __RDNS=
 
 alias qq-util-to-csv="paste -s -d, -"
 alias qq-util-get-ip="curl icanhazip.com"
-qq-sort-file="clean() {cat $1 | sort -u -o $1}"
+alias qq-sort-file="clean() {cat $1 | sort -u -o $1}"
 
 
 
