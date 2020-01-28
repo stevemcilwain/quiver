@@ -93,7 +93,7 @@ qq-recon-asns-by-org-amass() {
 
 
 qq-recon-cidr-by-asn() {
-  if [[ -z "$1" ]]
+  if [[ -z $1 ]]
   then
     for asn in $(cat $1); do curl https://api.hackertarget.com/aslookup/\?q\=AS$asn && echo "" ; done
   else
