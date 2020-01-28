@@ -63,7 +63,7 @@ __RDNS=
 
 qq-util-zshrc() source ~/.zshrc
 
-qq-util-to-csv() paste -s -d, -
+alias qq-util-to-csv="paste -s -d, -"
 
 qq-util-get-ip() {
   curl icanhazip.com
