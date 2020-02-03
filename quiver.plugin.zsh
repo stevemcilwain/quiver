@@ -52,6 +52,8 @@ echo " "
 # PATHS
 #############################################################
 
+export __NOTES="${0:A:h}/notes"
+
 export __WORDS_ALL="/opt/words/all/all.txt"
 export __WORDS_COMMON="/usr/share/seclists/Discovery/Web-Content/common.txt"
 export __WORDS_RAFT_DIRS="/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"
@@ -181,7 +183,6 @@ qq-recon-email-by-domain-theharvester() {
 # Web
 #############################################################
 
-
 qq-enum-web-sweep-nmap() {
   local subnet && read "subnet?Subnet (range): "
   print -z "nmap -n -Pn -sS -p80,443,8080 -oA web_sweep ${subnet} && \
@@ -213,14 +214,11 @@ qq-enum-web-scope-burp() {
   print -z ".*\.domain\.com$"
 }
 
-
-
 qq-enum-web-vhosts-gobuster() {
   local u && read "u?Url: "
   print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt \
   -a \"${__UA}\" -t20 -o web.vhosts.gobuster.txt"
 }
-
 
 qq-enum-web-dirs-wfuzz() {
   local u && read "u?Url: "
@@ -231,7 +229,6 @@ qq-enum-web-files-wfuzz() {
   local u && read "u?Url: "
   print -z "wfuzz -c -v -L -s 0.1 -w ${__WORDS_RAFT_FILES} -R2 --hc=404 --hh=100 ${u}/FUZZ "
 }
-
 
 qq-enum-web-dirs-ffuf() {
   local u && read "u?Url: "
@@ -247,7 +244,6 @@ qq-enum-web-post-json-ffuf() {
   local u && read "u?Url: "
   print -z "ffuf -w /usr/share/seclists/Fuzzing/Databases/NoSQL.txt -u ${u} -X POST -H \"Content-Type: application/json\" -d '{\"username\": \"FUZZ\", \"password\": \"FUZZ\"}' -fr \"error\" "
 }
-
 
 qq-enum-web-dirs-gobuster() {
   local u && read "u?Url: "
@@ -266,7 +262,6 @@ qq-enum-web-screens-eyewitness() {
   print -z "eyewitness.py --web -f ${f} -d ./${d} --user-agent \"${__UA}\" "
 }
 
-
 qq-enum-web-vuln-nikto() {
   local u && read "u?Url: "
   print -z "nikto -C all -useragent \"${__UA}\" -h ${u} -output web.nikto.log"
@@ -283,7 +278,7 @@ qq-enum-web-app-wordpress() {
 }
 
 qq-enum-web-dir-traversal-notes() {
-  glow notes/enum-web-dir-traversal.md
+  glow ${__NOTES}/enum-web-dir-traversal.md
 }
 
 
