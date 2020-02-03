@@ -195,16 +195,6 @@ qq-enum-web-tcpdump() {
   print -z "tcpdump -i ${i} host ${r} and tcp port 80 -w web.${r}.pcap"
 }
 
-qq-enum-web-dir-robots() {
-  local u && read "u?Url: "
-  print -z "curl -v --user-agent \"${__UA}\" ${u}/robots.txt > web.robots.txt"
-}
-
-qq-enum-web-dir-robots-parsero() {
-  local u && read "u?Url: "
-  print -z "parsero -u ${u} -o -sb > web.parsero.txt"
-}
-
 qq-enum-web-whatweb() {
   local s && read "s?Search: "
   print -z "whatweb ${s} -a 3"
@@ -214,10 +204,24 @@ qq-enum-web-scope-burp() {
   print -z ".*\.domain\.com$"
 }
 
+# vhosts
+
 qq-enum-web-vhosts-gobuster() {
   local u && read "u?Url: "
   print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt \
   -a \"${__UA}\" -t20 -o web.vhosts.gobuster.txt"
+}
+
+# dirs and files
+
+qq-enum-web-dirs-robots() {
+  local u && read "u?Url: "
+  print -z "curl -v --user-agent \"${__UA}\" ${u}/robots.txt > web.robots.txt"
+}
+
+qq-enum-web-dirs-robots-parsero() {
+  local u && read "u?Url: "
+  print -z "parsero -u ${u} -o -sb > web.parsero.txt"
 }
 
 qq-enum-web-dirs-wfuzz() {
@@ -240,11 +244,6 @@ qq-enum-web-files-ffuf() {
   print -z "ffuf -r -w ${__WORDS_RAFT_FILES} -u ${u}/FUZZ -fs 100 -fc 404"
 }
 
-qq-enum-web-post-json-ffuf() {
-  local u && read "u?Url: "
-  print -z "ffuf -w /usr/share/seclists/Fuzzing/Databases/NoSQL.txt -u ${u} -X POST -H \"Content-Type: application/json\" -d '{\"username\": \"FUZZ\", \"password\": \"FUZZ\"}' -fr \"error\" "
-}
-
 qq-enum-web-dirs-gobuster() {
   local u && read "u?Url: "
   print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_DIRS} -a \"${__UA}\" -t20 -r -k -o gobuster-dirs-${u}.txt"
@@ -255,12 +254,23 @@ qq-enum-web-files-gobuster() {
   print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_FILES} -a \"${__UA}\" -t20 -r -k -o gobuster-files-${u}.txt"
 }
 
+# fuzz
+
+qq-enum-web-fuzz-post-json-ffuf() {
+  local u && read "u?Url: "
+  print -z "ffuf -w /usr/share/seclists/Fuzzing/Databases/NoSQL.txt -u ${u} -X POST -H \"Content-Type: application/json\" -d '{\"username\": \"FUZZ\", \"password\": \"FUZZ\"}' -fr \"error\" "
+}
+
+# screens
+
 qq-enum-web-screens-eyewitness() {
   local f && read "f?File(urls): "
   local d && read "d?Directory: "
   mkdir ./${d}
   print -z "eyewitness.py --web -f ${f} -d ./${d} --user-agent \"${__UA}\" "
 }
+
+# vuln scanners
 
 qq-enum-web-vuln-nikto() {
   local u && read "u?Url: "
@@ -272,15 +282,73 @@ qq-enum-web-vuln-nmap-rfi() {
   print -z "nmap -vv -n -Pn -p80 --script http-rfi-spider --script-args http-rfi-spider.url='/' -oN web.rfi.nmap ${r}"
 }
 
+# apps
+
 qq-enum-web-app-wordpress() {
   local u && read "u?Url: "
   print -z "wpscan --url ${u} --enumerate tt,vt,u,vp"
 }
 
-qq-enum-web-dir-traversal-notes() {
-  glow ${__NOTES}/enum-web-dir-traversal.md
+# elastic search
+
+qq-enum-web-app-elastic-health() {
+  local u && read "u?Url(:9200): "
+  print -z "curl -XGET ${u}:9200/_cluster/health?pretty"
 }
 
+qq-enum-web-app-elastic-indices() {
+  local u && read "u?Url(:9200): "
+  print -z "curl -XGET ${u}:9200/_cat/indices?v"
+}
+
+qq-enum-web-app-elastic-search() {
+  local u && read "u?Url(:9200): "
+  local index && read "index?Index: "
+  local query && read "query?Query: "
+  __info "example query: *:password"
+  print -z "curl -XGET ${u}:9200/${index}/_search?q=${query}&size=10&pretty"
+}
+
+qq-enum-web-app-elastic-all() {
+  local u && read "u?Url(:9200): "
+  local index && read "index?Index: "
+  print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
+}
+
+# padding oracle
+
+qq-enum-web-app-padbuster-check() {
+  local r && read "r?Remote Host: "
+  local cn && read "cn?Cookie Name: "
+  local cv && read "cv?Cookie Value: "
+  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0"
+}
+
+qq-enum-web-app-padbuster-forge() {
+  local r && read "r?Remote Host: "
+  local cn && read "cn?Cookie Name: "
+  local cv && read "cv?Cookie Value: "
+  local u && read "u?Username: "
+  print -z "padbuster ${r} ${cv} 8 -cookies ${cn}=${cv} -encoding 0 -plaintext user=${u}"
+}
+
+# Notes 
+
+qq-enum-web-app-drupal-notes() {
+  glow -p ${__NOTES}/enum-web-app-drupal-notes.md
+}
+
+qq-enum-web-app-wordpress-notes() {
+  glow -p ${__NOTES}/enum-web-app-wordpress-notes.md
+}
+
+qq-enum-web-dirs-traversal-notes() {
+  glow -p ${__NOTES}/enum-web-dir-traversal.md
+}
+
+qq-enum-web-bypass-upload-notes() {
+  glow -p ${__NOTES}/enum-web-bypasss-upload.md
+}
 
 
 
