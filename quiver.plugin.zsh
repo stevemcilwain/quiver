@@ -53,6 +53,7 @@ echo " "
 #############################################################
 
 export __NOTES="${0:A:h}/notes"
+export __SCRIPTS="${0:A:h}/scripts"
 
 export __WORDS_ALL="/opt/words/all/all.txt"
 export __WORDS_COMMON="/usr/share/seclists/Discovery/Web-Content/common.txt"
@@ -136,9 +137,9 @@ qq-recon-subs-by-domain-amass() {
   print -z "amass enum -d ${d}"
 }
 
-qq-recon-domains-crt.sh() {
+qq-recon-domains-by-crt.sh() {
   local s && read "s?Search (domain, url, etc): "
-  print -z "curl -s https://crt.sh/\?q\=\%.${s}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u "
+  print -z "${__SCRIPTS}/crt.sh ${s}"
 }
 
 qq-recon-subs-by-domain-subfinder() {
@@ -146,19 +147,9 @@ qq-recon-subs-by-domain-subfinder() {
   print -z "subfinder -d ${d} -nW -silent >> domains.txt"
 }
 
-qq-recon-domains-by-url-nmap() {
-  local u && read "u?Url: "
-  print -z "nmap -vvv -Pn -p 80,443 --script dns-brute ${u}"
-}
-
 qq-recon-subs-by-domain-dnsrecon() {
   local domain && read "domain?Domain: "
   print -z "dnsrecon -d ${domain}"
-}
-
-qq-recon-domains-crt.sh-httprobe() {
-  local s && read "s?Search: "
-  print -z "curl -s https://crt.sh/\?q\=\%.${s}\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u  "
 }
 
 qq-recon-files-metagoofil() {
@@ -178,6 +169,72 @@ qq-recon-email-by-domain-theharvester() {
   local domain && read "domain?Domain: "
   print -z "theharvester -d ${domain} -l 50 -b all -n -t -e 1.1.1.1"
 }
+
+############################################################# 
+# Network
+#############################################################
+
+qq-scan-net-1-ping-sweep() {
+  local subnet && read "subnet?Subnet : "
+  print -z "nmap -vvv -sn --open -oA ping_sweep ${subnet} && cat ping_sweep.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+}
+
+qq-scan-net-2-syn-sweep() {
+  local subnet && read "subnet?Subnet : "
+  print -z "nmap -vvv -n -Pn --open -sS -oA syn_sweep --excludefile hosts.txt ${subnet} && cat syn_sweep.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+}
+
+qq-scan-net-3-udp-sweep() {
+  local subnet && read "subnet?Subnet : "
+  print -z "nmap -vvv -n -Pn --open -sU --top-ports 100 -oA udp_sweep --excludefile hosts.txt ${subnet} && cat udp_sweep.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+}
+
+qq-scan-net-4-all-sweep() {
+  local subnet && read "subnet?Subnet : "
+  print -z "nmap -vvv -n -Pn -T4 --open -sS -p- -oA syn_all --excludefile hosts.txt ${subnet} && cat syn_all.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+}
+
+qq-scan-net-5-discovery() {
+  print -z "nmap -vvv -n -Pn -sV -sC -iL hosts.txt -oA network_discovery && searchsploit -x --nmap network_discovery.xml |grep remote"
+}
+
+qq-scan-net-sort-hosts() {
+  print -z "cat hosts.txt | sort -u | sort -V"
+}
+
+############################################################# 
+# Host
+#############################################################
+
+qq-scan-host-tcpdump() {
+  local r && read "r?Remote Host: "
+  print -z "tcpdump -i ${__IF} host ${r} -w host.${r}.pcap"
+}
+
+qq-scan-host-basic-nmap(){
+  local r && read "r?Remote Host: "
+  print -z "nmap -vvv -sC -sV --open -oA scan.${r}.top ${r}"
+}
+
+qq-scan-host-syn-fast-nmap() {
+  local r && read "r?Remote Host: "
+  print -z "nmap -vvv -n -Pn -sS -T4 --open -oA scan.${r}.syn -p- ${r}"
+}
+
+qq-scan-host-svc-nmap() {
+  local r && read "r?Remote Host: "
+  print -z "nmap -vvv -n -Pn -sS -sC -sV --open -oA scan.${r}.svc -p- ${r}"
+}
+
+qq-scan-host-udp-nmap() {
+  local r && read "r?Remote Host: "
+  print -z "nmap -n -Pn -sU -sV -sC --open -oA scan.${r}.udp --top-ports 100 ${r}"
+}
+
+qq-scan-host-lse-grep() {
+  print -z "ls /usr/share/nmap/scripts/* | grep "
+}
+
 
 ############################################################# 
 # Web
