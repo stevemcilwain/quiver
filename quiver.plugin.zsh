@@ -282,6 +282,9 @@ qq-enum-web-app-wordpress() {
   print -z "wpscan --url ${u} --enumerate tt,vt,u,vp"
 }
 
+qq-enum-web-dir-traversal-notes() {
+  glow notes/enum-web-dir-traversal.md
+}
 
 
 
