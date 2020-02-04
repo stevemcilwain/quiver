@@ -2,6 +2,8 @@
 
 Quiver is an opinionated and curated collection of commands, notes and scripts I use for bug bounty hunting.
 
+<script id="asciicast-ZHrUyUmGzNNxftclFG7xjc3Xe" src="https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe.js" async autoplay="true"></script>
+
 ## Features
 
 * ZSH / Oh-My-ZSH shell plugin
