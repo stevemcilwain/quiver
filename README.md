@@ -2,7 +2,7 @@
 
 Quiver is an opinionated and curated collection of commands, notes and scripts I use for bug bounty hunting.
 
-<script id="asciicast-ZHrUyUmGzNNxftclFG7xjc3Xe" src="https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe.js" async autoplay="true"></script>
+[![asciicast](https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe.svg)](https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe)
 
 ## Features
 
