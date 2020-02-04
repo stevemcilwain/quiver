@@ -29,11 +29,11 @@ done
 # Output Helpers
 #############################################################
 
-__info() echo "$fg[blue]$1$reset_color"
-__ok()   echo "$fg[green]$1$reset_color"
+__info() echo "$fg[blue][*] $1$reset_color"
+__ok()   echo "$fg[green][+] $1$reset_color"
 __ok-clip() __ok "The command was copied to the clipboard."
-__warn() echo "$fg[yellow]$1$reset_color"
-__err()  echo "$fg[red]$1$reset_color"
+__warn() echo "$fg[yellow][?] $1$reset_color"
+__err()  echo "$fg[red][!] $1$reset_color"
 __clip() xclip -selection c
 
 ############################################################# 
