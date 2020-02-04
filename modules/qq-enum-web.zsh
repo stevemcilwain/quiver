@@ -67,12 +67,12 @@ qq-enum-web-files-ffuf() {
 
 qq-enum-web-dirs-gobuster() {
   local u && read "u?Url: "
-  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_DIRS} -a \"${__UA}\" -t20 -r -k -o gobuster-dirs-${u}.txt"
+  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_DIRS} -a \"${__UA}\" -t20 -r -k -o gobuster-dirs.txt"
 }
 
 qq-enum-web-files-gobuster() {
   local u && read "u?Url: "
-  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_FILES} -a \"${__UA}\" -t20 -r -k -o gobuster-files-${u}.txt"
+  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_FILES} -a \"${__UA}\" -t20 -r -k -o gobuster-files.txt"
 }
 
 # fuzz
