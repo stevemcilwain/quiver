@@ -8,7 +8,7 @@
 __VER=0.2.0
 
 echo " "
-echo "[*] quiver ${__VER} loading..."
+echo "$fg[cyan][*] quiver ${__VER} loading...$reset_color"
 
 autoload colors; colors
 
@@ -29,11 +29,11 @@ done
 # Output Helpers
 #############################################################
 
-__info() echo "$fg[white]$bg[blue]  \u2691  $bg[default]$fg[blue]$reset_color $1"
-__ok()   echo "$fg[white]$bg[green]  \u2714  $bg[default]$fg[green]$reset_color $1"
+__info() echo "$fg[blue]$1$reset_color"
+__ok()   echo "$fg[green]$1$reset_color"
 __ok-clip() __ok "The command was copied to the clipboard."
-__warn() echo "$fg[white]$bg[yellow]  \u2731  $bg[default]$fg[yellow]$reset_color $1"
-__err()  echo "$fg[white]$bg[red]  \u2716  $bg[default]$fg[red]$reset_color $1"
+__warn() echo "$fg[yellow]$1$reset_color"
+__err()  echo "$fg[red]$1$reset_color"
 __clip() xclip -selection c
 
 ############################################################# 
@@ -72,7 +72,7 @@ export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
 
 
 
-echo "[*] quiver loaded."
+echo "$fg[cyan][*] quiver loaded.$reset_color"
 echo " "
 
 
