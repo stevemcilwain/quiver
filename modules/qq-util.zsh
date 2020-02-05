@@ -6,9 +6,13 @@
 
 alias qq-util-sort-to-csv="paste -s -d, -"
 
-qq-util-sort-file() cat $1 | sort -u -o $1
+qq-util-sort-file() {
+    cat $1 | sort -u -o $1
+}
 
-# qq-util-sort-ips() cat $1 | sort -u | sort -V -o $1
+qq-util-sort-ips() {
+    cat $1 | sort -u | sort -V -o $1
+}
 
 qq-util-system-mount() print -z "sudo mount | column -t"
 
