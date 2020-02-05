@@ -48,8 +48,11 @@ source ~/.zshrc
 ## Usage
 
 Use tab completion to view commands.
+
 ```
+
 qq-<tab>
+
 ```
 
 ### Namespaces
@@ -62,8 +65,15 @@ Quiver is organized into namespaces for easy tab navigation:
 * qq-enum-network:  network scanning and enumeration commands
 * qq-enum-host:  host scanning and enumeration commands
 * qq-enum-web:  web enumeration commands
+* qq-enum-web-aws:  aws enumeration commands
+  
+## Setting up Kali Linux
 
-## Reference - Tools Used
+To install dependent packages and tools run the included install script.
 
-* [Kali Linux Setup](kali.md)
+```
+
+qq-kali-install
+
+```
  

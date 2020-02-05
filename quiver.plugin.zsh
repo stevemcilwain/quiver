@@ -5,7 +5,7 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.2.0
+__VER=0.3.0
 
 echo " "
 echo "$fg[cyan][*] quiver ${__VER} loading...$reset_color"
@@ -68,6 +68,20 @@ export __IMPACKET="/usr/share/doc/python3-impacket/examples"
 
 export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
 
+############################################################# 
+# Update
+#############################################################
+
+qq-update() {
+  cd ~/.oh-my-zsh/custom/plugins/quiver
+  git pull
+  cd -
+  source ~/.zshrc
+}
+
+qq-kali-install() {
+  print -z "${__SCRIPTS}/install-kali.sh"
+}
 
 
 
