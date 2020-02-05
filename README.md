@@ -66,6 +66,8 @@ Quiver is organized into namespaces for easy tab navigation:
 * qq-enum-host:  host scanning and enumeration commands
 * qq-enum-web:  web enumeration commands
 * qq-enum-web-aws:  aws enumeration commands
+* qq-enum-dns: dns enumeration commands
+* qq-srv: service hosting commands
   
 ## Setting up Kali Linux
 

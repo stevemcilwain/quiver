@@ -82,3 +82,8 @@ qq-recon-domains-by-brute-ffuf() {
   local d && read "domain?Domain: "
   print -z "ffuf -u FUZZ.${d} -w ${__WORDS_ALL} -v | grep \"| URL | \" | awk '{print \$4}'"
 }
+
+qq-recon-github-by-user-curl() {
+  local u && read "u:User: "
+  print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
+}
