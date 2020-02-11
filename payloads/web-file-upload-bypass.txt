@@ -1,0 +1,5 @@
+Content-Disposition: form-data; name="upload"; filename="badfile.''gif"
+Content-Type: image/png
+
+GIF8
+<html><script>alert('XSS');</script></html>

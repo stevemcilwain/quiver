@@ -75,6 +75,12 @@ qq-enum-web-files-gobuster() {
   print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_FILES} -a \"${__UA}\" -t20 -r -k -o gobuster-files.txt"
 }
 
+qq-enum-web-js-endpoint-finder() {
+  local u && read "u?Url (js): "
+  print -z "python EndPoint-Finder.py -u ${u}"
+}
+
+
 # fuzz
 
 qq-enum-web-fuzz-post-json-ffuf() {

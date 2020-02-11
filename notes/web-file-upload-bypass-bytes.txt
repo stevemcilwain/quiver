@@ -1,0 +1,3 @@
+JPEG  - FF D8 FF DB - ÿØÿÛ 
+GIF   - 47 49 46 38 - GIF8
+PNG   - 89 50 4E 47 - ‰PNG

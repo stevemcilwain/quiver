@@ -25,3 +25,9 @@ qq-util-network-listeners-ss() print -z "sudo ss -plunt"
 qq-util-system-memory-top10() print -z "ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}'"
 
 qq-util-network-lsof() print -z "sudo lsof -P -i -n"
+
+qq-util-add-path-to-zshrc() {
+    local p && read "p?Path: "
+    __info "Current: $PATH"
+    print -z "export PATH=\$PATH:${p} | tee -a ~/.zshrc"
+}

@@ -58,8 +58,8 @@ sudo service xrdp restart
 
 echo -e "${green}[+] Installing custom packages...${reset}"
 
-sudo apt-get install -y rlwrap xclip jq pigz fonts-powerline git unzip asciinema
-sudo apt-get install -y gobuster exiftool amass lftp wireshark
+sudo apt-get install -y rlwrap xclip jq pigz fonts-powerline git unzip asciinema 
+sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts
 
 echo -e "${green}[+] Installing golang and packages... ${reset}"
 
@@ -107,6 +107,7 @@ echo -e "${green}[+] Adding enum tools...${reset}"
 
 sudo git clone https://github.com/ticarpi/jwt_tool.git /opt/enum/jwt_tool
 sudo git clone https://github.com/s0md3v/Arjun.git /opt/enum/Arjun
+sudo git clone https://github.com/tarunkant/EndPoint-Finder.git /opt/enum/Endpoint-Finder
 
 echo -e "${green}[+] Adding privesc tools...${reset}"
 
@@ -166,3 +167,6 @@ sudo ln -s /opt/powerless/Powerless.bat /srv/windows/pless.bat
 
 sudo mkdir /srv/rfi
 echo "<html><body><p>PHP INFO PAGE</p><br /><?php phpinfo(); ?></body></html>" | sudo tee /srv/rfi/phpinfo.php
+
+echo -e "${green}[+] Adding samba server...${reset}"
+

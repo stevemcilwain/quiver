@@ -54,8 +54,8 @@ for url in $(cat $1);do
     ############################################################
     # Eyewitness
     ############################################################
-    echo -e "${green} [+] Screenshotting... ${reset}"
-    eyewitness --web --single ${url} -d ./${host}/screens --no-prompt &> /dev/null
+    #echo -e "${green} [+] Screenshotting... ${reset}"
+    #eyewitness --web --single ${url} -d ./${host}/screens --no-prompt &> /dev/null
 
 
     echo -e " "
