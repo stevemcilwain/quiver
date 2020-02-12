@@ -45,11 +45,17 @@ for url in $(cat $1);do
     echo -e "${green} [+] Whatwebbing... ${reset}"
     whatweb ${url} -a 1 > ${host}/whatweb.txt 2> /dev/null
 
+   ############################################################
+    # Wafw00f
+    ############################################################
+    echo -e "${green} [+] Wafw00fing... ${reset}"
+    wafw00f ${url} > ${host}/waf.txt 2> /dev/null
+ 
     ############################################################
     # Gobuster
     ############################################################
     echo -e "${green} [+] Gobustering... ${reset}"
-    gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/quickhits.txt -k -o gobuster-dirs.txt
+    gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/quickhits.txt -k -o ${host}/gobuster-dirs.txt 2> /dev/null
   
     ############################################################
     # Eyewitness
@@ -63,7 +69,7 @@ for url in $(cat $1);do
     #echo -e "${green} [+] Bucketing... ${reset}"
     #aws s3 ls s3://${host}
 
-    
+
     #python3 dirsearch/dirsearch.py  -e * -u ${subdomain}
 
 

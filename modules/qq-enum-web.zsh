@@ -21,6 +21,11 @@ qq-enum-web-whatweb() {
   print -z "whatweb ${s} -a 3"
 }
 
+qq-enum-web-waf() {
+  local u && read "u?Url: "
+  print -z "wafw00f ${u} "
+}
+
 qq-enum-web-scope-burp() {
   print -z ".*\.domain\.com$"
 }

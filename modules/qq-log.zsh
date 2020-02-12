@@ -11,21 +11,60 @@ qq-log-new() {
     local p && read "p?Path: "
     
     if [[ -f "${p}" ]]; then
-        echo "${p} already exists"
-        return
+    
+        __LP=${p}
+        __warn "${p} already exists, set as active log"
+
+    elif
+
+        __LP=${p}
+        touch ${__LP}
+        echo "# Logbook - ${n}" >> ${__LP}
+        echo " " >> ${__LP}
+        __ok "${__LP} created."
     fi
 
-    __LP=${p}
-    touch ${__LP}
-    echo "# Logbook - ${n}" >> ${__LP}
-    echo " " >> ${__LP}
+
+}
+
+qq-log-set() {
+
+    local p && read "p?Logfile: "
+
+    if [[ -f "${p}" ]]; then
+
+        __LP=${p}
+        __ok "${p} set as active log"
+
+    elif
+        __err "${p} not found"
+    fi
+}
+
+qq-log-cat() {
+
+    if [[ -f "${__LP}" ]]; then
+
+        glow ${__LP}
+
+    elif
+        __err "${p} not found"
+    fi
 }
 
 qq-log() {
-    local stamp=$(date +'%m-%d-%Y : %r')
-    echo "## ${stamp}" >> ${__LP}
-    echo "\`\`\`" >> ${__LP}
-    echo "$1" >> ${__LP}
-    echo "\`\`\`" >> ${__LP}
-    echo " " >> ${__LP}
+
+    if [[ -f "${__LP}" ]]; then
+
+        local stamp=$(date +'%m-%d-%Y : %r')
+        echo "## ${stamp}" >> ${__LP}
+        echo "\`\`\`" >> ${__LP}
+        echo "$1" >> ${__LP}
+        echo "\`\`\`" >> ${__LP}
+        echo " " >> ${__LP}
+
+    elif
+        __err "${p} not found"
+    fi
+
 }
