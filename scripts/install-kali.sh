@@ -103,6 +103,10 @@ echo -e "${green}[+] Adding recon tools...${reset}"
 sudo git clone https://github.com/smicallef/spiderfoot.git /opt/recon/spiderfoot
 sudo git clone https://github.com/M4cs/BlackEye-Python.git /opt/recon/BlackEye-Python
 
+sudo git clone https://github.com/guelfoweb/knock.git /opt/recon/knock
+sudo python /opt/recon/knock/setup.py install
+
+
 echo -e "${green}[+] Adding enum tools...${reset}"
 
 sudo git clone https://github.com/ticarpi/jwt_tool.git /opt/enum/jwt_tool

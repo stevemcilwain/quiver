@@ -58,6 +58,12 @@ for url in $(cat $1);do
     #eyewitness --web --single ${url} -d ./${host}/screens --no-prompt &> /dev/null
 
 
+
+    #aws s3 ls s3://${subdomain}
+
+    #python3 dirsearch/dirsearch.py  -e * -u ${subdomain}
+
+
     echo -e " "
 done
 

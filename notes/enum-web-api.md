@@ -1,11 +1,7 @@
 
-
-
 ## IDOR
 ```
 Even if ID is a GUID or random, send numeric: /?user_id=111
-
-
 
 ```
 
@@ -18,7 +14,5 @@ Send ID twice URL?id=<LEGIT>&id=<VICTIM>
 Send wildcard {"user_id":"*"}
 ```
 
-Use Mass Assignment to bypass security mechanisms.
-For Example:"POST /api/rest_pass" requires old password."PUT /api/update_user" 
 
 
