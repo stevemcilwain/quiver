@@ -5,15 +5,15 @@
 #############################################################
 
 qq-enum-web-sweep-nmap() {
-  local subnet && read "subnet?Subnet (range): "
-  print -z "nmap -n -Pn -sS -p80,443,8080 -oA web_sweep ${subnet} && \
-  grep open web_sweep.gnmap |cut -d' ' -f2 > web_hosts.txt"
+  local s && read "s?Subnet (range): "
+  print -z "nmap -n -Pn -sS -p80,443,8080 -oA web_sweep ${s} && \
+  grep open web_sweep.gnmap |cut -d' ' -f2 > sweep.${s}.txt"
 }
 
 qq-enum-web-tcpdump() {
   local i && read "i?Interface: "
   local r && read "r?Remote Host: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 80 -w web.${r}.pcap"
+  print -z "tcpdump -i ${i} host ${r} and tcp port 80 -w capture.${r}.pcap"
 }
 
 qq-enum-web-whatweb() {
@@ -29,50 +29,59 @@ qq-enum-web-scope-burp() {
 
 qq-enum-web-vhosts-gobuster() {
   local u && read "u?Url: "
+  local d=$(cat ${u} | cut -d/ -f3)
   print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt \
-  -a \"${__UA}\" -t20 -o web.vhosts.gobuster.txt"
+  -a \"${__UA}\" -t20 -o vhosts.$d.txt"
 }
 
 # dirs and files
 
 qq-enum-web-dirs-robots() {
   local u && read "u?Url: "
-  print -z "curl -v --user-agent \"${__UA}\" ${u}/robots.txt > web.robots.txt"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "curl -s --user-agent \"${__UA}\" ${u}/robots.txt > robots.${d}.txt"
 }
 
 qq-enum-web-dirs-robots-parsero() {
   local u && read "u?Url: "
-  print -z "parsero -u ${u} -o -sb > web.parsero.txt"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "parsero -u ${u} -o -sb > robots-parsed.${d}.txt"
 }
 
 qq-enum-web-dirs-wfuzz() {
   local u && read "u?Url: "
-  print -z "wfuzz -c -v -L -s 0.1 -w ${__WORDS_RAFT_DIRS} -R2 --hc=404 --hh=100 ${u}/FUZZ "
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "wfuzz -v -s 0.1 -R5 --hc=404 --hh=101 -w ${__WORDS_QUICK} ${u}/FUZZ > dirs.${d}.txt "
 }
 
 qq-enum-web-files-wfuzz() {
   local u && read "u?Url: "
-  print -z "wfuzz -c -v -L -s 0.1 -w ${__WORDS_RAFT_FILES} -R2 --hc=404 --hh=100 ${u}/FUZZ "
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "wfuzz -v -s 0.1 --hc=404 --hh=101 -w ${__WORDS_NULL} ${u}/FUZZ > files.${d}.txt "
 }
 
 qq-enum-web-dirs-ffuf() {
   local u && read "u?Url: "
-  print -z "ffuf -r -w ${__WORDS_RAFT_DIRS} -u ${u}/FUZZ -fs 100 -fc 404"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "ffuf  -fc 404 -fs 101 -w ${__WORDS_QUICK} -u ${u}/FUZZ > dirs.${d}.txt"
 }
 
 qq-enum-web-files-ffuf() {
   local u && read "u?Url: "
-  print -z "ffuf -r -w ${__WORDS_RAFT_FILES} -u ${u}/FUZZ -fs 100 -fc 404"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "ffuf -fc 404 -fs 101 -w ${__WORDS_NULL} -u ${u}/FUZZ > files.${d}.txt"
 }
 
 qq-enum-web-dirs-gobuster() {
   local u && read "u?Url: "
-  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_DIRS} -a \"${__UA}\" -t20 -r -k -o gobuster-dirs.txt"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "gobuster dir -u ${u} -a \"${__UA}\" -t10 -k -w ${__WORDS_QUICK} -o dirs.${d}.txt"
 }
 
 qq-enum-web-files-gobuster() {
   local u && read "u?Url: "
-  print -z "gobuster dir -u ${u} -w ${__WORDS_RAFT_FILES} -a \"${__UA}\" -t20 -r -k -o gobuster-files.txt"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "gobuster dir -u ${u} -a \"${__UA}\" -t10 -k  -w ${__WORDS_NULL} -o files.${d}.txt"
 }
 
 qq-enum-web-js-endpoint-finder() {
@@ -101,7 +110,8 @@ qq-enum-web-screens-eyewitness() {
 
 qq-enum-web-vuln-nikto() {
   local u && read "u?Url: "
-  print -z "nikto -C all -useragent \"${__UA}\" -h ${u} -output web.nikto.log"
+  local d=$(cat ${u} | cut -d/ -f3)
+  print -z "nikto -C all -useragent \"${__UA}\" -h ${u} -output nikto.${d}.log"
 }
 
 qq-enum-web-vuln-nmap-rfi() {

@@ -50,9 +50,19 @@ qq-recon-domains-by-crt.sh() {
   print -z "${__SCRIPTS}/crt.sh ${s}"
 }
 
+qq-recon-subs-by-domain-crt.sh() {
+  local d && read "d?Domain: "
+  print -z "curl 'https://crt.sh/?q=%.${d}' | grep -i "${d}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u"
+}
+
 qq-recon-subs-by-domain-subfinder() {
   local d && read "d?Domain: "
   print -z "subfinder -d ${d} -nW -silent >> domains.txt"
+}
+
+qq-recon-subs-by-domain-sublist3r() {
+  local d && read "d?Domain: "
+  print -z "python3 sublist3r.py -d ${d} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS"
 }
 
 qq-recon-subs-by-domain-dnsrecon() {
@@ -87,3 +97,4 @@ qq-recon-github-by-user-curl() {
   local u && read "u:User: "
   print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
 }
+
