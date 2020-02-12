@@ -5,7 +5,7 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.3.0
+__VER=0.4.0
 
 echo " "
 echo "$fg[cyan][*] quiver ${__VER} loading...$reset_color"
