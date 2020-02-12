@@ -52,6 +52,19 @@ qq-log-cat() {
     fi
 }
 
+qq-log-edit() {
+
+    if [[ -f "${__LP}" ]]; then
+
+        # I know... I know... you love your vim... just change it or make it a 
+        # setting,I'm tired.
+        nano ${__LP}
+
+    else
+        __err "${p} not found"
+    fi
+}
+
 qq-log() {
 
     if [[ -f "${__LP}" ]]; then
