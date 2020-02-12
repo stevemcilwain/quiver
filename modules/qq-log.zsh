@@ -15,7 +15,7 @@ qq-log-new() {
         __LP=${p}
         __warn "${p} already exists, set as active log"
 
-    elif
+    else
 
         __LP=${p}
         touch ${__LP}
@@ -36,7 +36,7 @@ qq-log-set() {
         __LP=${p}
         __ok "${p} set as active log"
 
-    elif
+    else
         __err "${p} not found"
     fi
 }
@@ -47,7 +47,7 @@ qq-log-cat() {
 
         glow ${__LP}
 
-    elif
+    else
         __err "${p} not found"
     fi
 }
@@ -63,7 +63,7 @@ qq-log() {
         echo "\`\`\`" >> ${__LP}
         echo " " >> ${__LP}
 
-    elif
+    else
         __err "${p} not found"
     fi
 
