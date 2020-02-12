@@ -24,45 +24,21 @@ qq-log-new() {
         __ok "${__LP} created."
     fi
 
-
 }
 
 qq-log-set() {
-
-    local p && read "p?Logfile: "
-
-    if [[ -f "${p}" ]]; then
-
-        __LP=${p}
-        __ok "${p} set as active log"
-
-    else
-        __err "${p} not found"
-    fi
+    __LP=$1
+    __ok "$1 set as active log"
 }
 
 qq-log-cat() {
-
-    if [[ -f "${__LP}" ]]; then
-
-        glow ${__LP}
-
-    else
-        __err "${p} not found"
-    fi
+    glow ${__LP}
 }
 
 qq-log-edit() {
-
-    if [[ -f "${__LP}" ]]; then
-
-        # I know... I know... you love your vim... just change it or make it a 
-        # setting,I'm tired.
-        nano ${__LP}
-
-    else
-        __err "${p} not found"
-    fi
+    # I know... I know... you love your vim... just change it or make it a 
+    # setting,I'm tired.
+    nano ${__LP}
 }
 
 qq-log() {
