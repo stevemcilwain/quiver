@@ -86,8 +86,6 @@ qq-kali-install() {
 }
 
 
-
-
 echo "$fg[cyan][*] quiver loaded.$reset_color"
 echo " "
 

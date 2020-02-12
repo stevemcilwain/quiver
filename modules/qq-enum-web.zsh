@@ -89,7 +89,6 @@ qq-enum-web-js-endpoint-finder() {
   print -z "python EndPoint-Finder.py -u ${u}"
 }
 
-
 # fuzz
 
 qq-enum-web-fuzz-post-json-ffuf() {

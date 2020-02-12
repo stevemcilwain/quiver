@@ -57,10 +57,13 @@ for url in $(cat $1);do
     #echo -e "${green} [+] Screenshotting... ${reset}"
     #eyewitness --web --single ${url} -d ./${host}/screens --no-prompt &> /dev/null
 
+    ############################################################
+    # AWS
+    ############################################################
+    #echo -e "${green} [+] Bucketing... ${reset}"
+    #aws s3 ls s3://${host}
 
-
-    #aws s3 ls s3://${subdomain}
-
+    
     #python3 dirsearch/dirsearch.py  -e * -u ${subdomain}
 
 
