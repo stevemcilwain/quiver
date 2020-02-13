@@ -21,7 +21,7 @@ qq-recon-github-by-user-curl() {
 qq-recon-github-top5() {
     local o && read "o?Org: "
     __info "${__GH}"
-    local q=$(cat $GH_TOP5 | sed ':a;N;$!ba;s/\n/ OR /g')
+    local q=cat $GH_TOP5 | sed ':a;N;$!ba;s/\n/ OR /g'
     echo "${o} AND ${q}"
 }
 
