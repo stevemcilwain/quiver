@@ -66,8 +66,8 @@ for url in $(cat $1);do
     ############################################################
     # AWS
     ############################################################
-    #echo -e "${green} [+] Bucketing... ${reset}"
-    #aws s3 ls s3://${host}
+    echo -e "${green} [+] S3 Bucketing... ${reset}"
+    aws s3 ls s3://${host}
 
 
     #python3 dirsearch/dirsearch.py  -e * -u ${subdomain}

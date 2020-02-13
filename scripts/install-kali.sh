@@ -59,7 +59,7 @@ sudo service xrdp restart
 echo -e "${green}[+] Installing custom packages...${reset}"
 
 sudo apt-get install -y rlwrap xclip jq pigz fonts-powerline git unzip asciinema 
-sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts
+sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts awscli
 
 echo -e "${green}[+] Installing golang and packages... ${reset}"
 
@@ -104,8 +104,14 @@ sudo git clone https://github.com/smicallef/spiderfoot.git /opt/recon/spiderfoot
 sudo git clone https://github.com/M4cs/BlackEye-Python.git /opt/recon/BlackEye-Python
 
 sudo git clone https://github.com/guelfoweb/knock.git /opt/recon/knock
-sudo python /opt/recon/knock/setup.py install
+cd /opt/recon/knock
+sudo python setup.py install
+cd -
 
+sudo git clone https://github.com/blechschmidt/massdns.git /opt/recon/massdns
+cd /opt/recon/massdns
+make
+cd -
 
 echo -e "${green}[+] Adding enum tools...${reset}"
 
@@ -172,5 +178,5 @@ sudo ln -s /opt/powerless/Powerless.bat /srv/windows/pless.bat
 sudo mkdir /srv/rfi
 echo "<html><body><p>PHP INFO PAGE</p><br /><?php phpinfo(); ?></body></html>" | sudo tee /srv/rfi/phpinfo.php
 
-echo -e "${green}[+] Adding samba server...${reset}"
+
 

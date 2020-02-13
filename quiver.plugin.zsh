@@ -5,7 +5,19 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.4.0
+__VER=0.5.0
+
+
+cat << END
+
+ ██████╗ ██╗   ██╗██╗██╗   ██╗███████╗██████╗ 
+██╔═══██╗██║   ██║██║██║   ██║██╔════╝██╔══██╗
+██║   ██║██║   ██║██║██║   ██║█████╗  ██████╔╝
+██║▄▄ ██║██║   ██║██║╚██╗ ██╔╝██╔══╝  ██╔══██╗
+╚██████╔╝╚██████╔╝██║ ╚████╔╝ ███████╗██║  ██║
+ ╚══▀▀═╝  ╚═════╝ ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝                                              
+
+END
 
 echo " "
 echo "$fg[cyan][*] quiver ${__VER} loading...$reset_color"
@@ -15,7 +27,7 @@ autoload colors; colors
 #Ssource all qq scripts
 
 for f in ${0:A:h}/modules/qq-* ; do
-  echo "[+] quiver sourcing $f ... "
+  echo "[+] sourcing $f ... "
   source $f;
 done
 
@@ -34,9 +46,6 @@ __ok()   echo "$fg[green][+] $1$reset_color"
 __warn() echo "$fg[yellow][>] $1$reset_color"
 __err()  echo "$fg[red][!] $1$reset_color"
 
-__clip() xclip -selection c
-__ok-clip() __ok "The command was copied to the clipboard."
-
 ############################################################# 
 # Constants
 #############################################################
@@ -48,7 +57,7 @@ export __WORDS_ALL="/opt/words/all/all.txt"
 export __WORDS_NULL="/opt/words/nullenc/null.txt"
 export __WORDS_COMMON="/usr/share/seclists/Discovery/Web-Content/common.txt"
 export __WORDS_RAFT_DIRS="/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"
-export __WORDS_QUICK="/usr/share/seclists/Discovery/Web-Contant/quickhits.txt"
+export __WORDS_QUICK="/usr/share/seclists/Discovery/Web-Content/quickhits.txt"
 export __WORDS_MEDIUM="/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
 export __WORDS_RAFT_FILES="/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"
 export __WORDS_SWAGGER="/usr/share/seclists/Discovery/Web-Content/swagger.txt"

@@ -23,13 +23,10 @@ qq-recon-wordlist-by-website-cewl() {
     john --wordlist=tmp.list --rules --stdout"
 }
 
-qq-recon-email-by-domain-theharvester() {
+qq-recon-all-by-domain-theharvester() {
   local d && read "d?Domain: "
-  print -z "theharvester -d ${d} -l 50 -b all -n -t -e 1.1.1.1"
+  print -z "theharvester -d ${d} -l 50 -b all -n -t -c -e 1.1.1.1"
 }
 
-qq-recon-github-by-user-curl() {
-  local u && read "u:User: "
-  print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
-}
+
 
