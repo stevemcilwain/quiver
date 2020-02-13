@@ -15,11 +15,12 @@ $fg[cyan]
 ||__|||__|||__|||__|||__|||__||
 |/__\|/__\|/__\|/__\|/__\|/__\|
 
+ ${__VER}
 $reset_color
 END
 
 echo " "
-echo "$fg[cyan][*] quiver ${__VER} loading...$reset_color"
+echo "$fg[cyan][*] loading...$reset_color"
 
 autoload colors; colors
 

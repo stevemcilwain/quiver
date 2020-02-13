@@ -16,13 +16,10 @@ qq-recon-github-by-user-curl() {
   print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
 }
 
-qq-recon-github-top5() {
+qq-recon-github-dorks-top5() {
     local o && read "o?Org: "
-    echo ${__GH}
     echo "${o} AND ${__GH_TOP5}"
 }
-
-__GH="https://github.com/search/"
 
 __GH_TOP5=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 security_credentials
@@ -32,6 +29,11 @@ send_keys
 send,keys
 END
 )
+
+qq-recon-github-dorks-aws() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_AWS}"
+}
 
 __GH_AWS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 AKIA
@@ -43,6 +45,11 @@ bucket
 cloudfront
 END
 )
+
+qq-recon-github-dorks-api() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_API}"
+}
 
 __GH_API=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 access_token
@@ -57,6 +64,11 @@ secret_key
 END
 )
 
+qq-recon-github-dorks-keys() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_KEYS}"
+}
+
 __GH_KEYS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 -----BEGIN RSA PRIVATE KEY-----
 -----BEGIN EC PRIVATE KEY-----
@@ -64,6 +76,11 @@ __GH_KEYS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 -----BEGIN PGP PRIVATE KEY BLOCK-----
 END
 )
+
+qq-recon-github-dorks-b2b() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_B2B}"
+}
 
 __GH_B2B=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 EAA
@@ -78,6 +95,11 @@ sk_live_
 rk_live_
 END
 )
+
+qq-recon-github-dorks-comms() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_COMMS}"
+}
 
 __GH_COMMS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 removed prod
@@ -95,6 +117,11 @@ vulnerability
 encrypted
 END
 )
+
+qq-recon-github-dorks-cloud() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_CLOUD}"
+}
 
 __GH_CLOUD=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 AMAZON
@@ -117,11 +144,10 @@ OPENSTACK
 END
 )
 
-GH_AUTH << END
-AUTH0
-OKTA
-END
-)
+qq-recon-github-dorks-dotfiles() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_DOTFILES}"
+}
 
 __GH_DOTFILES=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 filename:bash_history
@@ -138,6 +164,11 @@ filename:filezilla.xml Pass
 END
 )
 
+qq-recon-github-dorks-cms() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_CMS}"
+}
+
 __GH_CMS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 filename:wp-config
 filename:wp-config.php
@@ -148,6 +179,11 @@ MAGENTO_PASSWORD
 CONTENTFUL_
 END
 )
+
+qq-recon-github-dorks-ext() {
+    local o && read "o?Org: "
+    echo "${o} AND ${__GH_EXT}"
+}
 
 __GH_EXT=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 extension:bat
