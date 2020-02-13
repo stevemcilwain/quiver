@@ -14,10 +14,13 @@ alias cls="clear"
 alias path="echo -e \${PATH//:/\\n}"
 alias cp="cp -iv"
 alias mv="mv -iv"
+alias du='du -kh'
+alias df='df -kTh'
+alias lx='ls -lXB'
 alias linestocsv="paste -s -d, -"
 alias csvtolines="tr ',' '\n'"
 alias mount="mount | column -t"
-alias zcat="cat ~/.zshrc | less"
+alias zcat="cat ~/.zshrc"
 alias znano="nano ~/.zshrc"
 alias zsrc="source ~/.zshrc"
 
