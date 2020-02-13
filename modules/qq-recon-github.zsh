@@ -4,8 +4,6 @@
 # Recon Github
 #############################################################
 
-export __GH=https://github.com/search/
-
 # grep -i "<query>" <dorks_file> | sed ':a;N;$!ba;s/\n/ OR /g'
 
 qq-recon-github-git-search() {
@@ -20,19 +18,21 @@ qq-recon-github-by-user-curl() {
 
 qq-recon-github-top5() {
     local o && read "o?Org: "
-    __info "${__GH}"
-    local q=cat $GH_TOP5 | sed ':a;N;$!ba;s/\n/ OR /g'
-    echo "${o} AND ${q}"
+    echo ${__GH}
+    echo "${o} AND ${__GH_TOP5}"
 }
 
+__GH="https://github.com/search/"
 
-GH_TOP5=cat << END
+__GH_TOP5=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
 security_credentials
 connectionstring
 ssh2_auth_password
 send_keys
 send,keys
 END
+)
+
 
 # GH_AWS << END
 # AKIA
