@@ -26,13 +26,13 @@ qq-recon-github-top5() {
 }
 
 
-GH_TOP5=$(cat << END
+GH_TOP5=cat << END
 security_credentials
 connectionstring
 ssh2_auth_password
 send_keys
 send,keys
-END)
+END
 
 # GH_AWS << END
 # AKIA
