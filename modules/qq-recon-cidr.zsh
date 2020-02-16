@@ -11,7 +11,7 @@ qq-recon-cidr-by-asn-bgpview() {
 
 qq-recon-cidr-by-asns-file-bgpview() {
   local p && read "p?Path to file: "
-  print -z "for a in $(cat ${p}); do curl -s https://api.bgpview.io/asn/\$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix' >> cidr.txt; done"
+  print -z "for a in \$(cat ${p}); do curl -s https://api.bgpview.io/asn/\$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix' >> cidr.txt; done"
 }
 
 qq-recon-cidr-lookup-ptr() {
