@@ -4,14 +4,14 @@
 # qq-recon-cidr
 #############################################################
 
-qq-recon-cidr-by-asn-hackertarget() {
-  local a && read "a?ASN: "
-  print -z "curl https://api.hackertarget.com/aslookup/\?q\=AS$a && echo"
-}
-
 qq-recon-cidr-by-asn-bgpview() {
   local a && read "a?ASN: "
   print -z "curl -s https://api.bgpview.io/asn/$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix'"
+}
+
+qq-recon-cidr-by-asns-file-bgpview() {
+  local p && read "p?Path to file: "
+  print -z "for a in $(cat ${p}); do curl -s https://api.bgpview.io/asn/\$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix' >> cidr.txt; done"
 }
 
 qq-recon-cidr-lookup-ptr() {
