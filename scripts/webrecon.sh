@@ -31,7 +31,7 @@ for url in $(cat $1);do
     # Robots
     ############################################################
     echo -e "${green} [+] Curling... robots.txt ${reset}" 
-    curl -s ${url}/robots.txt -o ${host}/robots.txt
+    curl -s -L ${url}/robots.txt -o ${host}/robots.txt
 
     ############################################################
     # Ports

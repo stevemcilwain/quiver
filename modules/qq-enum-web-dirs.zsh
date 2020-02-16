@@ -7,7 +7,7 @@
 qq-enum-web-dirs-robots() {
   local u && read "u?Url: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "curl -s --user-agent \"${__UA}\" ${u}/robots.txt > robots.${d}.txt"
+  print -z "curl -s -L --user-agent \"${__UA}\" ${u}/robots.txt > robots.${d}.txt"
 }
 
 qq-enum-web-dirs-robots-parsero() {
