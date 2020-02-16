@@ -5,10 +5,10 @@
 #############################################################
 
 # system
-alias agu="apt-get update"
-alias aguu="apt-get update && apt-get upgrade"
-alias agi="apt-get install"
-alias agr="apt autoremove"
+alias agu="sudo apt-get update"
+alias aguu="sudo apt-get update && sudo apt-get upgrade"
+alias agi="sudo apt-get install"
+alias agr="sudo apt autoremove"
 alias cd..="cd ../"
 alias cls="clear"
 alias path="echo -e \${PATH//:/\\n}"
@@ -19,10 +19,11 @@ alias df='df -kTh'
 alias lx='ls -lXB'
 alias linestocsv="paste -s -d, -"
 alias csvtolines="tr ',' '\n'"
-alias mount="mount | column -t"
+alias mount="sudo mount | column -t"
 alias zcat="cat ~/.zshrc"
 alias znano="nano ~/.zshrc"
 alias zsrc="source ~/.zshrc"
+alias hp="httprobe -t 3000 -c 50 "
 
 mcd () { mkdir -p "$1" && cd "$1"; }
 sfu() { cat $1 | sort -u -o $1 }

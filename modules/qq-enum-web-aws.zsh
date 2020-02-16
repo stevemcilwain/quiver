@@ -15,5 +15,8 @@ qq-enum-web-aws-s3-cp() {
   print -z "aws s3 cp ${f} s3://${r}"
 }
 
-# 
-# 
+qq-enum-web-aws-s3-s3scanner() {
+  local p && read "p?Path to buckets file: "
+  info "Use -d to dump buckets to local path"
+  print -z "python /opt/enum/S3Scanner/s3scanner.py ${p}"
+} 

@@ -28,5 +28,19 @@ qq-recon-all-by-domain-theharvester() {
   print -z "theharvester -d ${d} -l 50 -b all -n -t -c -e 1.1.1.1"
 }
 
+qq-recon-screens-by-url-eyewitness(){
+  local u && read "u?Url: "
+  local d=$(echo "${u}" | cut -d/ -f3)
+  print -z "eyewitness --web --user-agent \"${__UA}\" --single ${u} -d ./${d}/screens --no-dns --no-prompt "
+}
 
+qq-recon-screens-by-file-eyewitness(){
+  local p && read "p?Path: "
+  print -z "eyewitness --web --user-agent \"${__UA}\" -f ${p} -d ./screens --no-dns --no-prompt "
+}
+
+qq-recon-headers-curl() {
+  local u && read "u?Url: "
+  print -z "curl -X GET -I -L -A \"${__UA}\" ${u}"
+}
 

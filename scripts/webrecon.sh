@@ -56,7 +56,7 @@ for url in $(cat $1);do
     ############################################################
     echo -e "${green} [+] Gobustering... ${reset}"
     gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/quickhits.txt -k -o ${host}/gobuster-dirs.txt 2> /dev/null
-  
+   
     ############################################################
     # Eyewitness
     ############################################################
@@ -68,10 +68,6 @@ for url in $(cat $1);do
     ############################################################
     echo -e "${green} [+] S3 Bucketing... ${reset}"
     aws s3 ls s3://${host}
-
-
-    #python3 dirsearch/dirsearch.py  -e * -u ${subdomain}
-
 
     echo -e " "
 done
