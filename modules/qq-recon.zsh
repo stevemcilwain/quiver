@@ -5,8 +5,10 @@
 #############################################################
 
 qq-recon-script-webrecon() {
-  local f && read "f?File: "
-  __warn "Uses your current directory for output"
+  local f=$(rlwrap -S 'Select domains file: ' -e '' -c -o cat)
+  [[ ! -f $f ]] && err "${f} does not exist" && return
+  __info "Using ${f} as input" 
+  __warn "Using $(pwd) as output directory"
   print -z "${__SCRIPTS}/webrecon.sh ${f}"
 }
 
