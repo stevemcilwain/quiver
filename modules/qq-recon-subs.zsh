@@ -27,7 +27,7 @@ qq-recon-subs-by-domain-subfinder() {
 
 qq-recon-subs-by-domain-sublist3r() {
   local d && read "d?DOMAIN: "
-  print -z "python3 sublist3r.py -d ${d} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS -o subs.${d}.txt"
+  print -z "sublist3r -d ${d} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS -o subs.${d}.txt"
 }
 
 qq-recon-subs-by-domain-dnsrecon() {
@@ -37,7 +37,7 @@ qq-recon-subs-by-domain-dnsrecon() {
 
 qq-recon-subs-massdns() {
   local f=$(rlwrap -S 'FILE(DOMAINS): ' -e '' -c -o cat) 
-  print -z "/opt/recon/massdns/bin/massdns -r /opt/recon/massdns/list/resolvers.txt -t A -o S ${f} -w massdns.results.txt"
+  print -z "/opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${f} -w massdns.results.txt"
 }
 
 qq-recon-subs-massdns-results-parse() {

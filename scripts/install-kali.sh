@@ -60,7 +60,9 @@ echo -e "${green}[+] Installing custom packages...${reset}"
 
 sudo apt-get install -y rlwrap jq pigz fonts-powerline git unzip asciinema 
 sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts awscli libldns-dev whois atftpd
+
 sudo pip install py-altdns
+python3 -m pip install enteletaor
 
 echo -e "${green}[+] Installing golang and packages... ${reset}"
 
