@@ -14,6 +14,12 @@ qq-recon-domains-by-asn-amass() {
   print -z "amass intel -active -asn ${a}"
 }
 
+qq-recon-domains-by-asns-amass() {
+  local f=$(rlwrap -S 'FILE(ASNs): ' -e '' -c -o cat)
+  local asn_csv=$(cat ${f} | paste -s -d, - )
+  print -z "amass intel -active -asn ${asn_csv}"
+}
+
 qq-recon-domains-by-crt.sh() {
   local s && read "s?SEARCH(domain, url, name): "
   print -z "${__SCRIPTS}/crt.sh ${s}"
