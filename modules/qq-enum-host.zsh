@@ -18,12 +18,12 @@ qq-enum-host-basic-nmap(){
 
 qq-enum-host-syn-fast-nmap() {
   local r && read "r?RHOST: "
-  print -z "nmap -vvv -n -Pn -sS -T4 --open -oA scan.${r}.syn -p- ${r}"
+  print -z "sudo nmap -vvv -n -Pn -sS -T4 --open -oA scan.${r}.syn -p- ${r}"
 }
 
 qq-enum-host-svc-nmap() {
   local r && read "r?RHOST: "
-  print -z "nmap -vvv -n -Pn -sS -sC -sV --open -oA scan.${r}.svc -p- ${r}"
+  print -z "sudo nmap -vvv -n -Pn -sS -sC -sV --open -oA scan.${r}.svc -p- ${r}"
 }
 
 qq-enum-host-udp-nmap() {

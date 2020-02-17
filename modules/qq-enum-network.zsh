@@ -11,7 +11,7 @@ qq-enum-network-1-ping-sweep() {
 
 qq-enum-network-2-syn-sweep() {
   local s && read "s?SUBNET: "
-  print -z "nmap -vvv -n -Pn --open -sS -oA syn_sweep --excludefile hosts.txt ${s} && cat syn_sweep.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+  print -z "sudo nmap -vvv -n -Pn --open -sS -oA syn_sweep --excludefile hosts.txt ${s} && cat syn_sweep.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
 }
 
 qq-enum-network-3-udp-sweep() {
@@ -21,7 +21,7 @@ qq-enum-network-3-udp-sweep() {
 
 qq-enum-network-4-all-sweep() {
   local s && read "s?SUBNET: "
-  print -z "nmap -vvv -n -Pn -T4 --open -sS -p- -oA syn_all --excludefile hosts.txt ${s} && cat syn_all.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
+  print -z "sudo nmap -vvv -n -Pn -T4 --open -sS -p- -oA syn_all --excludefile hosts.txt ${s} && cat syn_all.gnmap | grep Up | cut -d" " -f2 >> hosts.txt"
 }
 
 qq-enum-network-5-discovery() {
@@ -37,12 +37,12 @@ __MASSCAN_PORTS="161,443,744,2075,2076,3000,3306,3366,3868,4000,4040,4044,4443,5
 qq-enum-network-masscan() {
   local s && read "s?SUBNET: "
   local f=$(echo $s | cut -d/ -f1)
-  print -z "masscan ${s} -p${__MASSCAN_PORTS} -oL masscan.${f}.txt "
+  print -z "sudo masscan ${s} -p${__MASSCAN_PORTS} -oL masscan.${f}.txt "
 }
 
 qq-enum-networks-masscan() {
   local f=$(rlwrap -S 'FILE(CIDRs): ' -e '' -c -o cat)
-  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && masscan -p${__MASSCAN_PORTS} \${c} -oL masscan.\${n}.txt ; done"
+  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && sudo masscan \${c} -p${__MASSCAN_PORTS} -oL masscan.\${n}.txt ; done"
 }
 
 
