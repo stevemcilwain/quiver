@@ -11,7 +11,13 @@ qq-recon-subs-by-domain-amass() {
 
 qq-recon-subs-by-domain-crt.sh() {
   local d && read "d?DOMAIN: "
-  print -z "curl 'https://crt.sh/?q=%.${d}' | grep -i "${d}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> subs.${d}.txt"
+  print -z "curl -s 'https://crt.sh/?q=%.${d}' | grep -i \"${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >> subs.${d}.txt"
+}
+
+qq-recon-subs-by-domains-crt.sh() {
+  local f=$(rlwrap -S 'FILE(DOMAINS): ' -e '' -c -o cat)
+  cmd="curl -s 'https://crt.sh/?q=%.\${d}' | grep -i \"\${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >> subs.\${d}.txt"
+  print -z "for d in \$(cat ${f}); do ${cmd} ; done"
 }
 
 qq-recon-subs-by-domain-subfinder() {
