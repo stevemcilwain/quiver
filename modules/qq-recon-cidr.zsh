@@ -17,5 +17,5 @@ qq-recon-cidr-by-asns-file-bgpview() {
 qq-recon-cidr-lookup-ptr() {
   local d && read "d?DOMAIN: "
   local f=$(rlwrap -S 'FILE(CIDRs): ' -e '' -c -o cat)
-  print -z "for c in \$(cat ${f}); do f=\$(echo \$c | cut -d/ -f1) && dnsrecon -d ${d} -r \$c -n 1.1.1.1 -c $(pwd)/ptr.\$f.csv; done"
+  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && dnsrecon -d ${d} -r \$c -n 1.1.1.1 -c $(pwd)/ptr.\$n.csv; done"
 }

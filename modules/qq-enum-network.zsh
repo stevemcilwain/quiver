@@ -32,7 +32,17 @@ qq-enum-network-sort-hosts() {
   print -z "cat hosts.txt | sort -u | sort -V"
 }
 
+__MASSCAN_PORTS="161,443,744,2075,2076,3000,3306,3366,3868,4000,4040,4044,4443,5000,5432,5900,6000,6443,7077,8000,8080,8081,8089,8181,8443,8888,9000,9091,9443,9999,10000,15672"
+
 qq-enum-network-masscan() {
   local s && read "s?SUBNET: "
-  print -z "masscan ${s} -p4443,2075,2076,6443,3868,3366,8443,8080,9443,9091,3000,8000,5900,8081,6000,10000,8181,3306,5000,4000,8888,5432,15672,9999,161,4044,7077,4040,9000,8089,443,744 "
+  local f=$(echo $s | cut -d/ -f1)
+  print -z "masscan ${s} -p${__MASSCAN_PORTS} -oL masscan.${f}.txt "
 }
+
+qq-enum-networks-masscan() {
+  local f=$(rlwrap -S 'FILE(CIDRs): ' -e '' -c -o cat)
+  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && masscan ${c} -p${__MASSCAN_PORTS} -oL masscan.${n}.txt ; done"
+}
+
+
