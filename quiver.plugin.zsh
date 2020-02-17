@@ -27,9 +27,10 @@ autoload colors; colors
 #install dependencies
 
 echo "[+] check for and installing dependencies..."
-sudo dpkg -l | grep -qw rlwrap || sudo apt-get install rlwrap
+dpkg -l | grep -qw rlwrap || sudo apt-get install rlwrap
 
-#Ssource all qq scripts
+
+#Source all qq scripts
 
 for f in ${0:A:h}/modules/qq-* ; do
   echo "[+] sourcing $f ... "
