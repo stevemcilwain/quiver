@@ -37,7 +37,7 @@ for url in $(cat $1);do
     # Ports
     ############################################################
     echo -e "${green} [+] Nmapping... ${reset}"
-    nmap -sV --version-light -p 80,443 --open ${host} -oA ${host}/ports > /dev/null 
+    nmap -sT --top-ports 100 --open ${host} -oA ${host}/ports > /dev/null 
 
     ############################################################
     # Whatweb
@@ -67,7 +67,7 @@ for url in $(cat $1);do
     # AWS
     ############################################################
     echo -e "${green} [+] S3 Bucketing... ${reset}"
-    aws s3 ls s3://${host}
+    aws s3 ls s3://${host} > s3.txt 2> /dev/null
 
     echo -e " "
 done
