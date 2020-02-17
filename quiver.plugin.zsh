@@ -73,7 +73,7 @@ export __PASS_ROCKYOU="/usr/share/wordlists/rockyou.txt"
 export __UA_GOOGLEBOT="Googlebot/2.1 (+http://www.google.com/bot.html)"
 export __UA_CHROME="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 export __UA_IOS="Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
-export __UA=__UA_CHROME
+export __UA=${__UA_CHROME}
 
 export __FDNS=""
 export __RDNS=""
