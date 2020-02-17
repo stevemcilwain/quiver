@@ -4,7 +4,7 @@
 # qq-recon-github
 #############################################################
 
-# grep -i "<query>" <dorks_file> | sed ':a;N;$!ba;s/\n/ OR /g'
+# grep -i "<query>" <dorks_file> | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 
 qq-recon-github-git-search() {
     local p && read "p?PATTERN: "
@@ -21,7 +21,7 @@ qq-recon-github-dorks-top5() {
     echo "${o} AND ${__GH_TOP5}"
 }
 
-__GH_TOP5=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_TOP5=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 security_credentials
 connectionstring
 ssh2_auth_password
@@ -35,7 +35,7 @@ qq-recon-github-dorks-aws() {
     echo "${o} AND ${__GH_AWS}"
 }
 
-__GH_AWS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_AWS=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 AKIA
 amazon
 s3cfg
@@ -51,7 +51,7 @@ qq-recon-github-dorks-api() {
     echo "${o} AND ${__GH_API}"
 }
 
-__GH_API=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_API=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 access_token
 API Secret
 access_secret
@@ -69,7 +69,7 @@ qq-recon-github-dorks-keys() {
     echo "${o} AND ${__GH_KEYS}"
 }
 
-__GH_KEYS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_KEYS=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 -----BEGIN RSA PRIVATE KEY-----
 -----BEGIN EC PRIVATE KEY-----
 -----BEGIN PRIVATE KEY-----
@@ -82,7 +82,7 @@ qq-recon-github-dorks-b2b() {
     echo "${o} AND ${__GH_B2B}"
 }
 
-__GH_B2B=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_B2B=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 EAA
 EAACEd
 EAACEdEose0cBA 
@@ -101,7 +101,7 @@ qq-recon-github-dorks-comms() {
     echo "${o} AND ${__GH_COMMS}"
 }
 
-__GH_COMMS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_COMMS=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 removed prod
 deleted prod
 removed data
@@ -123,7 +123,7 @@ qq-recon-github-dorks-cloud() {
     echo "${o} AND ${__GH_CLOUD}"
 }
 
-__GH_CLOUD=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_CLOUD=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 AMAZON
 AWS
 APIARY
@@ -149,7 +149,7 @@ qq-recon-github-dorks-dotfiles() {
     echo "${o} AND ${__GH_DOTFILES}"
 }
 
-__GH_DOTFILES=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_DOTFILES=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 filename:bash_history
 filename:bash_profile
 filename:bashrc
@@ -169,7 +169,7 @@ qq-recon-github-dorks-cms() {
     echo "${o} AND ${__GH_CMS}"
 }
 
-__GH_CMS=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_CMS=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 filename:wp-config
 filename:wp-config.php
 WORDPRESS_DB
@@ -185,7 +185,7 @@ qq-recon-github-dorks-ext() {
     echo "${o} AND ${__GH_EXT}"
 }
 
-__GH_EXT=$(cat << END | sed ':a;N;$!ba;s/\n/ OR /g'
+__GH_EXT=$(cat << END | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ OR /g'
 extension:bat
 extension:json client_secret
 extension:json mongolab.com
