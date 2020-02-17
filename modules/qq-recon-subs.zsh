@@ -47,7 +47,7 @@ qq-recon-subs-massdns-results-parse() {
 
 qq-recon-subs-gen-commonspeak-words() {
   local d && read "d?Domain: "
-  print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${d} >> tee -a subs.wordlist.${d}.txt; done"
+  print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${d} >> subs.wordlist.${d}.txt; done"
 }
 
 qq-recon-subs-by-brute-altdns() {
