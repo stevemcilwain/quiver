@@ -42,7 +42,7 @@ qq-enum-network-masscan() {
 
 qq-enum-networks-masscan() {
   local f=$(rlwrap -S 'FILE(CIDRs): ' -e '' -c -o cat)
-  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && masscan ${c} -p${__MASSCAN_PORTS} -oL masscan.\${n}.txt ; done"
+  print -z "for c in \$(cat ${f}); do n=\$(echo \$c | cut -d/ -f1) && masscan \${c} -p${__MASSCAN_PORTS} -oL masscan.\${n}.txt ; done"
 }
 
 
