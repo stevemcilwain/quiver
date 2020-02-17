@@ -10,6 +10,6 @@ qq-recon-asns-by-org-browser() {
 }
 
 qq-recon-asns-by-org-amass() {
-  local o && read "o?Org: "
+  local o && read "o?ORG: "
   print -z "amass intel -org ${o} | cut -d, -f1"
 }

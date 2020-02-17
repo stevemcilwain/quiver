@@ -21,6 +21,16 @@ Quiver is an opinionated and curated collection of commands, notes and scripts I
 * Kali Linux
 * Dependent packages
 
+## Setting up Kali Linux
+
+To install dependent packages, data and tools run the included install script on a fresh Kali Linux installation.
+
+```
+
+qq-kali-install
+
+```
+
 ## Installation
 
 Clone the repo to your custom plugins folder.
@@ -63,23 +73,31 @@ qq-<tab>
 
 Quiver is organized into namespaces for easy tab navigation:
 
-* qq-util: utility functions and aliases, including self-update
-* qq-log: create, log and view a running logbook for your notes and commands
-* qq-recon:  recon commands
-* qq-enum:  enumeration phase commands
-* qq-enum-network:  network scanning and enumeration commands
-* qq-enum-host:  host scanning and enumeration commands
-* qq-enum-web:  web enumeration commands
-* qq-enum-dns: dns enumeration commands
-* qq-srv: service hosting commands
-  
-## Setting up Kali Linux
+* qq-loq: create, log and view a running logbook for your notes and commands
+* qq-recon
+* qq-recon-asns
+* qq-recon-cidr
+* qq-recon-domains
+* qq-recon-github
+* qq-recon-subs
+* qq-enum
+* qq-enum-network
+* qq-enum-host
+* qq-enum-dns 
+* qq-enum-ftp
+* qq-enum-web
+* qq-enum-web-aws
+* qq-enum-web-dirs
+* qq-enum-web-vuln
+* qq-srv
 
-To install dependent packages, data and tools run the included install script on a fresh Kali Linux installation.
+Quiver also sets up helpful shell aliases and functions (qq-aliases).
 
-```
+### Notes
 
-qq-kali-install
+Markdown notes are stored in the /notes subfolder and rendered by module commands.
 
-```
- 
+### Scripts
+
+Sometimes scripts are invoked from modules and those are stored in the /scripts subfolder.
+

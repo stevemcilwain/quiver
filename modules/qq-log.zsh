@@ -1,23 +1,23 @@
 #!/usr/bin/env zsh
 
 ############################################################# 
-# qq-recon
+# qq-log
 #############################################################
 
 export __LP="~/logbook.md"
 
 qq-log-new() {
-    local n && read "n?Name: "
-    local p && read "p?Path: "
+    local n && read "n?NAME: "
+    local f && read "f?FILE: "
     
-    if [[ -f "${p}" ]]; then
+    if [[ -f "${f}" ]]; then
     
-        __LP=${p}
-        __warn "${p} already exists, set as active log"
+        __LP=${f}
+        __warn "${f} already exists, set as active log"
 
     else
 
-        __LP=${p}
+        __LP=${f}
         touch ${__LP}
         echo "# Logbook - ${n}" >> ${__LP}
         echo " " >> ${__LP}
@@ -53,7 +53,7 @@ qq-log() {
         echo " " >> ${__LP}
 
     else
-        __err "${p} not found"
+        __err "Log file not set or not found"
     fi
 
 }

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-domains-by-whois-amass() {
-  local d && read "d?Domain: "
+  local d && read "d?DOMAIN: "
   print -z "amass intel -active -whois -d ${d}"
 }
 
@@ -15,11 +15,11 @@ qq-recon-domains-by-asn-amass() {
 }
 
 qq-recon-domains-by-crt.sh() {
-  local s && read "s?Search (domain, url, etc): "
+  local s && read "s?SEARCH(domain, url, name): "
   print -z "${__SCRIPTS}/crt.sh ${s}"
 }
 
 qq-recon-domains-by-brute-ffuf() {
-  local d && read "domain?Domain: "
+  local d && read "d?DOMAIN: "
   print -z "ffuf -u FUZZ.${d} -w ${__WORDS_ALL} -v | grep \"| URL | \" | awk '{print \$4}'"
 }

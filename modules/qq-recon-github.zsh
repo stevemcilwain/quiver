@@ -1,23 +1,23 @@
 #!/usr/bin/env zsh
 
 ############################################################# 
-# Recon Github
+# qq-recon-github
 #############################################################
 
 # grep -i "<query>" <dorks_file> | sed ':a;N;$!ba;s/\n/ OR /g'
 
 qq-recon-github-git-search() {
-    local p && read "p?Pattern: "
+    local p && read "p?PATTERN: "
     { find .git/objects/pack/ -name "*.idx"|while read i;do git show-index < "$i"|awk '{print $2}';done;find .git/objects/ -type f|grep -v '/pack/'|awk -F'/' '{print $(NF-1)$NF}'; }|while read o;do git cat-file -p $o;done|grep -E '${p}'
 }
 
 qq-recon-github-by-user-curl() {
-  local u && read "u:User: "
+  local u && read "u:USER: "
   print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
 }
 
 qq-recon-github-dorks-top5() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_TOP5}"
 }
 
@@ -31,7 +31,7 @@ END
 )
 
 qq-recon-github-dorks-aws() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_AWS}"
 }
 
@@ -47,7 +47,7 @@ END
 )
 
 qq-recon-github-dorks-api() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_API}"
 }
 
@@ -65,7 +65,7 @@ END
 )
 
 qq-recon-github-dorks-keys() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_KEYS}"
 }
 
@@ -78,7 +78,7 @@ END
 )
 
 qq-recon-github-dorks-b2b() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_B2B}"
 }
 
@@ -97,7 +97,7 @@ END
 )
 
 qq-recon-github-dorks-comms() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_COMMS}"
 }
 
@@ -119,7 +119,7 @@ END
 )
 
 qq-recon-github-dorks-cloud() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_CLOUD}"
 }
 
@@ -145,7 +145,7 @@ END
 )
 
 qq-recon-github-dorks-dotfiles() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_DOTFILES}"
 }
 
@@ -165,7 +165,7 @@ END
 )
 
 qq-recon-github-dorks-cms() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_CMS}"
 }
 
@@ -181,7 +181,7 @@ END
 )
 
 qq-recon-github-dorks-ext() {
-    local o && read "o?Org: "
+    local o && read "o?ORG: "
     echo "${o} AND ${__GH_EXT}"
 }
 

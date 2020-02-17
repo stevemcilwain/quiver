@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 ############################################################# 
-# Recon - Google Dorks
+# qq-recon-google
 #############################################################
 
 # TODO: implement like github dorks

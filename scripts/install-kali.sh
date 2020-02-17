@@ -59,7 +59,7 @@ sudo service xrdp restart
 echo -e "${green}[+] Installing custom packages...${reset}"
 
 sudo apt-get install -y rlwrap xclip jq pigz fonts-powerline git unzip asciinema 
-sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts awscli libldns-dev whois
+sudo apt-get install -y gobuster exiftool amass lftp wireshark impacket-scripts awscli libldns-dev whois atftpd
 sudo pip install py-altdns
 
 echo -e "${green}[+] Installing golang and packages... ${reset}"

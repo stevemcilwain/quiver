@@ -10,12 +10,12 @@ qq-recon-cidr-by-asn-bgpview() {
 }
 
 qq-recon-cidr-by-asns-file-bgpview() {
-  local p && read "p?Path to file: "
-  print -z "for a in \$(cat ${p}); do curl -s https://api.bgpview.io/asn/\$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix' >> cidr.txt; done"
+  local f=$(rlwrap -S 'Select domains file: ' -e '' -c -o cat)
+  print -z "for a in \$(cat ${f}); do curl -s https://api.bgpview.io/asn/\$a/prefixes | jq -r '.data | .ipv4_prefixes, .ipv6_prefixes | .[].prefix' >> cidr.txt; done"
 }
 
 qq-recon-cidr-lookup-ptr() {
-    local d && read "d?Domain: "
-    local p && read -e "p?Path to cidr.txt: "
-    print -z "for c in \$(cat ${p}); do f=\$(echo \$c | cut -d/ -f1) && dnsrecon -d ${d} -r \$c -n 1.1.1.1 -c $(pwd)/ptr.\$f.csv; done"
+  local d && read "d?Domain: "
+  local f=$(rlwrap -S 'Select domains file: ' -e '' -c -o cat)
+  print -z "for c in \$(cat ${f}); do f=\$(echo \$c | cut -d/ -f1) && dnsrecon -d ${d} -r \$c -n 1.1.1.1 -c $(pwd)/ptr.\$f.csv; done"
 }
