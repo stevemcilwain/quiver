@@ -20,10 +20,12 @@ alias lx='ls -lXB'
 alias linestocsv="paste -s -d, -"
 alias csvtolines="tr ',' '\n'"
 alias mount="sudo mount | column -t"
-alias zcat="cat ~/.zshrc"
+alias zprint="cat ~/.zshrc"
 alias znano="nano ~/.zshrc"
 alias zsrc="source ~/.zshrc"
 alias hp="httprobe -t 3000 -c 50 "
+alias arec="asciinema rec"
+alias aplay="asciinema play"
 
 mcd () { mkdir -p "$1" && cd "$1"; }
 sfu() { cat $1 | sort -u -o $1 }
