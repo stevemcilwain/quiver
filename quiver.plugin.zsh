@@ -24,30 +24,11 @@ echo "$fg[cyan][*] loading...$reset_color"
 
 autoload colors; colors
 
-#install dependencies
-
-__pkgs(){
-  for pkg in "$@"
-  do
-      dpkg -l | grep -qw $pkg || sudo apt-get install $pkg
-  done 
-}
-
-
-echo "[+] check for and installing dependencies..."
-__pkgs rlwrap python python3 python-pip python3-pip
-
 #Source all qq scripts
 
 for f in ${0:A:h}/modules/qq-* ; do
   echo "[+] sourcing $f ... "
   source $f;
-done
-
-# Ensure all scripts are executable
-
-for s in ${0:A:h}/scripts/*.sh ; do
-  chmod +x $s;
 done
 
 ############################################################# 
@@ -82,11 +63,6 @@ export __UA_CHROME="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 export __UA_IOS="Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
 export __UA=${__UA_CHROME}
 
-export __FDNS=""
-export __RDNS=""
-
-export __IMPACKET="/usr/share/doc/python3-impacket/examples"
-
 ############################################################# 
 # Runtime Helpers
 #############################################################
@@ -102,11 +78,6 @@ qq-update() {
   git pull
   cd -
   source ~/.zshrc
-}
-
-qq-kali-install() {
-  __warn "This does a LOT of stuff..."
-  print -z "${__SCRIPTS}/install-kali.sh"
 }
 
 echo "$fg[cyan][*] quiver loaded.$reset_color"

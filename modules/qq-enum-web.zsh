@@ -51,7 +51,7 @@ qq-enum-web-fuzz-post-json-ffuf() {
 qq-enum-web-screens-eyewitness() {
   local f=$(rlwrap -S 'FILE(URLs): ' -e '' -c -o cat)
   local d=$(rlwrap -S 'DIR(output): ' -e '' -c -o cat)
-  print -z "eyewitness.py --web -f ${f} -d ${d} --user-agent \"${__UA}\" "
+  print -z "eyewitness --web -f ${f} -d ${d} --user-agent \"${__UA}\" "
 }
 
 # apps

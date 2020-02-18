@@ -4,12 +4,6 @@
 # qq-recon
 #############################################################
 
-qq-recon-script-by-domains-webrecon() {
-  local f=$(rlwrap -S 'FILE(DOMAINS): ' -e '' -c -o cat)
-  __warn "Using output: $(pwd)"
-  print -z "${__SCRIPTS}/webrecon.sh ${f}"
-}
-
 qq-recon-files-by-domain-metagoofil() {
   local d && read "d?DOMAIN: "
   local ft && read "ft?EXT: "

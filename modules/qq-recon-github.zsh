@@ -4,8 +4,6 @@
 # qq-recon-github
 #############################################################
 
-# grep -i "<query>" <dorks_file> | sed 's/\(.*\)/"\1"/g' | sed ':a;N;$!ba;s/\n/ or /g'
-
 qq-recon-github-git-search() {
     local p && read "p?PATTERN: "
     { find .git/objects/pack/ -name "*.idx"|while read i;do git show-index < "$i"|awk '{print $2}';done;find .git/objects/ -type f|grep -v '/pack/'|awk -F'/' '{print $(NF-1)$NF}'; }|while read o;do git cat-file -p $o;done|grep -E '${p}'

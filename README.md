@@ -21,16 +21,6 @@ Quiver is an opinionated and curated collection of commands, notes and scripts I
 * Kali Linux
 * Dependent packages
 
-## Setting up Kali Linux
-
-To install dependent packages, data and tools run the included install script on a fresh Kali Linux installation.
-
-```
-
-qq-kali-install
-
-```
-
 ## Installation
 
 Clone the repo to your custom plugins folder.
@@ -56,6 +46,16 @@ Source .zshrc
 ```
 
 source ~/.zshrc
+
+```
+
+## Setting up Kali Linux Dependencies
+
+To install dependent packages, data and tools run the included install script.  This will only install the tools needed in the plugin (previous install script was too large).
+
+```
+
+qq-install
 
 ```
 
