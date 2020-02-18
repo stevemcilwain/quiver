@@ -4,6 +4,9 @@
 # qq-srv
 #############################################################
 
+# Dependencies
+__pkgs python-smb python3-pyftpdlib impacket-scripts atftpd
+
 # Functions
 
 qq-srv-web() print -z "sudo python3 -m http.server 80"

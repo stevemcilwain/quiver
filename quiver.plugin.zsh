@@ -26,9 +26,16 @@ autoload colors; colors
 
 #install dependencies
 
-echo "[+] check for and installing dependencies..."
-dpkg -l | grep -qw rlwrap || sudo apt-get install rlwrap
+__pkgs(){
+  for pkg in "$@"
+  do
+      dpkg -l | grep -qw $pkg || sudo apt-get install $pkg
+  done 
+}
 
+
+echo "[+] check for and installing dependencies..."
+__pkgs rlwrap python python3 python-pip python3-pip
 
 #Source all qq scripts
 
