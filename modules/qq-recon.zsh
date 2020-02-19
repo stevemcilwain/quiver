@@ -12,7 +12,7 @@ qq-recon-files-by-domain-metagoofil() {
 
 qq-recon-wordlist-by-url-cewl() {
   local u && read "u?URL: "
-  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w custom_list.txt ${u}
+  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w custom_list.txt ${u}"
 }
 
 qq-recon-all-by-domain-theharvester() {
