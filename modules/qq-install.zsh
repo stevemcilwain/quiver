@@ -8,11 +8,11 @@ qq-install(){
 
   __info "Installing apt packages... "
 
-  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema
+  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux
 
   __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev 
 
-  __pkgs nmap masscan tcpdump awscli exiftool lftp whois 
+  __pkgs nmap masscan tcpdump awscli exiftool tftp ftp lftp whois 
 
   __pkgs whatweb gobuster wpscan wafw00f wfuzz hydra nikto padbuster parsero dirb 
 
@@ -20,9 +20,11 @@ qq-install(){
 
   __pkgs impacket-scripts atftpd wordlists seclists 
 
+  __pkgs metasploit-framework exploitdb
+
   __info "Installing python packages... "
 
-  pip install py-altdns
+  sudo pip install py-altdns
 
   __info "Installing golang and packages... "
 
@@ -38,6 +40,7 @@ qq-install(){
   sudo git clone https://github.com/chrislockard/api_wordlist.git /opt/words/api_wordlist
   sudo git clone https://github.com/assetnote/commonspeak2-wordlists.git /opt/words/commonspeak2-wordlists
   sudo git clone https://github.com/tarahmarie/nerdlist.git /opt/words/nerdlist
+  sudo wget -nd -P /opt/words/nullenc https://gist.github.com/stevemcilwain/f875b42ddb51c6eec5207f21a92cdceb/raw/146f367110973250785ced348455dc5173842ee4/content_discovery_nullenc0de.txt
   sudo wget -nd -P /opt/words/all https://gist.githubusercontent.com/jhaddix/f64c97d0863a78454e44c2f7119c2a6a/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt
   sudo gunzip -q -k /usr/share/wordlists/rockyou.txt.gz
 
@@ -108,3 +111,4 @@ __install_golang() {
   export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 
 }
+

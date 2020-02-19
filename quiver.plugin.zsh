@@ -24,6 +24,8 @@ echo "$fg[cyan][*] loading...$reset_color"
 
 autoload colors; colors
 
+mkdir -p ~./.quiver
+
 #Source all qq scripts
 
 for f in ${0:A:h}/modules/qq-* ; do

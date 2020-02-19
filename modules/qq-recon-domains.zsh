@@ -20,7 +20,4 @@ qq-recon-domains-by-asns-amass() {
   print -z "amass intel -active -asn ${asn_csv}"
 }
 
-qq-recon-domains-by-brute-ffuf() {
-  local d && read "d?DOMAIN: "
-  print -z "ffuf -u FUZZ.${d} -w ${__WORDS_ALL} -v | grep \"| URL | \" | awk '{print \$4}'"
-}
+

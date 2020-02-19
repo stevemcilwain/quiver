@@ -5,10 +5,10 @@
 #############################################################
 
 qq-enum-host-tcpdump() {
-    info "Available: ${__IFACES}"
-    local r && read "r?RHOST: "
-    local i && read "i?IFACE: "
-    print -z "tcpdump -i ${i} host ${r} -w host.${r}.pcap"
+  __info "Available: ${__IFACES}"
+  local i && read "i?IFACE: "
+  local r && read "r?RHOST: "
+  print -z "sudo tcpdump -i ${i} host ${r} -w host.${r}.pcap"
 }
 
 qq-enum-host-basic-nmap(){
@@ -28,9 +28,9 @@ qq-enum-host-svc-nmap() {
 
 qq-enum-host-udp-nmap() {
   local r && read "r?RHOST: "
-  print -z "nmap -n -Pn -sU -sV -sC --open -oA scan.${r}.udp --top-ports 100 ${r}"
+  print -z "sudo nmap -n -Pn -sU -sV -sC --open -oA scan.${r}.udp --top-ports 100 ${r}"
 }
 
 qq-enum-host-lse-grep() {
-  print -z "ls /usr/share/nmap/scripts/* | grep "
+  print -z "ls /usr/share/nmap/scripts/* | grep <pattern>"
 }

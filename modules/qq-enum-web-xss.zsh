@@ -4,7 +4,6 @@
 # qq-enum-web-xss
 #############################################################
 
-
 qq-enum-web-xss-grabber-host() {
     local l && read "l?LHOST: "
 

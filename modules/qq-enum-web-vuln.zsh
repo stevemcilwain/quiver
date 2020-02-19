@@ -7,7 +7,7 @@
 qq-enum-web-vuln-nikto() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "nikto -C all -useragent \"${__UA}\" -h ${u} -output nikto.${d}.log"
+  print -z "nikto -C all -useragent \"${__UA}\" -h ${u} -Format csv -output ."
 }
 
 qq-enum-web-vuln-nmap-rfi() {
@@ -31,7 +31,7 @@ qq-enum-web-vuln-shellshock-nc() {
 qq-enum-web-vuln-put-curl() {
   local r && read "r?RHOST: "
   local f=$(rlwrap -S 'FILE: ' -e '' -c -o cat)
-  print -z "curl -T ${f} http://${r}/${f}"
+  print -z "curl -L -T ${f} http://${r}/${f}"
 }
 
 qq-enum-web-vuln-padbuster-check() {

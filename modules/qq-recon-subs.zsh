@@ -4,6 +4,11 @@
 # qq-recon-subs
 #############################################################
 
+qq-recon-subs-by-domain-gobuster() {
+  local d && read "d?DOMAIN: "
+  print -z "gobuster dns -d ${d} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt -o subs.gobuster.txt"
+}
+
 qq-recon-subs-by-domain-amass() {
   local d && read "d?DOMAIN: "
   print -z "amass enum -d ${d} >> subs.${d}.txt"

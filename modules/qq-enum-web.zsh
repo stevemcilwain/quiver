@@ -6,15 +6,14 @@
 
 qq-enum-web-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} && \
-  grep open web_sweep.gnmap |cut -d' ' -f2 > sweep.${s}.txt"
+  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d\" \" -f2 > sweep.${s}.txt"
 }
 
 qq-enum-web-tcpdump() {
   __info "Interfaces: ${__IFACES}"
   local i && read "i?IFACE: "
   local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 80 -w capture.${r}.pcap"
+  print -z "sudo tcpdump -i ${i} host ${r} and tcp port 80 -w capture.${r}.pcap"
 }
 
 qq-enum-web-whatweb() {
@@ -117,6 +116,10 @@ qq-enum-web-brute-hydra-form-post() {
 
 # Notes 
 
+qq-enum-web-notes-api() {
+  glow -p ${__NOTES}/enum-web-api.md
+}
+
 qq-enum-web-notes-drupal() {
   glow -p ${__NOTES}/enum-web-app-drupal-notes.md
 }
@@ -132,5 +135,11 @@ qq-enum-web-notes-traversal() {
 qq-enum-web-notes-bypass-upload() {
   glow -p ${__NOTES}/enum-web-bypasss-upload.md
 }
+
+qq-enum-web-notes-bypass-waf() {
+  glow -p ${__NOTES}/enum-web-bypasss-waf.md
+}
+
+
 
 
