@@ -4,8 +4,6 @@
 # qq-srv
 #############################################################
 
-# Functions
-
 qq-srv-web() print -z "sudo python3 -m http.server 80"
 qq-srv-ftp() print -z "sudo python3 -m pyftpdlib -p 21 -w"
 qq-srv-smb() print -z "sudo impacket-smbserver -smb2supp F ."

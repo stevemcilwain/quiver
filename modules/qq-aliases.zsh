@@ -26,6 +26,10 @@ alias zsrc="source ~/.zshrc"
 alias hp="httprobe -t 3000 -c 50 "
 alias arec="asciinema rec"
 alias aplay="asciinema play"
+alias qql="qq-log"
+alias qqn="qq-log-new"
+alias qqc="qq-log-cat"
+alias pcap="sudo tcpdump -r"
 
 mcd () { mkdir -p "$1" && cd "$1"; }
 sfu() { cat $1 | sort -u -o $1 }

@@ -27,7 +27,7 @@ qq-log-new() {
 }
 
 qq-log-set() {
-    __LP=$1
+    __LP=$@
     __ok "$1 set as active log"
 }
 
@@ -36,9 +36,7 @@ qq-log-cat() {
 }
 
 qq-log-edit() {
-    # I know... I know... you love your vim... just change it or make it a 
-    # setting,I'm tired.
-    nano ${__LP}
+    $EDITOR ${__LP}
 }
 
 qq-log() {
@@ -48,7 +46,7 @@ qq-log() {
         local stamp=$(date +'%m-%d-%Y : %r')
         echo "## ${stamp}" >> ${__LP}
         echo "\`\`\`" >> ${__LP}
-        echo "$1" >> ${__LP}
+        echo "$@" >> ${__LP}
         echo "\`\`\`" >> ${__LP}
         echo " " >> ${__LP}
 

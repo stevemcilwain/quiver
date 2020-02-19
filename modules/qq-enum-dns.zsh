@@ -6,14 +6,14 @@
 
 qq-enum-dns-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -sU -p53 -oA dns_sweep ${s} && grep open dns_sweep.gnmap |cut -d' ' -f2 > dns_hosts.txt"
+  print -z "sduo nmap -n -Pn -sS -sU -p53 -oA dns_sweep ${s} && grep open dns_sweep.gnmap |cut -d' ' -f2 > dns_hosts.txt"
 }
 
 qq-enum-dns-tcpdump() {
-    __info "Available: ${__IFACES}"
-    local r && read "r?RHOST: "
-    local i && read "i?IFACE: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 53 -w dns.${r}.pcap"
+  __info "Available: ${__IFACES}"
+  local i && read "i?IFACE: "
+  local r && read "r?RHOST: "
+  print -z "sudo tcpdump -i ${i} host ${r} and tcp port 53 -w dns.${r}.pcap"
 }
 
 qq-enum-dns-txfr-dig() {

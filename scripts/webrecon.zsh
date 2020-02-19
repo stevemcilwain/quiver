@@ -1,11 +1,9 @@
-#!/bin/bash
-
 red=`tput setaf 1`
 green=`tput setaf 2`
 yellow=`tput setaf 3`
 reset=`tput sgr0`
 
-echo -e "[*] webrecon.sh "
+echo -e "[*] webrecon.zsh "
 echo -e "[*] source: $1"
 echo -e " "
 

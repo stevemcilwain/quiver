@@ -6,14 +6,14 @@
 
 qq-enum-ftp-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -p21 -oA ftp_sweep ${s} &&  grep open ftp_sweep.gnmap |cut -d' ' -f2 > sweep.${s}.txt"
+  print -z "sudo nmap -n -Pn -sS -p21 -oA ftp_sweep ${s} &&  grep open ftp_sweep.gnmap |cut -d' ' -f2 > sweep.${s}.txt"
 }
 
 qq-enum-ftp-tcpdump() {
-  info "Available: ${__IFACES}"
+  __info "Available: ${__IFACES}"
   local i && read "i?IFACE: "
   local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 21 -w capture.${r}.pcap"
+  print -z "sudo tcpdump -i ${i} host ${r} and tcp port 21 -w capture.${r}.pcap"
 }
 
 qq-enum-ftp-brute-hydra() {

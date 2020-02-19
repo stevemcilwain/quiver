@@ -31,13 +31,13 @@ qq-enum-web-files-wfuzz() {
 qq-enum-web-dirs-ffuf() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "ffuf -v -fc 404 -w ${__WORDS_QUICK} -u ${u}/FUZZ > dirs.${d}.txt"
+  print -z "ffuf -v -fc 404 -w ${__WORDS_QUICK} -u ${u}/FUZZ -d fuff.dbg > dirs.${d}.txt"
 }
 
 qq-enum-web-files-ffuf() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "ffuf -v -fc 404 -w ${__WORDS_NULL} -u ${u}/FUZZ > files.${d}.txt"
+  print -z "ffuf -v -fc 404 -w ${__WORDS_NULL} -u ${u}/FUZZ -d fuff.dbg > files.${d}.txt"
 }
 
 qq-enum-web-dirs-gobuster() {
