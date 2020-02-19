@@ -5,7 +5,7 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.6.1
+__VER=0.7.0
 
 cat << END
 $fg[cyan]
@@ -23,8 +23,6 @@ echo " "
 echo "$fg[cyan][*] loading...$reset_color"
 
 autoload colors; colors
-
-mkdir -p ~./.quiver
 
 #Source all qq scripts
 
