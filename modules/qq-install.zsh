@@ -92,13 +92,13 @@ __pkgs(){
   echo "  [+] check for and installing dependencies..."
   for pkg in "$@"
   do
-      dpkg -l | grep -qw $pkg || sudo apt-get install $pkg
+      dpkg -l | grep -qw $pkg || sudo apt-get -y install $pkg
   done 
 }
 
 __install_golang() {
 
-  sudo apt-get install golang
+  sudo apt-get install golang -y
 
   echo "export GOPATH=\$HOME/go" | tee -a .zshrc
   echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" | tee -a .zshrc
