@@ -25,6 +25,7 @@ qq-log-new() {
     fi
 
 }
+alias qln="qq-log-new"
 
 qq-log-set() {
     __LP=$@
@@ -34,6 +35,7 @@ qq-log-set() {
 qq-log-cat() {
     glow ${__LP}
 }
+alias qlc="qq-log-cat"
 
 qq-log-edit() {
     $EDITOR ${__LP}
@@ -55,3 +57,4 @@ qq-log() {
     fi
 
 }
+alias ql="qq-log"

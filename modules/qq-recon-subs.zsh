@@ -46,7 +46,7 @@ qq-recon-subs-massdns() {
 }
 
 qq-recon-subs-massdns-results-parse() {
-  local f=$(rlwrap -S 'Select results file: ' -e '' -c -o cat)
+  local f=$(rlwrap -S 'FILE(results): ' -e '' -c -o cat)
   print -z "sed 's/A.*//' ${f} | sed 's/CN.*//' | sed 's/\..$//' > massdns.clean.txt"
 }
 
@@ -56,7 +56,7 @@ qq-recon-subs-gen-commonspeak-words() {
 }
 
 qq-recon-subs-by-brute-altdns() {
-  local f=$(rlwrap -S 'Select domains file: ' -e '' -c -o cat)
-  local w=$(rlwrap -S 'Select wordlist: ' -e '' -c -o cat)
+  local f=$(rlwrap -S 'FILE(domains): ' -e '' -c -o cat)
+  local w=$(rlwrap -S 'FILE(wordlist): ' -e '' -c -o cat)
   print -z "altdns -r -i ${f} -w ${w} -t 20 -o altsub.data.txt -s altsub.resolved.txt"
 }

