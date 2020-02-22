@@ -5,7 +5,7 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.7.0
+__VER=0.8.0
 
 cat << END
 $fg[cyan]
