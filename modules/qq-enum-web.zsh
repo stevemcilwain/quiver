@@ -27,7 +27,8 @@ qq-enum-web-waf() {
 }
 
 qq-enum-web-scope-burp() {
-  print -z ".*\.domain\.com\$"
+  local d && read "d?DOMAIN(root):"
+  print -z "^.*?${d}\..*\$"
 }
 
 # vhosts
@@ -36,13 +37,6 @@ qq-enum-web-vhosts-gobuster() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
   print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt -a \"${__UA}\" -t20 -o vhosts.$d.txt"
-}
-
-# fuzz
-
-qq-enum-web-fuzz-post-json-ffuf() {
-  local u && read "u?URL: "
-  print -z "ffuf -w /usr/share/seclists/Fuzzing/Databases/NoSQL.txt -u ${u} -X POST -H \"Content-Type: application/json\" -d '{\"username\": \"FUZZ\", \"password\": \"FUZZ\"}' -fr \"error\" "
 }
 
 # screens
@@ -87,33 +81,6 @@ qq-enum-web-app-elastic-all() {
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 
-# brute
-
-qq-enum-web-brute-wfuzz-auth-post() {
-  local u && read "u?URL: "
-  local u && read "u?USERNAME(field): "
-  local user && read "user?USER(value): "
-  local p && read "p?PASSWORD(field): "
-  print -z "wfuzz -c -w ${__PASS_ROCKYOU} -d \"${u}=${user}&${p}=FUZZ\" --sc 302 ${u}"
-}
-
-qq-enum-web-brute-hydra-get() {
-  local r && read "r?RHOST: "
-  local user && read "user?USERNAME: "
-  local path && read "path?PATH(/path): "
-  print -z "hydra -l ${user} -P ${__PASS_ROCKYOU} ${r} http-get ${path}"
-}
-
-qq-enum-web-brute-hydra-form-post() {
-  local r && read "r?RHOST: "
-  local path && read "path?PATH: "
-  local u && read "u?USERNAME(field): "
-  local user && read "user?USER(value): "
-  local p && read "p?PASSWORD(field): "
-  local fm && read"fm?FAILED(message): "
-  print -z "hydra ${r} http-form-post \"${path}:${u}=^USER^&${p}=^PASS^:${fm}\" -l $u -P ${__PASS_ROCKYOU} -t 10 -w 30 "
-}
-
 # Notes 
 
 qq-enum-web-notes-api() {
@@ -139,7 +106,3 @@ qq-enum-web-notes-bypass-upload() {
 qq-enum-web-notes-bypass-waf() {
   glow -p ${__NOTES}/enum-web-bypasss-waf.md
 }
-
-
-
-
