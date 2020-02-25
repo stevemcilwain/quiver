@@ -27,7 +27,8 @@ qq-enum-web-waf() {
 }
 
 qq-enum-web-scope-burp() {
-  print -z ".*\.domain\.com\$"
+  local d && read "d?DOMAIN(root):"
+  print -z "^.*?${d}\..*\$"
 }
 
 # vhosts
@@ -37,7 +38,6 @@ qq-enum-web-vhosts-gobuster() {
   local d=$(echo "${u}" | cut -d/ -f3)
   print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt -a \"${__UA}\" -t20 -o vhosts.$d.txt"
 }
-
 
 # screens
 
@@ -81,7 +81,6 @@ qq-enum-web-app-elastic-all() {
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 
-
 # Notes 
 
 qq-enum-web-notes-api() {
@@ -107,7 +106,3 @@ qq-enum-web-notes-bypass-upload() {
 qq-enum-web-notes-bypass-waf() {
   glow -p ${__NOTES}/enum-web-bypasss-waf.md
 }
-
-
-
-

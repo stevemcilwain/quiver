@@ -57,6 +57,7 @@ alias dos2unix="qq-aliases-dos-to-unix"
 alias unix2dos="qq-aliases-unix-to-dos"
 alias fsync="qq-aliases-rsync-folders"
 alias umnt="qq-aliases-unmount"
+alias dt="qq-aliases-dtach"
 
 # functions
 
@@ -80,3 +81,5 @@ qq-aliases-net-lsof() { print -z "_ lsof -P -i -n "}
 #usage
 qq-aliases-sys-mem10() { print -z "_ ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}' "}
 qq-aliases-sys-disk10() { print -z "_ du -sk ./* | sort -r -n | head -10"}
+
+qq-aliases-dtach() { dtach -A $1 /bin/zsh }

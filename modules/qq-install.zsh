@@ -8,7 +8,7 @@ qq-install(){
 
   __info "Installing apt packages... "
 
-  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux
+  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach
 
   __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev 
 
