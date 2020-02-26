@@ -1,6 +1,12 @@
 # Releases
 
-## 0.8
+## 0.9 
+
+* Added scripts/recon.zsh
+* Added qq-bounty for bug bounty helpers
+* Added rescope to install script and qq-bounty
+
+## 0.8 - 2/25/2020
 
 * qq-pivot: added ssh tunneling commands
 * qq-log: added short aliases

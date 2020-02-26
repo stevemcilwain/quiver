@@ -34,6 +34,8 @@ qq-install(){
   go get -v -u github.com/tomnomnom/httprobe
   go get -v -u github.com/michenriksen/gitrob
   go get -v -u github.com/ffuf/ffuf
+  go get -v -u github.com/root4loot/rescope
+  go get -v -u github.com/tomnomnom/waybackurls
 
   __info "Installing wordlist repos... "
 

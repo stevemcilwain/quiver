@@ -26,11 +26,6 @@ qq-enum-web-waf() {
   print -z "wafw00f ${u} "
 }
 
-qq-enum-web-scope-burp() {
-  local d && read "d?DOMAIN(root):"
-  print -z "^.*?${d}\..*\$"
-}
-
 # vhosts
 
 qq-enum-web-vhosts-gobuster() {

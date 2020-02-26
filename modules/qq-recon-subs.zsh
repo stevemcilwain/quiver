@@ -40,7 +40,7 @@ qq-recon-subs-by-domain-dnsrecon() {
   print -z "dnsrecon -d ${d}"
 }
 
-qq-recon-subs-massdns() {
+qq-recon-subs-by-file-massdns() {
   local f=$(rlwrap -S 'FILE(DOMAINS): ' -e '' -c -o cat) 
   print -z "/opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${f} -w massdns.results.txt"
 }
@@ -59,4 +59,9 @@ qq-recon-subs-by-brute-altdns() {
   local f=$(rlwrap -S 'FILE(domains): ' -e '' -c -o cat)
   local w=$(rlwrap -S 'FILE(wordlist): ' -e '' -c -o cat)
   print -z "altdns -r -i ${f} -w ${w} -t 20 -o altsub.data.txt -s altsub.resolved.txt"
+}
+
+qq-recon-subs-by-file-wayback() {
+  local f=$(rlwrap -S 'FILE(DOMAINS): ' -e '' -c -o cat) 
+  print -z "cat ${f} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" >> subs.txt"
 }
