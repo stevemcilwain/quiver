@@ -46,16 +46,23 @@ __warn() echo "$fg[yellow][>] $1$reset_color"
 __err() echo "$fg[red][!] $1$reset_color"
 
 export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
+__STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
 
 ############################################################# 
 # Self Update
 #############################################################
 
 qq-update() {
-  cd ~/.oh-my-zsh/custom/plugins/quiver
+  cd $HOME/.oh-my-zsh/custom/plugins/quiver
   git pull
   cd -
-  source ~/.zshrc
+  source $HOME/.zshrc
+}
+
+qq-status() {
+  cd $HOME/.oh-my-zsh/custom/plugins/quiver
+  git status | grep On | cut -d" " -f2,3
+  cd -
 }
 
 ############################################################# 
