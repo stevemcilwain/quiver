@@ -13,6 +13,7 @@ export __VER=0.9.1
 #############################################################
 
 export __DIR="$HOME/.quiver"
+export __PLUGIN="${0:A:h}"
 export __LOGFILE="${__DIR}/log.txt"
 export __NOTES="${0:A:h}/notes"
 export __SCRIPTS="${0:A:h}/scripts"
@@ -62,7 +63,7 @@ qq-update() {
 #############################################################
 
 mkdir -p ${__DIR}
-echo "Quiver ${__VER}" > ${__LOGFILE}
+echo "Quiver ${__VER} in ${__PLUGIN}" > ${__LOGFILE}
 echo " " >> ${__LOGFILE}
 echo "[*] loading... " >> ${__LOGFILE}
 
@@ -75,4 +76,4 @@ done
 
 echo "[*] quiver loaded." >> ${__LOGFILE}
 
-echo "Quiver ${__VER} ZSH plugin loaded from ${0:A:h}"
+echo "Quiver ${__VER} ZSH plugin loaded."
