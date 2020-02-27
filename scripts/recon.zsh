@@ -45,34 +45,6 @@ echo "[*] $DOMAIN $ORG "
 echo "[*] Using current directory for output: ${DIR}"
 
 ############################################################# 
-# Workflow
-#############################################################
-
-echo "[*] Collecting Org Data... "
-
-org
-
-echo "[*] Collecting Network Information... "
-
-network
-
-echo "[*] Collection sub-domains..."
-
-domains 
-
-echo "[*] Scanning resolved..."
-
-scans
-
-echo "[*] Scanning web servers..."
-
-web
-
-echo "[*] Recon completed"
-
-echo " "
-
-############################################################# 
 # Steps
 #############################################################
 
@@ -197,3 +169,30 @@ web() {
 
 }
 
+############################################################# 
+# Workflow
+#############################################################
+
+echo "[*] Collecting Org Data... "
+
+org
+
+echo "[*] Collecting Network Information... "
+
+network
+
+echo "[*] Collection sub-domains..."
+
+domains 
+
+echo "[*] Scanning resolved..."
+
+scans
+
+echo "[*] Scanning web servers..."
+
+web
+
+echo "[*] Recon completed"
+
+echo " "
