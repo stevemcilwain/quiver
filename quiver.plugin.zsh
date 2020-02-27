@@ -55,14 +55,14 @@ __STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
 qq-update() {
   cd $HOME/.oh-my-zsh/custom/plugins/quiver
   git pull
-  cd -
+  cd - > /dev/null
   source $HOME/.zshrc
 }
 
 qq-status() {
   cd $HOME/.oh-my-zsh/custom/plugins/quiver
   git status | grep On | cut -d" " -f2,3
-  cd -
+  cd - > /dev/null
 }
 
 ############################################################# 
