@@ -49,9 +49,9 @@ echo "[*] Using current directory for output: ${DIR}"
 
 org() {
 
-    echo " [+] metagoofil'ing files"
+    #echo " [+] metagoofil'ing files"
     mkdir -p ${DIR}/files
-    silent metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files
+    #silent metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files
 }
 
 network() {
