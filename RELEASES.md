@@ -2,9 +2,13 @@
 
 ## 0.9 
 
+* Minor fixes and improvements
 * Added scripts/recon.zsh
 * Added qq-bounty for bug bounty helpers
 * Added rescope to install script and qq-bounty
+* Added qq-enum-ldap
+* Removed noisy banner and log loading to ./quiver/log.txt
+* Added qq-enum-ftp-notes-vsftp
 
 ## 0.8 - 2/25/2020
 

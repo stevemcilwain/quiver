@@ -33,6 +33,7 @@ alias myip="qq-aliases-net-curl-public-ip"
 alias netwatch="qq-aliases-net-watch-netstat"
 alias netss="qq-aliases-net-ss"
 alias netls="qq-aliases-net-lsof"
+alias grip="grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'"
 
 #zsh
 alias zprc="cat ~/.zshrc"
@@ -58,6 +59,13 @@ alias unix2dos="qq-aliases-unix-to-dos"
 alias fsync="qq-aliases-rsync-folders"
 alias umnt="qq-aliases-unmount"
 alias dt="qq-aliases-dtach"
+
+# out
+
+alias trim1="sed 's/.$//'"
+alias trim2="sed 's/..$//'"
+alias trim3="sed 's/...$//'"
+alias trim4="sed 's/....$//'"
 
 # functions
 

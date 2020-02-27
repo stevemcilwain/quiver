@@ -40,10 +40,10 @@ export __UA=${__UA_CHROME}
 
 autoload colors; colors
 
-__info() echo "$fg[blue][*] $1$reset_color"
-__ok() echo "$fg[green][+] $1$reset_color"
-__warn() echo "$fg[yellow][>] $1$reset_color"
-__err() echo "$fg[red][!] $1$reset_color"
+__info() echo "$fg[blue][*] $@ $reset_color"
+__ok() echo "$fg[green][+] $@ $reset_color"
+__warn() echo "$fg[yellow][>] $@ $reset_color"
+__err() echo "$fg[red][!] $@ $reset_color"
 
 export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
 __STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
@@ -89,4 +89,3 @@ echo "[*] quiver loaded." >> ${__LOGFILE}
 
 echo " "
 echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded. $reset_color"
-echo " "

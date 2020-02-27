@@ -19,7 +19,7 @@ qq-enum-web-dirs-robots-parsero() {
 qq-enum-web-dirs-wfuzz() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "wfuzz -v -s 0.1 -R5 --hc=404 -w ${__WORDS_QUICK} ${u}/FUZZ > dirs.${d}.txt "
+  print -z "wfuzz -v -s 0.1 -R5 --hc=404 -w ${__WORDS_QUICK} ${u}FUZZ > dirs.${d}.txt "
 }
 
 qq-enum-web-files-wfuzz() {
