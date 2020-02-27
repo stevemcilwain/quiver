@@ -10,21 +10,21 @@ set +e
 [[ -z $1 ]] && echo -e "[!] Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
 [[ -z $2 ]] && echo -e "[!] Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
 
-DOMAIN=$1
-ORG=$2
-DIR=$(pwd)
-UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+export DOMAIN=$1
+export ORG=$2
+export DIR=$(pwd)
+export UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 
-F_ASN="net.asn.txt"
-F_CIDR="net.cidr.txt"
-F_PTR="net.ptr"
-F_SUBS="subs.txt"
-F_SUBS_RES="subs.resolved.txt"
-F_HOSTS="hosts.names.txt"
-F_HOSTS_IP="hosts.ip.txt"
-F_WEB="hosts.web.txt"
+export F_ASN="net.asn.txt"
+export F_CIDR="net.cidr.txt"
+export F_PTR="net.ptr"
+export F_SUBS="subs.txt"
+export F_SUBS_RES="subs.resolved.txt"
+export F_HOSTS="hosts.names.txt"
+export F_HOSTS_IP="hosts.ip.txt"
+export F_WEB="hosts.web.txt"
 
-PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,1521,110,143,161,6379,5900,2222,4443,8000,8888,8080,9200"
+export PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,1521,110,143,161,6379,5900,2222,4443,8000,8888,8080,9200"
 
 
 ############################################################# 
@@ -40,8 +40,7 @@ silent() {
 #############################################################
 
 echo "[*] Recon.zsh running... "
-echo "[*] $DOMAIN $ORG "
-
+echo "[*] Domain: ${DOMAIN} Org: ${ORG}"
 echo "[*] Using current directory for output: ${DIR}"
 
 ############################################################# 
@@ -95,7 +94,7 @@ domains() {
     silent curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u | tee -a ${F_SUBS}
 
     echo " [+] waybackurls'ing... "
-    silent echo $DOMAIN | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" tee -a ${F_SUBS}
+    silent echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" | tee -a ${F_SUBS}
 
     echo " [+] sorting results "
     silent cat ${F_SUBS} | sort -u -o ${F_SUBS}
