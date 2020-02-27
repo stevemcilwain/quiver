@@ -59,7 +59,7 @@ qq-update() {
 }
 
 ############################################################# 
-# Setup Logging for Plugin Loading
+# Diagnostic Log
 #############################################################
 
 mkdir -p ${__DIR}
@@ -76,4 +76,10 @@ done
 
 echo "[*] quiver loaded." >> ${__LOGFILE}
 
-echo "Quiver ${__VER} ZSH plugin loaded."
+############################################################# 
+# Shell Log
+#############################################################
+
+echo " "
+echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded. $reset_color"
+echo " "
