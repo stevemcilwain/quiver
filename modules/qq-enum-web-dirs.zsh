@@ -31,7 +31,7 @@ qq-enum-web-files-wfuzz() {
 qq-enum-web-dirs-ffuf() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "ffuf -v -p 0.1 -t 5 -fc 404 -w ${__WORDS_QUICK} -u ${u}/FUZZ "
+  print -z "ffuf -v -p 0.1 -t 5 -fc 404 -w ${__WORDS_QUICK} -u ${u}FUZZ "
 }
 
 qq-enum-web-files-ffuf() {

@@ -5,45 +5,15 @@
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
-__VER=0.9.0
 
-cat << END
-$fg[cyan]
-
- ____ ____ ____ ____ ____ ____ 
-||q |||u |||i |||v |||e |||r ||
-||__|||__|||__|||__|||__|||__||
-|/__\|/__\|/__\|/__\|/__\|/__\|
-
- ${__VER}
-$reset_color
-END
-
-echo " "
-echo "$fg[cyan][*] loading...$reset_color"
-
-autoload colors; colors
-
-#Source all qq scripts
-
-for f in ${0:A:h}/modules/qq-* ; do
-  echo "[+] sourcing $f ... "
-  source $f;
-done
-
-############################################################# 
-# Output Helpers
-#############################################################
-
-__info() echo "$fg[blue][*] $1$reset_color"
-__ok()   echo "$fg[green][+] $1$reset_color"
-__warn() echo "$fg[yellow][>] $1$reset_color"
-__err()  echo "$fg[red][!] $1$reset_color"
+export __VER=0.9.1
 
 ############################################################# 
 # Constants
 #############################################################
 
+export __DIR="$HOME/.quiver"
+export __LOGFILE="${__DIR}/log.txt"
 export __NOTES="${0:A:h}/notes"
 export __SCRIPTS="${0:A:h}/scripts"
 
@@ -64,13 +34,20 @@ export __UA_IOS="Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWeb
 export __UA=${__UA_CHROME}
 
 ############################################################# 
-# Runtime Helpers
+# Helpers
 #############################################################
+
+autoload colors; colors
+
+__info() echo "$fg[blue][*] $1$reset_color"
+__ok() echo "$fg[green][+] $1$reset_color"
+__warn() echo "$fg[yellow][>] $1$reset_color"
+__err() echo "$fg[red][!] $1$reset_color"
 
 export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
 
 ############################################################# 
-# Update
+# Self Update
 #############################################################
 
 qq-update() {
@@ -80,5 +57,22 @@ qq-update() {
   source ~/.zshrc
 }
 
-echo "$fg[cyan][*] quiver loaded.$reset_color"
-echo " "
+############################################################# 
+# Setup Logging for Plugin Loading
+#############################################################
+
+mkdir -p ${__DIR}
+echo "Quiver ${__VER}" > ${__LOGFILE}
+echo " " >> ${__LOGFILE}
+echo "[*] loading... " >> ${__LOGFILE}
+
+#Source all qq scripts
+
+for f in ${0:A:h}/modules/qq-* ; do
+  echo "[+] sourcing $f ... "  >> ${__LOGFILE}
+  source $f >> ${__LOGFILE} 2>&1
+done
+
+echo "[*] quiver loaded." >> ${__LOGFILE}
+
+echo "Quiver ${__VER} ZSH plugin loaded from ${0:A:h}"
