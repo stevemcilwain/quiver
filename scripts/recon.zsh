@@ -146,37 +146,37 @@ scans() {
 
 web() {
 
-    echo " [+] httprobing resolved hosts"
-    cat ${F_SUBS_RES} | httprobe -t 3000 -s -p https:443 | sed 's/....$//' >> ${F_WEB}
+    __ok "httprobing resolved hosts"
+    cat ${F_SUBS_RES} | httprobe -t 3000 -s -p https:443 | sed 's/....$//' >> ${F_WEB} > /dev/null 2>&1
 
     mkdir -p ${DIR}/web
 
     for url in $(cat ${F_WEB})
     do
-        echo " [*] enumerating ${url} ... "
+        __ok "...enumerating ${url} ... "
 
         local host=$(echo ${url} | cut -d/ -f3)
         local hdir=${DIR}/web/${host}
 
         mkdir -p ${hdir}
 
-        echo " [+] Getting IP address"
-        host ${host} > ${hdir}/ip.txt 
+        __ok "Getting IP address"
+        host ${host} > ${hdir}/ip.txt > /dev/null 2>&1
 
-        echo " [+] Curling robots.txt" 
-        curl -s -L ${url}/robots.txt -o ${hdir}/robots.txt
+        __ok "Curling robots.txt" 
+        curl -s -L ${url}/robots.txt -o ${hdir}/robots.txt > /dev/null 2>&1
 
-        echo " [+] Whatwebbing"
-        whatweb ${url} -a 1 > ${hdir}/whatweb.txt 
+        __ok "Whatwebbing"
+        whatweb ${url} -a 1 > ${hdir}/whatweb.txt > /dev/null 2>&1
     
-        echo " [+] Wafw00fing"
-        wafw00f ${url} > ${hdir}/waf.txt
+        __ok "Wafw00fing"
+        wafw00f ${url} > ${hdir}/waf.txt > /dev/null 2>&1
 
-        echo " [+] Gobustering"
-        gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/common.txt -t10 -k -o ${hdir}/gobuster.txt
+        __ok "Gobustering"
+        gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/common.txt -t10 -k -o ${hdir}/gobuster.txt > /dev/null 2>&1
 
-        echo " [+] S3 Bucketing"
-        aws s3 ls s3://${host} > s3.txt 
+        __ok "S3 Bucketing"
+        aws s3 ls s3://${host} > s3.txt > /dev/null 2>&1
 
     done
 
@@ -204,11 +204,11 @@ __info "Resolving sub-domains... "
 
 __info "Scanning IP addresses..."
 
-scans
+#scans
 
 __info "Probing web servers..."
 
-#web
+web
 
 __info "Checking job completion..."
 

@@ -59,6 +59,7 @@ alias unix2dos="qq-aliases-unix-to-dos"
 alias fsync="qq-aliases-rsync-folders"
 alias umnt="qq-aliases-unmount"
 alias dt="qq-aliases-dtach"
+alias fs1="find . -type f -size +1M"
 
 # out
 
