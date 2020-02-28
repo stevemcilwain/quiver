@@ -119,13 +119,13 @@ domains() {
 lookups() {
 
     __ok "massdns'ing domains"
-    /opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${F_SUBS} -w ${F_SUBS_RES}
+    /opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${F_SUBS} -w ${F_SUBS_RES} > /dev/null 2>&1
 
     __ok "extracting resolved hostnames"
-    sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS}
+    sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS} > /dev/null 2>&1
 
     __ok "extracting resolved IP addresses"
-    grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP}
+    grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP} > /dev/null 2>&1
 }
 
 scans() {
@@ -196,7 +196,11 @@ __info "Mapping Network... "
 
 __info "Collecting sub-domains..."
 
-domains 
+#domains 
+
+__info "Resolving sub-domains... "
+
+lookups
 
 __info "Scanning IP addresses..."
 
