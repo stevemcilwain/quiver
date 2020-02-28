@@ -3,12 +3,19 @@
 #continue on errors
 set +e 
 
+autoload colors; colors
+
+__info() echo "$fg[blue][*] $@ $reset_color"
+__ok() echo "$fg[green] [+] $@ $reset_color"
+__warn() echo "$fg[yellow][>] $@ $reset_color"
+__err() echo "$fg[red][!] $@ $reset_color"
+
 ############################################################# 
 # Recon
 #############################################################
 
-[[ -z $1 ]] && echo -e "[!] Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
-[[ -z $2 ]] && echo -e "[!] Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
+[[ -z $1 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
+[[ -z $2 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
 
 export DOMAIN=$1
 export ORG=$2
@@ -29,9 +36,9 @@ export PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,152
 # Startup
 #############################################################
 
-echo "[*] Recon.zsh running... "
-echo "[*] Domain: ${DOMAIN} Org: ${ORG}"
-echo "[*] Using current directory for output: ${DIR}"
+__info "Recon.zsh running... "
+__info "Domain: ${DOMAIN} Org: ${ORG}"
+__info "Using current directory for output: ${DIR}"
 
 ############################################################# 
 # Steps
@@ -39,17 +46,17 @@ echo "[*] Using current directory for output: ${DIR}"
 
 org() {
 
-    echo " [+] metagoofil'ing files"
+    __ok "metagoofil'ing files"
     mkdir -p ${DIR}/files
     metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files &
 }
 
 network() {
 
-    echo " [+] Amass'ing ASNs"
+    __ok "Amass'ing ASNs"
     amass intel -org "${ORG}" | cut -d, -f1 > ${F_ASN}
 
-    echo " [+] BGPview'ing CIDRs"
+    __ok "BGPview'ing CIDRs"
     for asn in $(cat ${F_ASN})
     do 
         if [[ ! -z ${asn} ]]
@@ -58,11 +65,11 @@ network() {
         fi
     done
 
-    echo " [+] dnsrecon'ing PTRs"
+    __ok "dnsrecon'ing PTRs"
     network_dnsrecon
 
 
-    echo " [+] masscan'ing CIDRs"
+    __ok "masscan'ing CIDRs"
     network_masscan 
 
 }
@@ -96,41 +103,40 @@ domains() {
 
     echo "${DOMAIN}" > ${DIR}/domains.txt
 
-    echo " [+] Subfinder'ing "
+    __ok "Subfinder'ing "
     subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS}
 
-    echo " [+] crt.sh'ing "
+    __ok "crt.sh'ing "
     curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS}
 
-    echo " [+] waybackurls'ing... "
+    __ok "waybackurls'ing... "
     echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS}
 
-    echo " [+] sorting results "
+    __ok "sorting results "
     cat ${F_SUBS} | sort -u -o ${F_SUBS}
 
 }
 
 lookups() {
 
-    echo " [+] massdns'ing domains"
+    __ok "massdns'ing domains"
     /opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${F_SUBS} -w ${F_SUBS_RES}
 
-    echo " [+] extracting resolved hostnames"
-
+    __ok "extracting resolved hostnames"
     sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS}
 
-    echo " [+] extracting resolved IP addresses"
+    __ok "extracting resolved IP addresses"
     grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP}
 }
 
 scans() {
 
-    echo " [+] scanning host IP's"
+    __ok "scanning host IP's"
     mkdir -p ${DIR}/hosts
 
     for h in $(cat ${F_HOSTS_IP})
     do
-        echo " [+] scanning ${h}"
+        __ok "...scanning ${h}"
 
         mkdir -p ${DIR}/hosts/${h}
 
@@ -181,30 +187,30 @@ web() {
 # Workflow
 #############################################################
 
-echo "[*] Collecting Org Data... "
+__info "Searching for Org OSINT... "
 
-#org
+org
 
-echo "[*] Collecting Network Information... "
+__info "Mapping Network... "
 
-network
+#network
 
-echo "[*] Collection sub-domains..."
+__info "Collecting sub-domains..."
 
 #domains 
 
-echo "[*] Scanning resolved..."
+__info "Scanning IP addresses..."
 
 #scans
 
-echo "[*] Scanning web servers..."
+__info "Probing web servers..."
 
 #web
 
-echo "[*] Checking job completion..."
+__info "Checking job completion..."
 
 wait $(jobs -p)
 
-echo "[*] Recon completed"
+__info "Recon completed"
 
 echo " "
