@@ -57,12 +57,12 @@ org() {
 network() {
 
     echo " [+] Amass'ing ASNs"
-    silent amass intel -org ${ORG} | cut -d, -f1 | tee -a ${F_ASN}
+    silent amass intel -org ${ORG} | cut -d, -f1 >> ${F_ASN}
 
     echo " [+] BGPview'ing CIDRs"
     for asn in $(cat ${F_ASN})
     do 
-        silent curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' | tee -a ${F_CIDR}
+        silent curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
     done
 
     echo " [+] dnsrecon'ing PTRs"
@@ -88,13 +88,13 @@ network() {
 domains() {
 
     echo " [+] Subfinder'ing "
-    silent subfinder -d ${DOMAIN} -nW -silent | tee -a ${F_SUBS}
+    silent subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS}
 
     echo " [+] crt.sh'ing "
-    silent curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u | tee -a ${F_SUBS}
+    silent curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS}
 
     echo " [+] waybackurls'ing... "
-    silent echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" | tee -a ${F_SUBS}
+    silent echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS}
 
     echo " [+] sorting results "
     silent cat ${F_SUBS} | sort -u -o ${F_SUBS}
@@ -111,7 +111,7 @@ lookups() {
     silent sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS}
 
     echo " [+] extracting resolved IP addresses"
-    silent grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES}  | sort -u | sort -V -o ${F_HOSTS_IP}
+    silent grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP}
 }
 
 scans() {
@@ -147,22 +147,22 @@ web() {
         mkdir -p ${hdir}
 
         echo " [+] Getting IP address"
-        silent host ${host} | tee ${hdir}/ip.txt 
+        silent host ${host} > ${hdir}/ip.txt 
 
         echo " [+] Curling robots.txt" 
         silent curl -s -L ${url}/robots.txt -o ${hdir}/robots.txt
 
         echo " [+] Whatwebbing"
-        silent whatweb ${url} -a 1 | tee ${hdir}/whatweb.txt 
+        silent whatweb ${url} -a 1 > ${hdir}/whatweb.txt 
     
         echo " [+] Wafw00fing"
-        silent wafw00f ${url} | tee ${hdir}/waf.txt
+        silent wafw00f ${url} > ${hdir}/waf.txt
 
         echo " [+] Gobustering"
         silent gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/common.txt -t10 -k -o ${hdir}/gobuster.txt
 
         echo " [+] S3 Bucketing"
-        silent aws s3 ls s3://${host} | tee s3.txt 
+        silent aws s3 ls s3://${host} > s3.txt 
 
     done
 
