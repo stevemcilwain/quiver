@@ -68,7 +68,6 @@ network() {
     __ok "dnsrecon'ing PTRs"
     network_dnsrecon
 
-
     #__ok "masscan'ing CIDRs"
     #network_masscan 
 
@@ -189,7 +188,7 @@ web() {
 
 __info "Searching for Org OSINT... "
 
-org
+#org
 
 __info "Mapping Network... "
 
@@ -197,7 +196,7 @@ __info "Mapping Network... "
 
 __info "Collecting sub-domains..."
 
-#domains 
+domains 
 
 __info "Scanning IP addresses..."
 
