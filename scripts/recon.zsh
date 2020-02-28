@@ -17,7 +17,6 @@ export UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, 
 
 export F_ASN="${DIR}/asn.txt"
 export F_CIDR="${DIR}/cidr.txt"
-export F_PTR="${DIR}/ptr"
 export F_SUBS="${DIR}/subs.txt"
 export F_SUBS_RES="${DIR}/subs.resolved.txt"
 export F_HOSTS="${DIR}/hostnames.txt"
@@ -71,7 +70,7 @@ network() {
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${F_PTR}.${net}.csv
+        dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/PTR/ptr.${net}.csv &
     done
 
     echo " [+] masscan'ing CIDRs"
@@ -193,6 +192,8 @@ scans
 echo "[*] Scanning web servers..."
 
 web
+
+wait $(jobs -p)
 
 echo "[*] Recon completed"
 
