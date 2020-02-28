@@ -47,14 +47,14 @@ org() {
 network() {
 
     echo " [+] Amass'ing ASNs"
-    amass intel -org "${ORG}" | cut -d, -f1 >> ${F_ASN}
+    amass intel -org "${ORG}" | cut -d, -f1 > ${F_ASN}
 
     echo " [+] BGPview'ing CIDRs"
     for asn in $(cat ${F_ASN})
     do 
         if [[ ! -z ${asn} ]]
         then 
-            curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
+            curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' > ${F_CIDR}
         fi
     done
 
