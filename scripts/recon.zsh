@@ -65,21 +65,21 @@ network() {
     done
 
     echo " [+] dnsrecon'ing PTRs"
-    mkdir -p ${DIR}/PTR
+    mkdir -p ${DIR}/ptr
 
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/PTR/ptr.${net}.csv &
+        silent dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv &
     done
 
     echo " [+] masscan'ing CIDRs"
-    mkdir -p ${DIR}/NET
+    mkdir -p ${DIR}/net
 
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/NET/masscan.${net}.txt
+        silent sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt &
     done
 
 }
@@ -183,15 +183,15 @@ network
 
 echo "[*] Collection sub-domains..."
 
-domains 
+#domains 
 
 echo "[*] Scanning resolved..."
 
-scans
+#scans
 
 echo "[*] Scanning web servers..."
 
-web
+#web
 
 wait $(jobs -p)
 
