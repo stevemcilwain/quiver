@@ -49,9 +49,9 @@ echo "[*] Using current directory for output: ${DIR}"
 
 org() {
 
-    #echo " [+] metagoofil'ing files"
+    echo " [+] metagoofil'ing files"
     mkdir -p ${DIR}/files
-    #silent metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files
+    metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files &
 }
 
 network() {
@@ -71,7 +71,7 @@ network() {
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        silent dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${F_PTR}.${net}.csv
+        dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${F_PTR}.${net}.csv
     done
 
     echo " [+] masscan'ing CIDRs"
@@ -80,7 +80,7 @@ network() {
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        silent sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/NET/masscan.${net}.txt
+        sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/NET/masscan.${net}.txt
     done
 
 }
@@ -149,22 +149,22 @@ web() {
         mkdir -p ${hdir}
 
         echo " [+] Getting IP address"
-        silent host ${host} > ${hdir}/ip.txt 
+        host ${host} > ${hdir}/ip.txt 
 
         echo " [+] Curling robots.txt" 
-        silent curl -s -L ${url}/robots.txt -o ${hdir}/robots.txt
+        curl -s -L ${url}/robots.txt -o ${hdir}/robots.txt
 
         echo " [+] Whatwebbing"
-        silent whatweb ${url} -a 1 > ${hdir}/whatweb.txt 
+        whatweb ${url} -a 1 > ${hdir}/whatweb.txt 
     
         echo " [+] Wafw00fing"
-        silent wafw00f ${url} > ${hdir}/waf.txt
+        wafw00f ${url} > ${hdir}/waf.txt
 
         echo " [+] Gobustering"
-        silent gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/common.txt -t10 -k -o ${hdir}/gobuster.txt
+        gobuster dir -q -z -u ${url} -w /usr/share/seclists/Discovery/Web-Content/common.txt -t10 -k -o ${hdir}/gobuster.txt
 
         echo " [+] S3 Bucketing"
-        silent aws s3 ls s3://${host} > s3.txt 
+        aws s3 ls s3://${host} > s3.txt 
 
     done
 
@@ -176,7 +176,7 @@ web() {
 
 echo "[*] Collecting Org Data... "
 
-org
+#org
 
 echo "[*] Collecting Network Information... "
 
