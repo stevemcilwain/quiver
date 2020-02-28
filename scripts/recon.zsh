@@ -25,14 +25,10 @@ export F_WEB="${DIR}/urls.txt"
 
 export PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,1521,110,143,161,6379,5900,2222,4443,8000,8888,8080,9200"
 
+export HIDE=/dev/null 2>&1
 
-############################################################# 
-# Helpers
-#############################################################
-
-silent() {
-    "$@" > /dev/null 2>&1
-}
+# MAXJOBS=10
+# while [ $(jobs | wc -l) -ge ${MAXJOBS} ] ; do sleep 1 ; done
 
 ############################################################# 
 # Startup
@@ -61,28 +57,46 @@ network() {
     echo " [+] BGPview'ing CIDRs"
     for asn in $(cat ${F_ASN})
     do 
-        curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
+        if [[ ! -z ${asn} ]]
+        then 
+            curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
+        fi
     done
 
     echo " [+] dnsrecon'ing PTRs"
-    mkdir -p ${DIR}/ptr
+    network_dnsrecon &
 
-    for cidr in $(cat ${F_CIDR})
-    do 
-        local net=$(echo ${cidr} | cut -d/ -f1) 
-        silent dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv &
-    done
 
     echo " [+] masscan'ing CIDRs"
-    mkdir -p ${DIR}/net
-
-    for cidr in $(cat ${F_CIDR})
-    do 
-        local net=$(echo ${cidr} | cut -d/ -f1) 
-        silent sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt &
-    done
+    network_masscan &
 
 }
+
+network_dnsrecon() {
+    mkdir -p ${DIR}/ptr
+    for cidr in $(cat ${F_CIDR})
+    do 
+        if [[ ! -z ${cidr} ]]
+            local net=$(echo ${cidr} | cut -d/ -f1) 
+            dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv > HIDE
+        fi
+        
+    done
+}
+
+network_masscan() {
+    mkdir -p ${DIR}/net
+    for cidr in $(cat ${F_CIDR})
+    do
+        if [[ ! -z ${cidr} ]]
+            local net=$(echo ${cidr} | cut -d/ -f1) 
+            sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt > HIDE 
+        fi
+    done
+}
+
+
+
 
 domains() {
 
@@ -192,6 +206,8 @@ echo "[*] Scanning resolved..."
 echo "[*] Scanning web servers..."
 
 #web
+
+echo "[*] Checking job completion..."
 
 wait $(jobs -p)
 
