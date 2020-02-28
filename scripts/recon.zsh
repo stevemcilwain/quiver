@@ -77,10 +77,10 @@ network_dnsrecon() {
     for cidr in $(cat ${F_CIDR})
     do 
         if [[ ! -z ${cidr} ]]
+        then
             local net=$(echo ${cidr} | cut -d/ -f1) 
             dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv > HIDE
         fi
-        
     done
 }
 
@@ -89,6 +89,7 @@ network_masscan() {
     for cidr in $(cat ${F_CIDR})
     do
         if [[ ! -z ${cidr} ]]
+        then
             local net=$(echo ${cidr} | cut -d/ -f1) 
             sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt > HIDE 
         fi
