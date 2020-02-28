@@ -104,16 +104,16 @@ domains() {
     echo "${DOMAIN}" > ${DIR}/domains.txt
 
     __ok "Subfinder'ing "
-    subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS}
+    subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS} > /dev/null 2>&1
 
     __ok "crt.sh'ing "
-    curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS}
+    curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS} > /dev/null 2>&1
 
     __ok "waybackurls'ing... "
-    echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS}
+    echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS} > /dev/null 2>&1
 
     __ok "sorting results "
-    cat ${F_SUBS} | sort -u -o ${F_SUBS}
+    cat ${F_SUBS} | sort -u -o ${F_SUBS} > /dev/null 2>&1
 
 }
 
