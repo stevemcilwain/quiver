@@ -48,7 +48,7 @@ org() {
 
     __ok "metagoofil'ing files"
     mkdir -p ${DIR}/files
-    metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -l 100 -n 50 -o ${DIR}/files &
+    metagoofil -u "${UA}" -d ${DOMAIN} -t pdf,doc,docx,ppt,pptx,xls,xlsx -w -l 100 -n 50 -o ${DIR}/files > /dev/null 2>&1 &
 }
 
 network() {
@@ -69,8 +69,8 @@ network() {
     network_dnsrecon
 
 
-    __ok "masscan'ing CIDRs"
-    network_masscan 
+    #__ok "masscan'ing CIDRs"
+    #network_masscan 
 
 }
 
