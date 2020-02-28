@@ -139,7 +139,7 @@ scans() {
 
         mkdir -p ${DIR}/hosts/${h}
 
-        nmap -sT -p ${PORTS} -T4 --open ${h} -oA ${DIR}/hosts/${h}/scan 
+        nmap -sT -p ${PORTS} -T4 --open ${h} -oA ${DIR}/hosts/${h}/scan > /dev/null 2>&1
     done
 
 }
@@ -200,11 +200,11 @@ __info "Collecting sub-domains..."
 
 __info "Resolving sub-domains... "
 
-lookups
+#lookups
 
 __info "Scanning IP addresses..."
 
-#scans
+scans
 
 __info "Probing web servers..."
 
