@@ -147,7 +147,7 @@ scans() {
 web() {
 
     __ok "httprobing resolved hosts"
-    cat ${F_SUBS_RES} | httprobe -t 3000 -s -p https:443 | sed 's/....$//' >> ${F_WEB} > /dev/null 2>&1
+    cat ${F_HOSTS} | httprobe -t 3000 -s -p https:443 | sed 's/....$//' >> ${F_WEB} > /dev/null 2>&1
 
     mkdir -p ${DIR}/web
 
