@@ -15,14 +15,14 @@ export ORG=$2
 export DIR=$(pwd)
 export UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 
-export F_ASN="net.asn.txt"
-export F_CIDR="net.cidr.txt"
-export F_PTR="net.ptr"
-export F_SUBS="subs.txt"
-export F_SUBS_RES="subs.resolved.txt"
-export F_HOSTS="hosts.names.txt"
-export F_HOSTS_IP="hosts.ip.txt"
-export F_WEB="hosts.web.txt"
+export F_ASN="${DIR}/asn.txt"
+export F_CIDR="${DIR}/cidr.txt"
+export F_PTR="${DIR}/ptr"
+export F_SUBS="${DIR}/subs.txt"
+export F_SUBS_RES="${DIR}/subs.resolved.txt"
+export F_HOSTS="${DIR}/hostnames.txt"
+export F_HOSTS_IP="${DIR}/hostips.txt"
+export F_WEB="${DIR}/urls.txt"
 
 export PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,1521,110,143,161,6379,5900,2222,4443,8000,8888,8080,9200"
 
@@ -57,21 +57,21 @@ org() {
 network() {
 
     echo " [+] Amass'ing ASNs"
-    silent amass intel -org ${ORG} | cut -d, -f1 >> ${F_ASN}
+    amass intel -org "${ORG}" | cut -d, -f1 >> ${F_ASN}
 
     echo " [+] BGPview'ing CIDRs"
     for asn in $(cat ${F_ASN})
     do 
-        silent curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
+        curl -s https://api.bgpview.io/asn/${asn}/prefixes | jq -r '.data | .ipv4_prefixes | .[].prefix' >> ${F_CIDR}
     done
 
     echo " [+] dnsrecon'ing PTRs"
-    mkdir -p ${DIR}/NET/PTR
+    mkdir -p ${DIR}/PTR
 
     for cidr in $(cat ${F_CIDR})
     do 
         local net=$(echo ${cidr} | cut -d/ -f1) 
-        silent dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/NET/PTR/${F_PTR}.${net}.csv
+        silent dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${F_PTR}.${net}.csv
     done
 
     echo " [+] masscan'ing CIDRs"
@@ -87,31 +87,33 @@ network() {
 
 domains() {
 
+    echo "${DOMAIN}" > ${DIR}/domains.txt
+
     echo " [+] Subfinder'ing "
-    silent subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS}
+    subfinder -d ${DOMAIN} -nW -silent >> ${F_SUBS}
 
     echo " [+] crt.sh'ing "
-    silent curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS}
+    curl -s 'https://crt.sh/?q=%.$DOMAIN' | grep -i "${DOMAIN}" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v " " | sort -u >> ${F_SUBS}
 
     echo " [+] waybackurls'ing... "
-    silent echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS}
+    echo ${DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v ":80" >> ${F_SUBS}
 
     echo " [+] sorting results "
-    silent cat ${F_SUBS} | sort -u -o ${F_SUBS}
+    cat ${F_SUBS} | sort -u -o ${F_SUBS}
 
 }
 
 lookups() {
 
     echo " [+] massdns'ing domains"
-    silent /opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${F_SUBS} -w ${F_SUBS_RES}
+    /opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${F_SUBS} -w ${F_SUBS_RES}
 
     echo " [+] extracting resolved hostnames"
 
-    silent sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS}
+    sed 's/A.*//' ${F_SUBS_RES} | sed 's/CN.*//' | sed 's/\..$//' | sort -u >> ${F_HOSTS}
 
     echo " [+] extracting resolved IP addresses"
-    silent grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP}
+    grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'  ${F_SUBS_RES} | sort -u | sort -V -o ${F_HOSTS_IP}
 }
 
 scans() {
@@ -125,7 +127,7 @@ scans() {
 
         mkdir -p ${DIR}/hosts/${h}
 
-        silent nmap -sT -p ${PORTS} -T4 --open ${h} -oA ${DIR}/hosts/${h}/scan 
+        nmap -sT -p ${PORTS} -T4 --open ${h} -oA ${DIR}/hosts/${h}/scan 
     done
 
 }
