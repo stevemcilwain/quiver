@@ -188,23 +188,23 @@ web() {
 
 __info "Searching for Org OSINT... "
 
-#org
+org
 
 __info "Mapping Network... "
 
-#network
+network
 
 __info "Collecting sub-domains..."
 
-#domains 
+domains 
 
 __info "Resolving sub-domains... "
 
-#lookups
+lookups
 
 __info "Scanning IP addresses..."
 
-#scans
+scans
 
 __info "Probing web servers..."
 
