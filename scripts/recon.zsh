@@ -25,11 +25,6 @@ export F_WEB="${DIR}/urls.txt"
 
 export PORTS="21,22,25,80,443,135-139,445,3389,3306,1433,389,636,88,111,2049,1521,110,143,161,6379,5900,2222,4443,8000,8888,8080,9200"
 
-export HIDE=/dev/null 2>&1
-
-# MAXJOBS=10
-# while [ $(jobs | wc -l) -ge ${MAXJOBS} ] ; do sleep 1 ; done
-
 ############################################################# 
 # Startup
 #############################################################
@@ -64,11 +59,11 @@ network() {
     done
 
     echo " [+] dnsrecon'ing PTRs"
-    network_dnsrecon &
+    network_dnsrecon
 
 
     echo " [+] masscan'ing CIDRs"
-    network_masscan &
+    network_masscan 
 
 }
 
@@ -79,7 +74,7 @@ network_dnsrecon() {
         if [[ ! -z ${cidr} ]]
         then
             local net=$(echo ${cidr} | cut -d/ -f1) 
-            dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv > HIDE
+            dnsrecon -d ${DOMAIN} -r ${cidr} -n 1.1.1.1 -c ${DIR}/ptr/ptr.${net}.csv > /dev/null 2>&1
         fi
     done
 }
@@ -91,12 +86,10 @@ network_masscan() {
         if [[ ! -z ${cidr} ]]
         then
             local net=$(echo ${cidr} | cut -d/ -f1) 
-            sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt > HIDE 
+            sudo masscan ${cidr} -p${PORTS} -oL ${DIR}/net/masscan.${net}.txt > /dev/null 2>&1
         fi
     done
 }
-
-
 
 
 domains() {
