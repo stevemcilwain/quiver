@@ -1,8 +1,8 @@
 # quiver
 
-Quiver is an opinionated and curated collection of commands, notes and scripts I use for bug bounty hunting.
+Quiver is the tool to manage all of your tools. It's an opinionated and curated collection of commands, notes and scripts for bug bounty hunting and penetration testing.
 
-[![asciicast](https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe.svg)](https://asciinema.org/a/ZHrUyUmGzNNxftclFG7xjc3Xe)
+[![asciicast](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD/?t=1&speed=4&loop=1)](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD/?t=1&speed=4&loop=1)
 
 ## Features
 
@@ -13,6 +13,9 @@ Quiver is an opinionated and curated collection of commands, notes and scripts I
 * Renders markdown notes to the command line
 * Runs custom scripts
 * Modular, easy updates
+* Installation of all dependecies with qq-install
+* Bounty scope generators
+* Add your own custom aliases and functions in modules/qq-custom.zsh
 
 ## Requirements
 
@@ -73,6 +76,9 @@ qq-<tab>
 
 Quiver is organized into namespaces for easy tab navigation:
 
+* qq-install, qq-update, qq-debug, qq-status
+* qq-log
+* qq-bounty
 * qq-loq: create, log and view a running logbook for your notes and commands
 * qq-recon
 * qq-recon-asns
@@ -85,10 +91,16 @@ Quiver is organized into namespaces for easy tab navigation:
 * qq-enum-host
 * qq-enum-dns 
 * qq-enum-ftp
+* qq-enum-kerb
+* qq-enum-ldap
+* qq-enum-rdp
+* qq-enum-smb
 * qq-enum-web
 * qq-enum-web-aws
 * qq-enum-web-dirs
 * qq-enum-web-vuln
+* qq-enum-web-xss
+* qq-pivot
 * qq-srv
 
 Quiver also sets up helpful shell aliases and functions (qq-aliases).
