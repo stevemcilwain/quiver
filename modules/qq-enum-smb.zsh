@@ -71,7 +71,7 @@ qq-enum-smb-responder() {
 }
 
 qq-enum-smb-net-use-null() {
-  __info "net use \\\\<server>\\IPC$ \"\" /u:\"\" "
+  __info "net use \\\\\\\\<server>\\IPC$ \"\" /u:\"\" "
 }
 
 qq-enum-smb-bluecheck() {
