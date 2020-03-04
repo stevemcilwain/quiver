@@ -79,25 +79,25 @@ qq-enum-web-app-elastic-all() {
 # Notes 
 
 qq-enum-web-notes-api() {
-  glow -p ${__NOTES}/enum-web-api.md
+  glow ${__NOTES}/enum-web-api.md
 }
 
 qq-enum-web-notes-drupal() {
-  glow -p ${__NOTES}/enum-web-app-drupal-notes.md
+  glow ${__NOTES}/enum-web-app-drupal-notes.md
 }
 
 qq-enum-web-notes-wordpress() {
-  glow -p ${__NOTES}/enum-web-app-wordpress-notes.md
+  glow ${__NOTES}/enum-web-app-wordpress-notes.md
 }
 
 qq-enum-web-notes-traversal() {
-  glow -p ${__NOTES}/enum-web-dir-traversal.md
+  glow ${__NOTES}/enum-web-dir-traversal.md
 }
 
 qq-enum-web-notes-bypass-upload() {
-  glow -p ${__NOTES}/enum-web-bypasss-upload.md
+  glow ${__NOTES}/enum-web-bypasss-upload.md
 }
 
 qq-enum-web-notes-bypass-waf() {
-  glow -p ${__NOTES}/enum-web-bypasss-waf.md
+  glow ${__NOTES}/enum-web-bypasss-waf.md
 }

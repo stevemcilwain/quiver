@@ -33,5 +33,5 @@ qq-enum-ftp-wget-mirror() {
 }
 
 qq-enum-ftp-notes-vuln-vsftp() {
-  glow -p ${__NOTES}/enum-ftp-vuln-vsftp.md
+  glow ${__NOTES}/enum-ftp-vuln-vsftp.md
 }

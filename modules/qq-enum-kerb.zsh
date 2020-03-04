@@ -31,5 +31,5 @@ qq-enum-kerb-kerberoast() {
 }
 
 qq-enum-kerb-notes-exploit-pykek() {
-    glow -p ${__NOTES}/enum-kerb-exploit-pykek.md
+    glow ${__NOTES}/enum-kerb-exploit-pykek.md
 }

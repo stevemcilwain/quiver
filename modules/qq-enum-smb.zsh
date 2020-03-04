@@ -86,17 +86,17 @@ qq-enum-smb-notes-sysvol() {
 }
 
 qq-enum-smb-notes-info() {
-    glow -p ${__NOTES}/enum-smb-info.md
+    glow ${__NOTES}/enum-smb-info.md
 }
 
 qq-enum-smb-notes-exploit-netapi() {
-    glow -p ${__NOTES}/enum-smb-exploit-netapi.md
+    glow ${__NOTES}/enum-smb-exploit-netapi.md
 }
 
 qq-enum-smb-notes-exploit-srvos2featont() {
-    glow -p ${__NOTES}/enum-smb-exploit-srvos2featont.md
+    glow ${__NOTES}/enum-smb-exploit-srvos2featont.md
 }
 
 qq-enum-smb-notes-exploit-eternal() {
-    glow -p ${__NOTES}/enum-smb-exploit-eternal.md
+    glow ${__NOTES}/enum-smb-exploit-eternal.md
 }
