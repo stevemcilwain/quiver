@@ -1,5 +1,11 @@
 # Releases
 
+## 0.10 - 
+
+* Added qq-enum-kerb.zsh
+* 
+
+
 ## 0.9 - 3/4/2020
 
 * Minor fixes and improvements

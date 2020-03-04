@@ -6,7 +6,7 @@
 
 qq-enum-ftp-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "sudo nmap -n -Pn -sS -p21 -oA ftp_sweep ${s} &&  grep open ftp_sweep.gnmap |cut -d' ' -f2 >> dns_hosts.txt"
+  print -z "sudo nmap -n -Pn -sS -p21 -oA ftp_sweep ${s} &&  grep open ftp_sweep.gnmap |cut -d' ' -f2 >> ftp_hosts.txt"
 }
 
 qq-enum-ftp-tcpdump() {

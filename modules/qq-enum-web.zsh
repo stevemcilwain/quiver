@@ -6,7 +6,7 @@
 
 qq-enum-web-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d\" \" -f2 >> web.hosts.txt"
+  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d' ' -f2 >> web_hosts.txt"
 }
 
 qq-enum-web-tcpdump() {
