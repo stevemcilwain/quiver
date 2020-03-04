@@ -95,9 +95,9 @@ qq-enum-web-notes-traversal() {
 }
 
 qq-enum-web-notes-bypass-upload() {
-  glow ${__NOTES}/enum-web-bypasss-upload.md
+  glow ${__NOTES}/enum-web-bypass-upload.md
 }
 
 qq-enum-web-notes-bypass-waf() {
-  glow ${__NOTES}/enum-web-bypasss-waf.md
+  glow ${__NOTES}/enum-web-bypass-waf.md
 }
