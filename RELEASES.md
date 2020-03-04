@@ -1,5 +1,13 @@
 # Releases
 
+## 0.10 - 3/4/2020
+
+* Added module: qq-enum-kerb.zsh for kerboros enumeration functions
+* Added module: qq-enum-rdp.zsh for RDP enumeration functions
+* Added module: qq-enum-smb.zsh for SMB enumeration functions
+* Aded qq-debug to print ~/.quiver/log.txt 
+* Fixed glow commands to not use pager, leaving the output available in the console window
+
 ## 0.9 - 3/4/2020
 
 * Minor fixes and improvements

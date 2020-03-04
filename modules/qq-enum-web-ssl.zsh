@@ -30,9 +30,9 @@ qq-enum-web-ssl-certs() {
 }
 
 qq-enum-web-ssl-notes-client-certs() {
-  glow -p ${__NOTES}/enum-web-ssl-client-certs.md
+  glow ${__NOTES}/enum-web-ssl-client-certs.md
 }
 
 qq-enum-web-ssl-notes-openfck() {
-  glow -p ${__NOTES}/enum-web-ssl-openfck.md
+  glow ${__NOTES}/enum-web-ssl-openfck.md
 }

@@ -6,7 +6,7 @@
 
 qq-enum-ldap-sweep-nmap() {
     local s && read "s?SUBNET: "
-    print -z "sudo nmap -n -Pn -sS -sU -p389,636 -oA ldap_sweep ${s} &&  grep open ldap_sweep.gnmap |cut -d' ' -f2 >> ldap.hosts.txt"
+    print -z "sudo nmap -n -Pn -sS -sU -p389,636 -oA ldap_sweep ${s} &&  grep open ldap_sweep.gnmap |cut -d' ' -f2 >> ldap_hosts.txt"
 }
 
 qq-enum-ldap-tcpdump() {

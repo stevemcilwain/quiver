@@ -25,6 +25,6 @@ qq-bounty-sudoers-harden() {
 }
 alias hardmode="qq-bounty-sudoers-harden"
 
-qq-bounty-sync-remote-to-local-sshfs() {
+# qq-bounty-sync-remote-to-local-sshfs() {
 
-}
+# }

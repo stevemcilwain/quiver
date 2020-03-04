@@ -6,7 +6,7 @@
 # Contributors: 
 #############################################################
 
-export __VER=0.9.1
+export __VER=0.10.0
 
 ############################################################# 
 # Constants
@@ -28,6 +28,8 @@ export __WORDS_RAFT_FILES="/usr/share/seclists/Discovery/Web-Content/raft-large-
 export __WORDS_SWAGGER="/usr/share/seclists/Discovery/Web-Content/swagger.txt"
 
 export __PASS_ROCKYOU="/usr/share/wordlists/rockyou.txt"
+
+export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
 
 export __UA_GOOGLEBOT="Googlebot/2.1 (+http://www.google.com/bot.html)"
 export __UA_CHROME="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
@@ -63,6 +65,10 @@ qq-status() {
   cd $HOME/.oh-my-zsh/custom/plugins/quiver
   git status | grep On | cut -d" " -f2,3
   cd - > /dev/null
+}
+
+qq-debug() {
+  cat $HOME/.quiver/log.txt
 }
 
 ############################################################# 
