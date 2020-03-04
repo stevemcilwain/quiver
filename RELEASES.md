@@ -3,7 +3,9 @@
 ## 0.10 - 
 
 * Added module: qq-enum-kerb.zsh for kerboros enumeration functions
-* 
+* Added module: qq-enum-rdp.zsh for RDP enumeration functions
+* Added module: qq-enum-smb.zsh for SMB enumeration functions
+* Aded qq-debug to print ~/.quiver/log.txt 
 
 ## 0.9 - 3/4/2020
 
