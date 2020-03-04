@@ -2,7 +2,7 @@
 
 Quiver is the tool to manage all of your tools. It's an opinionated and curated collection of commands, notes and scripts for bug bounty hunting and penetration testing.
 
-[![asciicast](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD/?t=1&speed=4&loop=1)](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD/?t=1&speed=4&loop=1)
+[![asciicast](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD.png)](https://asciinema.org/a/gF1kRCOTtQGO4c7O4vhPv2fcD/?t=1&speed=4&loop=1)
 
 ## Features
 
