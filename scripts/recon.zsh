@@ -153,6 +153,7 @@ web() {
 
     for url in $(cat ${F_WEB})
     do
+        
         __ok "...enumerating ${url} ... "
 
         local host=$(echo ${url} | cut -d/ -f3)
