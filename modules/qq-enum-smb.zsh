@@ -82,7 +82,7 @@ qq-enum-smb-bluecheck() {
 # Notes
 
 qq-enum-smb-notes-sysvol() {
-    glow -p ${__NOTES}/enum-smb-sysvol.md
+    glow ${__NOTES}/enum-smb-sysvol.md
 }
 
 qq-enum-smb-notes-info() {
