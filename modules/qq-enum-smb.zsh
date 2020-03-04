@@ -78,3 +78,25 @@ qq-enum-smb-bluecheck() {
   local r && read "r?RHOST: "
   print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${r}"
 }
+
+# Notes
+
+qq-enum-smb-notes-sysvol() {
+    glow -p ${__NOTES}/enum-smb-sysvol.md
+}
+
+qq-enum-smb-notes-info() {
+    glow -p ${__NOTES}/enum-smb-info.md
+}
+
+qq-enum-smb-notes-exploit-netapi() {
+    glow -p ${__NOTES}/enum-smb-exploit-netapi.md
+}
+
+qq-enum-smb-notes-exploit-srvos2featont() {
+    glow -p ${__NOTES}/enum-smb-exploit-srvos2featont.md
+}
+
+qq-enum-smb-notes-exploit-eternal() {
+    glow -p ${__NOTES}/enum-smb-exploit-eternal.md
+}
