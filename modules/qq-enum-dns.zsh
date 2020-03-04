@@ -6,7 +6,7 @@
 
 qq-enum-dns-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "sduo nmap -n -Pn -sS -sU -p53 -oA dns_sweep ${s} && grep open dns_sweep.gnmap |cut -d' ' -f2 > dns_hosts.txt"
+  print -z "sduo nmap -n -Pn -sS -sU -p53 -oA dns_sweep ${s} && grep open dns_sweep.gnmap |cut -d' ' -f2 >> dns_hosts.txt"
 }
 
 qq-enum-dns-tcpdump() {
@@ -31,7 +31,7 @@ qq-enum-dns-txfr-host() {
 qq-enum-dns-brute-rev() {
   local server && read "server?SERVER: "
   local network && read "network?NETWORK(ex: 10.10.10): "
-  print -z "for h in {1..254}; do host ${network}.$h ${server}; done | grep pointer > revdns.${network}.txt"
+  print -z "for h in {1..254}; do host ${network}.$h ${server}; done | grep pointer >> revdns.${network}.txt"
 }
 
 

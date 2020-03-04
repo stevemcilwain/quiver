@@ -19,7 +19,7 @@ qq-enum-web-dirs-robots-parsero() {
 qq-enum-web-dirs-wfuzz() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "wfuzz -v -s 0.1 -R5 --hc=404 -w ${__WORDS_QUICK} ${u}/FUZZ > dirs.${d}.txt "
+  print -z "wfuzz -v -s 0.1 -R5 --hc=404 -w ${__WORDS_QUICK} ${u}FUZZ > dirs.${d}.txt "
 }
 
 qq-enum-web-files-wfuzz() {
@@ -31,13 +31,13 @@ qq-enum-web-files-wfuzz() {
 qq-enum-web-dirs-ffuf() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "ffuf -v -fc 404 -w ${__WORDS_QUICK} -u ${u}/FUZZ -d fuff.dbg > dirs.${d}.txt"
+  print -z "ffuf -v -p 0.1 -t 5 -fc 404 -w ${__WORDS_QUICK} -u ${u}FUZZ "
 }
 
 qq-enum-web-files-ffuf() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "ffuf -v -fc 404 -w ${__WORDS_NULL} -u ${u}/FUZZ -d fuff.dbg > files.${d}.txt"
+  print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_NULL} -u ${u}/FUZZ "
 }
 
 qq-enum-web-dirs-gobuster() {

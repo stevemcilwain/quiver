@@ -6,7 +6,7 @@
 
 qq-enum-web-sweep-nmap() {
   local s && read "s?SUBNET: "
-  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d\" \" -f2 > sweep.${s}.txt"
+  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d\" \" -f2 >> web.hosts.txt"
 }
 
 qq-enum-web-tcpdump() {
@@ -24,11 +24,6 @@ qq-enum-web-whatweb() {
 qq-enum-web-waf() {
   local u && read "u?URL: "
   print -z "wafw00f ${u} "
-}
-
-qq-enum-web-scope-burp() {
-  local d && read "d?DOMAIN(root):"
-  print -z "^.*?${d}\..*\$"
 }
 
 # vhosts

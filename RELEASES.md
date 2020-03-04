@@ -1,6 +1,18 @@
 # Releases
 
-## 0.8
+## 0.9 - 3/4/2020
+
+* Minor fixes and improvements
+* Added scripts/recon.zsh
+* Added qq-bounty for bug bounty helpers
+* Added rescope to install script and qq-bounty
+* Added qq-enum-ldap
+* Removed noisy banner and log loading to ./quiver/log.txt
+* Added qq-enum-ftp-notes-vsftp
+* Added qq-custom.zsh module for your custom aliases and functions (ignored)
+* Added .gitignore (for qq-custom.zsh)
+
+## 0.8 - 2/25/2020
 
 * qq-pivot: added ssh tunneling commands
 * qq-log: added short aliases

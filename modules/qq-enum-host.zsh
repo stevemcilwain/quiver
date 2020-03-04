@@ -13,15 +13,15 @@ qq-enum-host-tcpdump() {
 
 qq-enum-host-basic-nmap(){
   local r && read "r?RHOST: "
-  print -z "nmap -vvv -sC -sV --open -oA scan.${r}.top ${r}"
+  print -z "nmap -vvv -Pn -sC -sV --open -oA scan.${r}.top ${r}"
 }
 
-qq-enum-host-syn-fast-nmap() {
+qq-enum-host-syn-all-nmap() {
   local r && read "r?RHOST: "
   print -z "sudo nmap -vvv -n -Pn -sS -T4 --open -oA scan.${r}.syn -p- ${r}"
 }
 
-qq-enum-host-svc-nmap() {
+qq-enum-host-svc-all-nmap() {
   local r && read "r?RHOST: "
   print -z "sudo nmap -vvv -n -Pn -sS -sC -sV --open -oA scan.${r}.svc -p- ${r}"
 }
