@@ -25,7 +25,7 @@ qq-enum-kerb-users() {
 qq-enum-kerb-kerberoast() {
   local d && read "d?DOMAIN: "
   local u && read "u?SERVICE USER: "
-  local dc && read "dc:DC(IP): "
+  local dc && read "dc?DC(IP): "
   __warn "Ensure that the domain, ${d}, is in your hosts file."
   print -z "impacket-GetUserSPNs -request ${d}/${u} -dc-ip ${dc} "
 }
