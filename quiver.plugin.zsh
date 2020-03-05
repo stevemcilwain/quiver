@@ -23,9 +23,13 @@ export __WORDS_NULL="/opt/words/nullenc/null.txt"
 export __WORDS_COMMON="/usr/share/seclists/Discovery/Web-Content/common.txt"
 export __WORDS_RAFT_DIRS="/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"
 export __WORDS_QUICK="/usr/share/seclists/Discovery/Web-Content/quickhits.txt"
-export __WORDS_MEDIUM="/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"
 export __WORDS_RAFT_FILES="/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"
 export __WORDS_SWAGGER="/usr/share/seclists/Discovery/Web-Content/swagger.txt"
+
+export __EXT_PHP=".php,.phtml,.pht,.xml,.inc,.log,.sql,.cgi"
+export __WORDS_PHP_COMMON="/usr/share/seclists/Discovery/Web-Content/Common-PHP-Filenames.txt"
+export __WORDS_PHP_FUZZ="/usr/share/seclists/Discovery/Web-Content/PHP.fuzz.txt"
+
 
 export __PASS_ROCKYOU="/usr/share/wordlists/rockyou.txt"
 
