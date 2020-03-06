@@ -1,21 +1,21 @@
 #!/usr/bin/env zsh
 
+autoload colors; colors
+
 ############################################################# 
 # quiver
 # Author: Steve Mcilwain
 # Contributors: 
 #############################################################
 
-export __VER=0.11.0
+export __VER=0.11.1
 
 ############################################################# 
 # Constants
 #############################################################
 
-export __DIR="$HOME/.quiver"
 export __PLUGIN="${0:A:h}"
-export __LOGFILE="${__DIR}/log.txt"
-export __NOTES="${0:A:h}/notes"
+export __LOGFILE="${__PLUGIN}/log.txt"
 export __SCRIPTS="${0:A:h}/scripts"
 
 export __WORDS_ALL="/opt/words/all/all.txt"
@@ -30,7 +30,6 @@ export __EXT_PHP=".php,.phtml,.pht,.xml,.inc,.log,.sql,.cgi"
 export __WORDS_PHP_COMMON="/usr/share/seclists/Discovery/Web-Content/Common-PHP-Filenames.txt"
 export __WORDS_PHP_FUZZ="/usr/share/seclists/Discovery/Web-Content/PHP.fuzz.txt"
 
-
 export __PASS_ROCKYOU="/usr/share/wordlists/rockyou.txt"
 
 export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
@@ -44,15 +43,14 @@ export __UA=${__UA_CHROME}
 # Helpers
 #############################################################
 
-autoload colors; colors
+export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
+export __STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
 
 __info() echo "$fg[blue][*] $@ $reset_color"
 __ok() echo "$fg[green][+] $@ $reset_color"
 __warn() echo "$fg[yellow][>] $@ $reset_color"
 __err() echo "$fg[red][!] $@ $reset_color"
 
-export __IFACES=$(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')
-__STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
 
 ############################################################# 
 # Self Update
@@ -72,14 +70,13 @@ qq-status() {
 }
 
 qq-debug() {
-  cat $HOME/.quiver/log.txt
+  cat ${__LOGFILE}
 }
 
 ############################################################# 
 # Diagnostic Log
 #############################################################
 
-mkdir -p ${__DIR}
 echo "Quiver ${__VER} in ${__PLUGIN}" > ${__LOGFILE}
 echo " " >> ${__LOGFILE}
 echo "[*] loading... " >> ${__LOGFILE}
@@ -99,3 +96,4 @@ echo "[*] quiver loaded." >> ${__LOGFILE}
 
 echo " "
 echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded. $reset_color"
+

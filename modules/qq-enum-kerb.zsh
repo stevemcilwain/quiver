@@ -29,7 +29,3 @@ qq-enum-kerb-kerberoast() {
   __warn "Ensure that the domain, ${d}, is in your hosts file."
   print -z "impacket-GetUserSPNs -request ${d}/${u} -dc-ip ${dc} "
 }
-
-qq-enum-kerb-notes-exploit-pykek() {
-    glow ${__NOTES}/enum-kerb-exploit-pykek.md
-}
