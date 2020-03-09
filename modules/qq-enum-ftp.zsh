@@ -31,7 +31,3 @@ qq-enum-ftp-wget-mirror() {
   local r && read "r?RHOST: "
   print -z "wget --mirror ftp://anonymous:user@anon.com@${r}"
 }
-
-qq-enum-ftp-notes-vuln-vsftp() {
-  glow ${__NOTES}/enum-ftp-vuln-vsftp.md
-}

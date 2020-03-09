@@ -1,5 +1,13 @@
 # Releases
 
+## 0.11 - 3/9/2020
+
+* You can now specify a path to your markdown notes by setting $__NOTES
+* qq-notes.zsh: notes search and display 
+* qq-exploit.zsh: compilation helpers
+* qq-enum-web-php: php specific enumeration such as lfi, rfi and scans
+* minor fixes 
+
 ## 0.10 - 3/4/2020
 
 * Added module: qq-enum-kerb.zsh for kerboros enumeration functions

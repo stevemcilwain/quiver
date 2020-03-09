@@ -76,28 +76,3 @@ qq-enum-web-app-elastic-all() {
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 
-# Notes 
-
-qq-enum-web-notes-api() {
-  glow ${__NOTES}/enum-web-api.md
-}
-
-qq-enum-web-notes-drupal() {
-  glow ${__NOTES}/enum-web-app-drupal-notes.md
-}
-
-qq-enum-web-notes-wordpress() {
-  glow ${__NOTES}/enum-web-app-wordpress-notes.md
-}
-
-qq-enum-web-notes-traversal() {
-  glow ${__NOTES}/enum-web-dir-traversal.md
-}
-
-qq-enum-web-notes-bypass-upload() {
-  glow ${__NOTES}/enum-web-bypass-upload.md
-}
-
-qq-enum-web-notes-bypass-waf() {
-  glow ${__NOTES}/enum-web-bypass-waf.md
-}
