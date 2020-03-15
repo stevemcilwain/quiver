@@ -5,8 +5,8 @@
 #############################################################
 
 qq-recon-domains-by-whois-amass() {
-  local d && read "d?DOMAIN: "
-  print -z "amass intel -active -whois -d ${d}"
+  __GET-DOMAIN
+  print -z "amass intel -active -whois -d ${__DOMAIN}"
 }
 
 qq-recon-domains-by-asn-amass() {

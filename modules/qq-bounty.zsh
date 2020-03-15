@@ -16,7 +16,7 @@ qq-bounty-scope-by-url() {
 
 qq-bounty-sudoers-easy() {
   __warn "This is dangerous! Remove when done."
-  print -z "echo \"$USER ALL=(ALL:ALL) NOPASSWD: /usr/bin/nmap, /usr/bin/masscan\" | sudo tee /etc/sudoers.d/$USER"
+  print -z "echo \"$USER ALL=(ALL:ALL) NOPASSWD: /usr/bin/nmap, /usr/bin/masscan, /usr/sbin/tcpdump\" | sudo tee /etc/sudoers.d/$USER"
 }
 alias easymode="qq-bounty-sudoers-easy"
 

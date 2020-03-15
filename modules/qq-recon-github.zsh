@@ -11,7 +11,7 @@ qq-recon-github-by-user-curl() {
 
 qq-recon-github-by-domain-gwen-001() {
     [[ -z "${GH_TOKEN}" ]] && echo "GH_TOKEN env variable not set" && return;
-    local d && read "d?DOMAIN: "
-    print -z "python3 /opt/recon/github-search/github-endpoints.py -t ${GH_TOKEN} -d ${d}"
+    __GET-DOMAIN
+    print -z "python3 /opt/recon/github-search/github-endpoints.py -t ${GH_TOKEN} -d ${__DOMAIN}"
 }
 

@@ -1,5 +1,9 @@
 # Releases
 
+## 0.12
+
+* qq-project.zsh
+
 ## 0.11 - 3/9/2020
 
 * You can now specify a path to your markdown notes by setting $__NOTES

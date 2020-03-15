@@ -5,21 +5,20 @@
 #############################################################
 
 qq-enum-kerb-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -p88 -oA kerb_sweep ${s} && grep open kerb_sweep.gnmap |cut -d' ' -f2 > kerb_hosts.txt"
+  __GET-NETWORK
+  print -z "nmap -n -Pn -sS -p88 ${__NETWORK}"
 }
 
 qq-enum-kerb-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 88 -w kerb.${r}.pcap"
+  __GET-IFACE
+  __GET-RHOST
+  print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 88"
 }
 
 qq-enum-kerb-users() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local realm && read "realm?REALM: "
-  print -z "nmap -vvv -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=${realm},userdb=/usr/share/seclists/Usernames/Names/names.txt ${r}"
+  print -z "nmap -vvv -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=${realm},userdb=/usr/share/seclists/Usernames/Names/names.txt ${__RHOST}"
 }
 
 qq-enum-kerb-kerberoast() {

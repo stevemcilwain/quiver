@@ -5,24 +5,35 @@
 #############################################################
 
 qq-enum-ldap-sweep-nmap() {
-    local s && read "s?SUBNET: "
-    print -z "sudo nmap -n -Pn -sS -sU -p389,636 -oA ldap_sweep ${s} &&  grep open ldap_sweep.gnmap |cut -d' ' -f2 >> ldap_hosts.txt"
+    __GET-NETWORK
+    print -z "sudo nmap -n -Pn -sS -sU -p389,636 ${__NETWORK}"
 }
 
 qq-enum-ldap-tcpdump() {
-    __info "Available: ${__IFACES}"
-    local i && read "i?IFACE: "
-    local r && read "r?RHOST: "
-    print -z "sudo tcpdump -i ${i} host ${r} and tcp port 389 and port 636 -w ldap.${__RHOST}.pcap"
+    __GET-IFACE
+    __GET-RHOST
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 389 and port 636"
 }
 
 qq-enum-ldap-ctx() {
-    local r && read "r?RHOST: "
-    print -z "ldapsearch -x -h ${r} -s base namingcontexts"
+    __GET-RHOST
+    print -z "ldapsearch -x -h ${__RHOST} -s base namingcontexts"
 }
 
-qq-enum-ldap-search() {
-    local r && read "r?RHOST: "
+qq-enum-ldap-search-by-dn() {
+    __GET-RHOST
     local dn && read "dn?DN(DC=domain,DC=com): "
-    print -z "ldapsearch -x -h ${r} -s sub -b '${dn}'"
+    print -z "ldapsearch -x -h ${__RHOST} -s sub -b '${dn}' "
+}
+
+qq-enum-ldap-search-all() {
+    __GET-RHOST
+    local dn && read "dn?DN(DC=domain,DC=com): "
+    local u && read "u?USER: "
+    print -z "ldapsearch -x -h ${__RHOST} -D '${dn}' \"(objectClass=*)\" -w \"${u}\" "
+}
+
+qq-enum-ldap-whoami() {
+    __GET-RHOST
+    print -z "ldapwhoami -h ${__RHOST} -w \"non-existing-user\" "
 }

@@ -5,10 +5,9 @@
 #############################################################
 
 qq-enum-web-ssl-tcpdump() {
-    __info "Available: ${__IFACES}"
-    local i && read "i?IFACE: "
-    local r && read "r?RHOST: "
-    print -z "tcpdump -i ${i} host ${r} and tcp port 443 -w capture.${r}.pcap"
+    __GET-IFACE
+    __GET-RHOST
+    print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 443"
 }
 
 qq-enum-web-ssl-der-to-crt-openssl() {
@@ -25,6 +24,6 @@ qq-enum-web-ssl-crt-ca-install() {
 alias qcrt2store="qq-enum-web-ssl-crt-ca-install"
 
 qq-enum-web-ssl-certs() {
-    local u && read "u?URL: "
-    print -z "openssl s_client -showcerts -connect ${u}:443" 
+    __GET-URL
+    print -z "openssl s_client -showcerts -connect ${__URL}:443" 
 }

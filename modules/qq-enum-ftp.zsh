@@ -5,29 +5,28 @@
 #############################################################
 
 qq-enum-ftp-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "sudo nmap -n -Pn -sS -p21 -oA ftp_sweep ${s} &&  grep open ftp_sweep.gnmap |cut -d' ' -f2 >> ftp_hosts.txt"
+  __GET-NETWORK
+  print -z "sudo nmap -n -Pn -sS -p21 ${__NETWORK}"
 }
 
 qq-enum-ftp-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "sudo tcpdump -i ${i} host ${r} and tcp port 21 -w capture.${r}.pcap"
+  __GET-IFACE
+  __GET-RHOST
+  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 21"
 }
 
 qq-enum-ftp-brute-hydra() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local u && read "u?USERNAME: "
-  print -z "hydra -l ${u} -P ${__PASS_ROCKYOU} -f ${r} ftp -V -t 15"
+  print -z "hydra -l ${u} -P ${__PASS_ROCKYOU} -f ${__RHOST} ftp -V -t 15"
 }
 
 qq-enum-ftp-lftp-grep() {
-  local r && read "r?RHOST: "
-  print -z "lftp ${r}:/ > find | grep "
+  __GET-RHOST
+  print -z "lftp ${__RHOST}:/ > find | grep -i "
 }
 
 qq-enum-ftp-wget-mirror() {
-  local r && read "r?RHOST: "
-  print -z "wget --mirror ftp://anonymous:user@anon.com@${r}"
+  __GET-RHOST
+  print -z "wget --mirror ftp://anonymous:user@anon.com@${__RHOST}"
 }

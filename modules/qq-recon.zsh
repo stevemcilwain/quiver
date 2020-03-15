@@ -5,26 +5,25 @@
 #############################################################
 
 qq-recon-files-by-domain-metagoofil() {
-  local d && read "d?DOMAIN: "
+  __GET-DOMAIN
   local ft && read "ft?EXT: "
-  print -z "metagoofil -u \"${__UA}\" -d ${d} -t ${ft} -o files"
+  print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o files"
 }
 
 qq-recon-wordlist-by-url-cewl() {
-  local u && read "u?URL: "
-  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w custom_list.txt ${u}"
+  __GET-URL
+  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w custom_list.txt ${__URL}"
 }
 
 qq-recon-all-by-domain-theharvester() {
-  local d && read "d?DOMAIN: "
-  print -z "theHarvester -d ${d} -l 50 -b all"
+  __GET-DOMAIN
+  print -z "theHarvester -d ${__DOMAIN} -l 50 -b all"
 }
 
 qq-recon-screens-by-url-eyewitness(){
-  local u && read "u?URL: "
-  local d=$(echo "${u}" | cut -d/ -f3)
+  __GET-URL
   mkdir -p ./screens
-  print -z "eyewitness --web --user-agent \"${__UA}\" --single ${u} -d ./screens --no-dns --no-prompt "
+  print -z "eyewitness --web --user-agent \"${__UA}\" --single ${__URL} -d ./screens --no-dns --no-prompt "
 }
 
 qq-recon-screens-by-file-eyewitness(){
@@ -34,7 +33,7 @@ qq-recon-screens-by-file-eyewitness(){
 }
 
 qq-recon-headers-curl() {
-  local u && read "u?URL: "
-  print -z "curl -X GET -I -L -A \"${__UA}\" ${u}"
+  __GET-URL
+  print -z "curl -X GET -I -L -A \"${__UA}\" ${__URL}"
 }
 

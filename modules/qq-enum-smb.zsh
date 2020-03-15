@@ -5,76 +5,75 @@
 #############################################################
 
 qq-enum-smb-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -sU -p445,137-139 -oA smb_sweep ${s} &&  grep open smb_sweep.gnmap |cut -d' ' -f2 > smb_hosts.txt"
+  __GET-NETWORK
+  print -z "nmap -n -Pn -sS -sU -p445,137-139 ${__NETWORK}"
 }
 
 qq-enum-smb-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 445 -w smb.${r}.pcap"
+  __GET-IFACE
+  __GET-RHOST
+  print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 445"
 }
 
 qq-enum-smb-null-smbmap() {
-  local r && read "r?RHOST: "
-  print -z "smbmap -H ${r}"
+  __GET-RHOST
+  print -z "smbmap -H ${__RHOST}"
 }
 
 qq-enum-smb-user-smbmap() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local u && read "u?USER: "
   __info "Usage with creds: -u <user> -p <pass> -d <domain>"
-  print -z "smbmap -u ${u} -H ${r}"
+  print -z "smbmap -u ${u} -H ${__RHOST}"
 }
 
 qq-enum-smb-null-enum4() {
-  local r && read "r?RHOST: "
-  print -z "enum4linux -a ${r}"
+  __GET-RHOST
+  print -z "enum4linux -a ${__RHOST}"
 }
 
 qq-enum-smb-null-smbclient-list() {
-  local r && read "r?RHOST: "
-  print -r -z "smbclient -L \\\\\\\\${r} -N "
+  __GET-RHOST
+  print -r -z "smbclient -L \\\\\\\\${__RHOST} -N "
 }
 
 qq-enum-smb-null-smbclient-connect() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local share && read "share?SHARE: "
-  print -r -z "smbclient \\\\\\\\${r}\\\\${share} -N "
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -N "
 }
 
 qq-enum-smb-user-smbclient-connect() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local u && read "u?USER: "
   local share && read "share?SHARE: "
-  print -r -z "smbclient \\\\\\\\${r}\\\\${share} -U ${u} "
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -U ${u} "
 }
 
 qq-enum-user-smb-mount() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local share && read "share?SHARE: "
   local u && read "u?USER: "
   local p && read "p?PASSWORD: "
-  print -z "mount //${r}/${share} /mnt/${share} -o username=${u},password=${p}"
+  print -z "mount //${__RHOST}/${share} /mnt/${share} -o username=${u},password=${p}"
 }
 
 qq-enum-smb-samrdump() {
-  local r && read "r?RHOST: "
-  print -z "python3 ${__IMPACKET}/samrdump.py ${r}"
+  __GET-RHOST
+  print -z "python3 ${__IMPACKET}/samrdump.py ${__RHOST}"
 }
 
 qq-enum-smb-responder() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  print -z "responder -I ${i} -A"
+  __GET-IFACE
+  print -z "responder -I ${__IFACE} -A"
 }
 
 qq-enum-smb-net-use-null() {
-  __info "net use \\\\\\\\<server>\\IPC$ \"\" /u:\"\" "
+    __GET-RHOST
+  __info "net use \\\\\\\\${__RHOST}\\IPC$ \"\" /u:\"\" "
 }
 
 qq-enum-smb-bluecheck() {
-  local r && read "r?RHOST: "
-  print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${r}"
+  __GET-RHOST
+  print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${__RHOST}"
 }

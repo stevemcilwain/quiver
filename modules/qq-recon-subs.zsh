@@ -5,18 +5,18 @@
 #############################################################
 
 qq-recon-subs-by-domain-gobuster() {
-  local d && read "d?DOMAIN: "
-  print -z "gobuster dns -d ${d} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt -o subs.gobuster.txt"
+  __GET-DOMAIN
+  print -z "gobuster dns -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 }
 
 qq-recon-subs-by-domain-amass() {
-  local d && read "d?DOMAIN: "
-  print -z "amass enum -d ${d} >> subs.${d}.txt"
+  __GET-DOMAIN
+  print -z "amass enum -d ${__DOMAIN}"
 }
 
 qq-recon-subs-by-domain-crt.sh() {
-  local d && read "d?DOMAIN: "
-  print -z "curl -s 'https://crt.sh/?q=%.${d}' | grep -i \"${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >> subs.${d}.txt"
+  __GET-DOMAIN
+  print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u"
 }
 
 qq-recon-subs-by-domains-crt.sh() {
@@ -26,18 +26,18 @@ qq-recon-subs-by-domains-crt.sh() {
 }
 
 qq-recon-subs-by-domain-subfinder() {
-  local d && read "d?DOMAIN: "
-  print -z "subfinder -d ${d} -nW -silent >> subs.${d}.txt"
+  __GET-DOMAIN
+  print -z "subfinder -d ${__DOMAIN} -nW -silent"
 }
 
 qq-recon-subs-by-domain-sublist3r() {
-  local d && read "d?DOMAIN: "
-  print -z "sublist3r -d ${d} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS -o subs.${d}.txt"
+  __GET-DOMAIN
+  print -z "sublist3r -d ${__DOMAIN} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS"
 }
 
 qq-recon-subs-by-domain-dnsrecon() {
-  local d && read "d?DOMAIN: "
-  print -z "dnsrecon -d ${d}"
+  __GET-DOMAIN
+  print -z "dnsrecon -d ${__DOMAIN}"
 }
 
 qq-recon-subs-by-file-massdns() {
@@ -51,8 +51,8 @@ qq-recon-subs-massdns-results-parse() {
 }
 
 qq-recon-subs-gen-commonspeak-words() {
-  local d && read "d?Domain: "
-  print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${d} >> subs.wordlist.${d}.txt; done"
+  __GET-DOMAIN
+  print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${__DOMAIN} >> subs.wordlist.${d}.txt; done"
 }
 
 qq-recon-subs-by-brute-altdns() {

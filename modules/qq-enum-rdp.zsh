@@ -5,21 +5,20 @@
 #############################################################
 
 qq-enum-rdp-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -p3389 -oA rdp_sweep ${s} &&  grep open rdp_sweep.gnmap |cut -d' ' -f2 > rdp_hosts.txt"
+  __GET-NETWORK
+  print -z "nmap -n -Pn -sS -p3389 ${__NETWORK}"
 }
 
 qq-enum-rdp-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 3389 -w rdp.${r}.pcap"
+  __GET-IFACE
+  __GET-RHOST
+  print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 3389"
 }
 
 qq-enum-rdp-ncrack() {
-  local r && read "r?RHOST: "
+  __GET-RHOST
   local u && read "u?USER: "
-  print -z "ncrack -vv --user ${u} -P ${__PASS_ROCKYOU} rdp://${r}"
+  print -z "ncrack -vv --user ${u} -P ${__PASS_ROCKYOU} rdp://${__RHOST}"
 }
 
 qq-enum-rdp-exploit-bluekeep() {

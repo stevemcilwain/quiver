@@ -5,15 +5,14 @@
 #############################################################
 
 qq-enum-web-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "sudo nmap -n -Pn -sS -p80,443,8080 --open -oA web_sweep ${s} &&  grep open web_sweep.gnmap |cut -d' ' -f2 >> web_hosts.txt"
+  __GET-NETWORK
+  print -z "sudo nmap -n -Pn -sS -p80,443,8080 ${__NETWORK}"
 }
 
 qq-enum-web-tcpdump() {
-  __info "Interfaces: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "sudo tcpdump -i ${i} host ${r} and tcp port 80 -w capture.${r}.pcap"
+  __GET-IFACE
+  __GET-RHOST
+  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 80"
 }
 
 qq-enum-web-whatweb() {
@@ -22,8 +21,8 @@ qq-enum-web-whatweb() {
 }
 
 qq-enum-web-waf() {
-  local u && read "u?URL: "
-  print -z "wafw00f ${u} "
+  __GET-URL
+  print -z "wafw00f ${__URL} "
 }
 
 # vhosts
@@ -31,7 +30,7 @@ qq-enum-web-waf() {
 qq-enum-web-vhosts-gobuster() {
   local u && read "u?URL: "
   local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt -a \"${__UA}\" -t20 -o vhosts.$d.txt"
+  print -z "gobuster vhost -u ${u} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt -a \"${__UA}\" -t1"
 }
 
 # screens
@@ -45,9 +44,8 @@ qq-enum-web-screens-eyewitness() {
 # apps
 
 qq-enum-web-app-wordpress() {
-  local u && read "u?URL: "
-  local d=$(echo "${u}" | cut -d/ -f3)
-  print -z "wpscan --url ${u} --enumerate tt,vt,u,vp > wp.${d}.txt"
+  __GET-URL
+  print -z "wpscan --url ${__URL} --enumerate tt,vt,u,vp"
 }
 
 # elastic search
