@@ -178,6 +178,15 @@ __urlpath() {
   echo  "${result}"
 }
 
+__rand() {
+    if [ "$#" -eq  "1" ]
+    then
+        head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 ; echo ''
+    else
+        head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16 ; echo ''
+    fi  
+}
+
 __menu-helper() {
   PS3="$fg[cyan][#]:$reset_color "
   COLUMNS=6

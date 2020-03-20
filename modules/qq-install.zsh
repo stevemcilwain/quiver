@@ -8,7 +8,7 @@ qq-install(){
 
   __info "Installing apt packages... "
 
-  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs
+  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs tree
 
   __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev
 
@@ -26,6 +26,7 @@ qq-install(){
 
   sudo pip install py-altdns
   sudo pip install wfuzz
+  sudo pip3 install updog
 
   __info "Installing golang and packages... "
 

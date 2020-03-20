@@ -27,3 +27,18 @@ qq-enum-web-ssl-certs() {
     qq-vars-set-url
     print -z "openssl s_client -showcerts -connect ${__URL}:443" 
 }
+
+qq-enum-ssl-cert-download() {
+    qq-vars-set-url
+	local d=$(echo "${__URL}" | cut -d/ -f3)
+	print -z "openssl s_client -servername ${d} -connect ${d}:443 </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > $(__urlpath)/ssl.certificate.`date +"%Y%m%d-%H%M%S"`.pem"
+}
+
+qq-enum-ssl-testssl-full() {
+    qq-vars-set-url
+	print -z "testssl --color=3 -oA $(__urlpath)/testssl.full.`date +"%Y%m%d-%H%M%S"` ${__URL} "
+}
+qq-enum-ssl-testssl-ciphers() {
+    qq-vars-set-url
+	print -z "testssl -E --color=3 -oA $(__urlpath)/testssl.ciphers.`date +"%Y%m%d-%H%M%S"` ${__URL} "
+}
