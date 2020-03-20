@@ -45,8 +45,9 @@ qq-vars-set-output() {
   mkdir -p ${__OUTPUT}/target
   mkdir -p ${__OUTPUT}/domains
   mkdir -p ${__OUTPUT}/networks
+  mkdir -p ${__OUTPUT}/recon
   mkdir -p ${__OUTPUT}/hosts
-  mkdir -p ${__OUTPUT}/files/{downloads,uploads}
+  mkdir -p ${__OUTPUT}/files
   mkdir -p ${__OUTPUT}/notes/screenshots
   mkdir -p ${__OUTPUT}/data
 
