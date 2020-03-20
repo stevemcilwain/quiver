@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-domains-by-whois-amass() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "amass intel -active -whois -d ${__DOMAIN}"
 }
 

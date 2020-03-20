@@ -4,6 +4,29 @@
 # qq-project
 #############################################################
 
+qq-project-output-set() {
+    qq-vars-set-output
+    if [[ -d "${__OUTPUT}" ]]; then
+        __info "Using existing output directory: ${__OUTPUT}"
+    else
+
+        mkdir -p ${__OUTPUT}/burp
+        mkdir -p ${__OUTPUT}/target
+        mkdir -p ${__OUTPUT}/domains
+        mkdir -p ${__OUTPUT}/networks
+        mkdir -p ${__OUTPUT}/hosts
+        mkdir -p ${__OUTPUT}/files/{downloads,uploads}
+        mkdir -p ${__OUTPUT}/notes/screenshots
+        mkdir -p ${__OUTPUT}/data
+    fi
+   
+
+}
+
+
+
+
+
 export __PROJECT_DIR="."
 export __PROJECT_CLIENT="Org"
 

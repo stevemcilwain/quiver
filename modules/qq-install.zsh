@@ -10,11 +10,11 @@ qq-install(){
 
   __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs
 
-  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev 
+  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev
 
   __pkgs nmap masscan tcpdump awscli exiftool tftp ftp lftp whois 
 
-  __pkgs whatweb gobuster wpscan wafw00f wfuzz hydra nikto padbuster parsero dirb 
+  __pkgs whatweb gobuster wpscan wafw00f hydra nikto padbuster parsero dirb 
 
   __pkgs metagoofil cewl john theharvester eyewitness amass sublist3r dnsrecon 
 
@@ -25,6 +25,7 @@ qq-install(){
   __info "Installing python packages... "
 
   sudo pip install py-altdns
+  sudo pip install wfuzz
 
   __info "Installing golang and packages... "
 

@@ -5,17 +5,17 @@
 #############################################################
 
 qq-recon-subs-by-domain-gobuster() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "gobuster dns -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 }
 
 qq-recon-subs-by-domain-amass() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "amass enum -d ${__DOMAIN}"
 }
 
 qq-recon-subs-by-domain-crt.sh() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u"
 }
 
@@ -26,17 +26,17 @@ qq-recon-subs-by-domains-crt.sh() {
 }
 
 qq-recon-subs-by-domain-subfinder() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "subfinder -d ${__DOMAIN} -nW -silent"
 }
 
 qq-recon-subs-by-domain-sublist3r() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "sublist3r -d ${__DOMAIN} -b -p 80,443,8080,4443 -t 10 -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS"
 }
 
 qq-recon-subs-by-domain-dnsrecon() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "dnsrecon -d ${__DOMAIN}"
 }
 
@@ -51,7 +51,7 @@ qq-recon-subs-massdns-results-parse() {
 }
 
 qq-recon-subs-gen-commonspeak-words() {
-  __GET-DOMAIN
+  qq-vars-set-domain
   print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${__DOMAIN} >> subs.wordlist.${d}.txt; done"
 }
 

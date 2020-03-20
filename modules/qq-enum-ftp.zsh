@@ -5,28 +5,28 @@
 #############################################################
 
 qq-enum-ftp-sweep-nmap() {
-  __GET-NETWORK
-  print -z "sudo nmap -n -Pn -sS -p21 ${__NETWORK}"
+  qq-vars-set-network
+  print -z "sudo nmap -n -Pn -sS -p21 ${__NETWORK} -oA $(__netpath)/ftp-sweep"
 }
 
 qq-enum-ftp-tcpdump() {
-  __GET-IFACE
-  __GET-RHOST
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 21"
+  qq-vars-set-iface
+  qq-vars-set-rhost
+  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 21 -w $(__hostpath)/ftp.pcap"
 }
 
-qq-enum-ftp-brute-hydra() {
-  __GET-RHOST
-  local u && read "u?USERNAME: "
-  print -z "hydra -l ${u} -P ${__PASS_ROCKYOU} -f ${__RHOST} ftp -V -t 15"
+qq-enum-ftp-hydra-brute() {
+  qq-vars-set-rhost
+  local u && read "u?$fg[cyan]USERNAME:$reset_color "
+  print -z "hydra -l ${u} -P ${__PASSLIST} -f ${__RHOST} ftp -V -t 15 -o $(__hostpath)/ftp-hydra-brute.txt"
 }
 
 qq-enum-ftp-lftp-grep() {
-  __GET-RHOST
+  qq-vars-set-rhost
   print -z "lftp ${__RHOST}:/ > find | grep -i "
 }
 
 qq-enum-ftp-wget-mirror() {
-  __GET-RHOST
+  qq-vars-set-rhost
   print -z "wget --mirror ftp://anonymous:user@anon.com@${__RHOST}"
 }
