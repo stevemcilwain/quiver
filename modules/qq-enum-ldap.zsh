@@ -5,24 +5,35 @@
 #############################################################
 
 qq-enum-ldap-sweep-nmap() {
-    local s && read "s?SUBNET: "
-    print -z "sudo nmap -n -Pn -sS -sU -p389,636 -oA ldap_sweep ${s} &&  grep open ldap_sweep.gnmap |cut -d' ' -f2 >> ldap_hosts.txt"
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -sU -p389,636 ${__NETWORK} -oA $(__netpath)/ldap-sweep"
 }
 
 qq-enum-ldap-tcpdump() {
-    __info "Available: ${__IFACES}"
-    local i && read "i?IFACE: "
-    local r && read "r?RHOST: "
-    print -z "sudo tcpdump -i ${i} host ${r} and tcp port 389 and port 636 -w ldap.${__RHOST}.pcap"
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 389 and port 636 -w $(__hostpath)/ldap.pcap"
 }
 
 qq-enum-ldap-ctx() {
-    local r && read "r?RHOST: "
-    print -z "ldapsearch -x -h ${r} -s base namingcontexts"
+    qq-vars-set-rhost
+    print -z "ldapsearch -x -h ${__RHOST} -s base namingcontexts"
 }
 
-qq-enum-ldap-search() {
-    local r && read "r?RHOST: "
-    local dn && read "dn?DN(DC=domain,DC=com): "
-    print -z "ldapsearch -x -h ${r} -s sub -b '${dn}'"
+qq-enum-ldap-search-by-dn() {
+    qq-vars-set-rhost
+    local dn && read "dn?$fg[cyan]DN(DC=domain,DC=com):$reset_color "
+    print -z "ldapsearch -x -h ${__RHOST} -s sub -b '${dn}' "
+}
+
+qq-enum-ldap-search-all() {
+    qq-vars-set-rhost
+    local dn && read "dn?$fg[cyan]DN(DC=domain,DC=com):$reset_color "
+    local u && read "u?$fg[cyan]USER: "
+    print -z "ldapsearch -x -h ${__RHOST} -D '${dn}' \"(objectClass=*)\" -w \"${u}\" "
+}
+
+qq-enum-ldap-whoami() {
+    qq-vars-set-rhost
+    print -z "ldapwhoami -h ${__RHOST} -w \"non-existing-user\" "
 }

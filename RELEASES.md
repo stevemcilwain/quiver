@@ -1,5 +1,14 @@
 # Releases
 
+## 0.12 3/22/2020
+
+* qq-vars.zsh: Added global variables for the most common arguments, load and save
+* qq-srv.zsh: added updog
+* qq-project.zsh added folder scaffolding for projects / engagements
+* qq-log.zsh integration with qq-vars
+* Major change to output on all methods, uses $__OUTPUT as the directory from qq-vars.zsh
+* Lot of minor changes
+
 ## 0.11 - 3/9/2020
 
 * You can now specify a path to your markdown notes by setting $__NOTES

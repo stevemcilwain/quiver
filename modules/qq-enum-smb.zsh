@@ -5,76 +5,75 @@
 #############################################################
 
 qq-enum-smb-sweep-nmap() {
-  local s && read "s?SUBNET: "
-  print -z "nmap -n -Pn -sS -sU -p445,137-139 -oA smb_sweep ${s} &&  grep open smb_sweep.gnmap |cut -d' ' -f2 > smb_hosts.txt"
+  qq-vars-set-network
+  print -z "nmap -n -Pn -sS -sU -p445,137-139 ${__NETWORK} -oA $(__netpath)/smb-sweep"
 }
 
 qq-enum-smb-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "tcpdump -i ${i} host ${r} and tcp port 445 -w smb.${r}.pcap"
+  qq-vars-set-iface
+  qq-vars-set-rhost
+  print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 445 -w $(__hostpath)/smb.pcap"
 }
 
 qq-enum-smb-null-smbmap() {
-  local r && read "r?RHOST: "
-  print -z "smbmap -H ${r}"
+  qq-vars-set-rhost
+  print -z "smbmap -H ${__RHOST}"
 }
 
 qq-enum-smb-user-smbmap() {
-  local r && read "r?RHOST: "
-  local u && read "u?USER: "
+  qq-vars-set-rhost
+  local u && read "u?$fg[cyan]USER:$reset_color "
   __info "Usage with creds: -u <user> -p <pass> -d <domain>"
-  print -z "smbmap -u ${u} -H ${r}"
+  print -z "smbmap -u ${u} -H ${__RHOST}"
 }
 
 qq-enum-smb-null-enum4() {
-  local r && read "r?RHOST: "
-  print -z "enum4linux -a ${r}"
+  qq-vars-set-rhost
+  print -z "enum4linux -a ${__RHOST}"
 }
 
 qq-enum-smb-null-smbclient-list() {
-  local r && read "r?RHOST: "
-  print -r -z "smbclient -L \\\\\\\\${r} -N "
+  qq-vars-set-rhost
+  print -r -z "smbclient -L \\\\\\\\${__RHOST} -N "
 }
 
 qq-enum-smb-null-smbclient-connect() {
-  local r && read "r?RHOST: "
-  local share && read "share?SHARE: "
-  print -r -z "smbclient \\\\\\\\${r}\\\\${share} -N "
+  qq-vars-set-rhost
+  local share && read "share?$fg[cyan]SHARE:$reset_color "
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -N "
 }
 
 qq-enum-smb-user-smbclient-connect() {
-  local r && read "r?RHOST: "
-  local u && read "u?USER: "
-  local share && read "share?SHARE: "
-  print -r -z "smbclient \\\\\\\\${r}\\\\${share} -U ${u} "
+  qq-vars-set-rhost
+  local u && read "u?$fg[cyan]USER:$reset_color "
+  local share && read "share?$fg[cyan]SHARE:$reset_color "
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -U ${u} "
 }
 
 qq-enum-user-smb-mount() {
-  local r && read "r?RHOST: "
-  local share && read "share?SHARE: "
-  local u && read "u?USER: "
-  local p && read "p?PASSWORD: "
-  print -z "mount //${r}/${share} /mnt/${share} -o username=${u},password=${p}"
+  qq-vars-set-rhost
+  local share && read "share?$fg[cyan]SHARE:$reset_color "
+  local u && read "u?$fg[cyan]USER:$reset_color "
+  local p && read "p?$fg[cyan]PASSWORD:$reset_color "
+  print -z "mount //${__RHOST}/${share} /mnt/${share} -o username=${u},password=${p}"
 }
 
 qq-enum-smb-samrdump() {
-  local r && read "r?RHOST: "
-  print -z "python3 ${__IMPACKET}/samrdump.py ${r}"
+  qq-vars-set-rhost
+  print -z "python3 ${__IMPACKET}/samrdump.py ${__RHOST}"
 }
 
 qq-enum-smb-responder() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  print -z "responder -I ${i} -A"
+  qq-vars-set-iface
+  print -z "responder -I ${__IFACE} -A"
 }
 
 qq-enum-smb-net-use-null() {
-  __info "net use \\\\\\\\<server>\\IPC$ \"\" /u:\"\" "
+    qq-vars-set-rhost
+  __info "net use \\\\\\\\${__RHOST}\\IPC$ \"\" /u:\"\" "
 }
 
 qq-enum-smb-bluecheck() {
-  local r && read "r?RHOST: "
-  print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${r}"
+  qq-vars-set-rhost
+  print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${__RHOST}"
 }

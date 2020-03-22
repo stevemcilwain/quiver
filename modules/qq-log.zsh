@@ -4,53 +4,47 @@
 # qq-log
 #############################################################
 
-export __LP="~/logbook.md"
-
-qq-log-new() {
-    local n && read "n?NAME: "
-    local f && read "f?FILE: "
-    
-    if [[ -f "${f}" ]]; then
-    
-        __LP=${f}
-        __warn "${f} already exists, set as active log"
-
-    else
-
-        __LP=${f}
-        touch ${__LP}
-        echo "# Logbook - ${n}" >> ${__LP}
-        echo " " >> ${__LP}
-        __ok "${__LP} created."
-    fi
-
-}
-alias qln="qq-log-new"
-
 qq-log-set() {
-    __LP=$@
-    __ok "$1 set as active log"
+    qq-vars-set-output
+
+    [[ -z $__OUTPUT ]] && __err "__OUTPUT not set" && return 
+
+    local log="${__OUTPUT}/logbook.md"
+    
+    if [[ -f "${log}" ]]; then
+        __warn "${log} already exists, set as active log"
+    else
+        touch ${log}
+        echo "# Logbook" >> ${log}
+        echo " " >> ${log}
+        __ok "${log} created."
+    fi
 }
+alias qls="qq-log-set"
 
 qq-log-cat() {
-    glow ${__LP}
+    log="${__OUTPUT}/logbook.md"
+    __info "$log"
+    glow ${log}
 }
 alias qlc="qq-log-cat"
 
 qq-log-edit() {
-    $EDITOR ${__LP}
+    log="${__OUTPUT}/logbook.md"
+    nano ${log}
 }
+alias qle="qq-log-edit"
 
 qq-log() {
-
-    if [[ -f "${__LP}" ]]; then
+    log="${__OUTPUT}/logbook.md"
+    if [[ -f "${log}" ]]; then
 
         local stamp=$(date +'%m-%d-%Y : %r')
-        echo "## ${stamp}" >> ${__LP}
-        echo "\`\`\`" >> ${__LP}
-        echo "$@" >> ${__LP}
-        echo "\`\`\`" >> ${__LP}
-        echo " " >> ${__LP}
+        echo "## ${stamp}" >> ${log}
+        echo "\`\`\`" >> ${log}
+        echo "$@" >> ${log}
+        echo "\`\`\`" >> ${log}
+        echo " " >> ${log}
 
     else
         __err "Log file not set or not found"

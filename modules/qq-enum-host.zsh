@@ -5,32 +5,48 @@
 #############################################################
 
 qq-enum-host-tcpdump() {
-  __info "Available: ${__IFACES}"
-  local i && read "i?IFACE: "
-  local r && read "r?RHOST: "
-  print -z "sudo tcpdump -i ${i} host ${r} -w host.${r}.pcap"
+  qq-vars-set-iface
+  qq-vars-set-rhost
+  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} -w $(__hostpath)/tcpdump.pcap"
 }
 
-qq-enum-host-basic-nmap(){
-  local r && read "r?RHOST: "
-  print -z "nmap -vvv -Pn -sC -sV --open -oA scan.${r}.top ${r}"
+qq-enum-host-nmap-top(){
+  qq-vars-set-rhost
+  print -z "sudo nmap -vvv -Pn -sS --top-ports 1000 --open ${__RHOST} -oA $(__hostpath)/nmap-top"
 }
 
-qq-enum-host-syn-all-nmap() {
-  local r && read "r?RHOST: "
-  print -z "sudo nmap -vvv -n -Pn -sS -T4 --open -oA scan.${r}.syn -p- ${r}"
+qq-enum-host-nmap-top-discovery(){
+  qq-vars-set-rhost
+  print -z "sudo nmap -vvv -Pn -sS --top-ports 1000 --open -sC -sV ${__RHOST} -oA $(__hostpath)/nmap-top-discovery"
 }
 
-qq-enum-host-svc-all-nmap() {
-  local r && read "r?RHOST: "
-  print -z "sudo nmap -vvv -n -Pn -sS -sC -sV --open -oA scan.${r}.svc -p- ${r}"
+qq-enum-host-nmap-all() {
+  qq-vars-set-rhost
+  print -z "sudo nmap -vvv -Pn -sS -p- -T4 --open ${__RHOST} -oA $(__hostpath)/nmap-all"
 }
 
-qq-enum-host-udp-nmap() {
-  local r && read "r?RHOST: "
-  print -z "sudo nmap -n -Pn -sU -sV -sC --open -oA scan.${r}.udp --top-ports 100 ${r}"
+qq-enum-host-nmap-all-discovery() {
+  qq-vars-set-rhost
+  print -z "sudo nmap -vvv -Pn -sS -p- -sC -sV --open ${__RHOST} -oA $(__hostpath)/nmap-all-discovery"
 }
 
-qq-enum-host-lse-grep() {
+qq-enum-host-nmap-udp() {
+  qq-vars-set-rhost
+  print -z "sudo nmap -v -Pn -sU --top-ports 100 -sV -sC --open ${__RHOST} -oA $(__hostpath)/nmap-udp"
+}
+
+qq-enum-host-masscan-all-tcp() {
+  qq-vars-set-iface
+  qq-vars-set-rhost
+  print -z "masscan -p1-65535 --open-only ${__RHOST} --rate=1000 -e ${__IFACE} -oL $(__hostpath)/masscan-all-tcp.txt"
+}
+
+qq-enum-host-masscan-all-udp() {
+  qq-vars-set-iface
+  qq-vars-set-rhost
+  print -z "masscan -pU:1-65535 --open-only ${__RHOST} --rate=1000 -e ${__IFACE} -oL $(__hostpath)/masscan-all-udp.txt"
+}
+
+qq-enum-host-nmap-lse-grep() {
   print -z "ls /usr/share/nmap/scripts/* | grep <pattern>"
 }

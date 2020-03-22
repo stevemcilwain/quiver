@@ -27,6 +27,6 @@ qq-notes() {
 }
 
 qq-notes-search() {
-  local s && read "s?SEARCH: "
+  local s && read "s?$fg[cyan]SEARCH:$reset_color "
   __notes ${s}
 }

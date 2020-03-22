@@ -29,7 +29,7 @@ alias disk10="qq-aliases-sys-disk10"
 #network
 alias hp="httprobe -t 3000 -c 50 "
 alias pcap="sudo tcpdump -r"
-alias myip="qq-aliases-net-curl-public-ip"
+alias myip="qq-aliases-net-public-ip-curl"
 alias netwatch="qq-aliases-net-watch-netstat"
 alias netss="qq-aliases-net-ss"
 alias netls="qq-aliases-net-lsof"
@@ -89,6 +89,10 @@ qq-aliases-net-public-ip-curl() { curl icanhazip.com }
 qq-aliases-net-watch-netstat() { print -z "_ watch -n 0.3 'netstat -pantlu | grep \"ESTABLISHED\|LISTEN\"' "}
 qq-aliases-net-ss() { print -z "_ ss -plunt" }
 qq-aliases-net-lsof() { print -z "_ lsof -P -i -n "}
+
+#scans
+qq-aliases-scan-gnmap-to-hosts() { grep -i "open" $1 | cut -d' ' -f2 > $2 }
+
 
 #git
 qq-aliases-git-add-commit-push() {
