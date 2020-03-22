@@ -12,6 +12,7 @@ Quiver is the tool to manage all of your tools. It's an opinionated and curated 
 
 * ZSH / Oh-My-ZSH shell plugin
 * Tab auto-completion
+* Global variables
 * Prefills the command line, doesn't hide commands from you
 * Built-in logbook for on-the-fly notes, saving commands
 * Renders markdown notes to the command line
@@ -83,6 +84,7 @@ Quiver is organized into namespaces for easy tab navigation:
 * qq-install, qq-update, qq-debug, qq-status
 * qq-log
 * qq-bounty
+* qq-project
 * qq-loq: create, log and view a running logbook for your notes and commands
 * qq-recon
 * qq-recon-asns
@@ -105,13 +107,17 @@ Quiver is organized into namespaces for easy tab navigation:
 * qq-enum-web-vuln
 * qq-enum-web-xss
 * qq-pivot
+* qq-encoding
+* qq-notes
+* qq-scripts
 * qq-srv
+* qq-vars
 
 Quiver also sets up helpful shell aliases and functions (qq-aliases).
 
 ### Notes
 
-Markdown notes are stored in the /notes subfolder and rendered by module commands.
+Specify where your markdown notes are stored by setting / exporting the __NOTES variable in your .zshrc for use with qq-notes. 
 
 ### Scripts
 
