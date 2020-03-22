@@ -5,7 +5,7 @@
 * qq-project.zsh
 * Added a completion enhancement, qq-<search_term> + TAB
 * Added global variables for the most common arguments
-** 
+* 
 
 ## 0.11 - 3/9/2020
 

@@ -16,7 +16,7 @@ qq-enum-web-tcpdump() {
 }
 
 qq-enum-web-whatweb() {
-  local s && read "s?SEARCH(url,host,ip range): "
+  local s && read "s?$fg[cyan]SEARCH(url,host,ip range):$reset_color "
   print -z "whatweb ${s} -a 3"
 }
 
@@ -35,8 +35,8 @@ qq-enum-web-vhosts-gobuster() {
 # screens
 
 qq-enum-web-screens-eyewitness() {
-  local f=$(rlwrap -S "FILE(URLs): " -e '' -c -o cat)
-  local d=$(rlwrap -S "DIR(output): " -e '' -c -o cat)
+  local f=$(rlwrap -S "$fg[cyan]FILE(URLs):$reset_color " -e '' -c -o cat)
+  local d=$(rlwrap -S "$fg[cyan]DIR(output):$reset_color " -e '' -c -o cat)
   print -z "eyewitness --web -f ${f} -d ${d} --user-agent \"${__UA}\" "
 }
 
@@ -50,26 +50,26 @@ qq-enum-web-app-wordpress() {
 # elastic search
 
 qq-enum-web-app-elastic-health() {
-  local u && read "u?URL(:9200): "
+  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
   print -z "curl -XGET ${u}:9200/_cluster/health?pretty"
 }
 
 qq-enum-web-app-elastic-indices() {
-  local u && read "u?URL(:9200): "
+  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
   print -z "curl -XGET ${u}:9200/_cat/indices?v"
 }
 
 qq-enum-web-app-elastic-search() {
-  local u && read "u?URL(:9200): "
-  local index && read "index?INDEX: "
+  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
+  local index && read "index?$fg[cyan]INDEX:$reset_color "
   __info "example query: *:password"
-  local query && read "query?QUERY: "
+  local query && read "query?$fg[cyan]QUERY:$reset_color "
   print -z "curl -XGET ${u}:9200/${index}/_search?q=${query}&size=10&pretty"
 }
 
 qq-enum-web-app-elastic-all() {
-  local u && read "u?URL(:9200): "
-  local index && read "index?INDEX: "
+  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
+  local index && read "index?$fg[cyan]INDEX:$reset_color "
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 

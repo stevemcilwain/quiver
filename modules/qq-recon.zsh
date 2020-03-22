@@ -6,7 +6,7 @@
 
 qq-recon-files-by-domain-metagoofil() {
   qq-vars-set-domain
-  local ft && read "ft?EXT: "
+  local ft && read "ft?$fg[cyan]EXT:$reset_color "
   print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o ${__OUTPUT}/files"
 }
 
@@ -27,7 +27,7 @@ qq-recon-screens-by-url-eyewitness(){
 }
 
 qq-recon-screens-by-file-eyewitness(){
-  local f=$(rlwrap -S 'FILE(URLS): ' -e '' -c -o cat)
+  local f=$(rlwrap -S "$fg[cyan]FILE(URLS):$reset_color " -e '' -c -o cat)
   mkdir -p $(__urlpath)/screens
   print -z "eyewitness --web --user-agent \"${__UA}\" -f ${f} -d $(__urlpath)/screens --no-dns --no-prompt "
 }

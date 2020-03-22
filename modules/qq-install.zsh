@@ -26,6 +26,7 @@ qq-install(){
 
   sudo pip install py-altdns
   sudo pip install wfuzz
+  sudo pip install shodan
   sudo pip3 install updog
 
   __info "Installing golang and packages... "

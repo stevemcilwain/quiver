@@ -11,14 +11,14 @@ qq-enum-web-ssl-tcpdump() {
 }
 
 qq-enum-web-ssl-der-to-crt-openssl() {
-    local f=$(rlwrap -S 'FILE(cacert.der): ' -e '' -c -o cat)
+    local f=$(rlwrap -S "$fg[cyan]FILE(cacert.der):$reset_color " -e '' -c -o cat)
     print -z "sudo openssl x509 -inform DER -in ${f} -out cacert.crt"
 }
 alias qder2crt="qq-enum-web-ssl-der-to-crt-openssl"
 
 
 qq-enum-web-ssl-crt-ca-install() {
-    local f=$(rlwrap -S 'FILE(cacert.crt): ' -e '' -c -o cat)
+    local f=$(rlwrap -S "$fg[cyan]FILE(cacert.crt):$reset_color " -e '' -c -o cat)
     print -z "sudo cp ${f} /usr/local/share/ca-certificates/. && sudo update-ca-certificates"
 }
 alias qcrt2store="qq-enum-web-ssl-crt-ca-install"

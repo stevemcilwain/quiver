@@ -73,9 +73,9 @@ alias trim4="sed 's/....$//'"
 
 # functions
 
-__path-add() { echo "export PATH=\$PATH:$1" | tee -a ~/.zshrc }  
-__mkd-cd() { mkdir -p "$1" && cd "$1"; }      
-__file-tgf() { tail -f $1 | grep --line-buffered $2 }       
+qq-aliases-path-add() { echo "export PATH=\$PATH:$1" | tee -a ~/.zshrc }  
+qq-aliases-make-dir-cd() { mkdir -p "$1" && cd "$1"; }      
+qq-aliases-tail-grep-follow() { tail -f $1 | grep --line-buffered $2 }       
 qq-aliases-replace-in-file() {print -z "sed 's/$1/$2/g' <file>"} #replace $1 with $2 in file
 qq-aliases-sort-file-uniq() { cat $1 | sort -u -o $1 }  
 qq-aliases-sort-file-uniq-ip() { cat $1 | sort -u | sort -V -o $1 } 

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-github-by-user-curl() {
-    local u && read "u?USER: "
+    local u && read "u?$fg[cyan]USER:$reset_color "
     print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url'"
 }
 
