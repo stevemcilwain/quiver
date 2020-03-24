@@ -5,9 +5,7 @@
 #############################################################
 
 qq-log-set() {
-    qq-vars-set-output
-
-    [[ -z $__OUTPUT ]] && __err "__OUTPUT not set" && return 
+    [[ -z $__OUTPUT ]] && qq-vars-set-output
 
     local log="${__OUTPUT}/logbook.md"
     

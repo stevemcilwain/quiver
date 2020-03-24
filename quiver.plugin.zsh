@@ -8,7 +8,7 @@ autoload colors; colors
 # Contributors: 
 #############################################################
 
-export __VER=0.12.1
+export __VER=0.14
 
 ############################################################# 
 # Constants
@@ -71,6 +71,9 @@ done
 
 # completion enhancement
 # zstyle ':completion:*' matcher-list 'r:|[-]=**'
+ZSTYLE_ORIG=`zstyle -L ':completion:\*' matcher-list`
+ZSTYLE_NEW="${ZSTYLE_ORIG} 'r:|[-]=**'"
+eval ${ZSTYLE_NEW}
 
 echo "[*] quiver loaded." >> ${__LOGFILE}
 
@@ -79,5 +82,5 @@ echo "[*] quiver loaded." >> ${__LOGFILE}
 #############################################################
 
 echo " "
-echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded: $reset_color"
+echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded $reset_color"
 

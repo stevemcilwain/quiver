@@ -1,5 +1,13 @@
 # Releases
 
+## 0.14 3/24/2020
+
+* quiver.plugin.zsh: added zstyle tab autocompletion
+** use qq-<tab> to search for commands across any namespace
+* qq-install.zsh
+** added jsbeautifier 
+* qq-vars.zsh: set-output will now create the root directory if missing
+
 ## 0.12 3/22/2020
 
 * qq-vars.zsh: Added global variables for the most common arguments, load and save

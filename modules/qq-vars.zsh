@@ -37,10 +37,12 @@ alias var-url="qq-vars-set-url"
 qq-vars-set-output() {
   local relative=$(rlwrap -S "$fg[cyan]OUTPUT: $reset_color" -P "${__OUTPUT}" -e '' -c -o cat)
   
-  [[ "$relative" == *"~"* ]] && __warn "~ not allowed" && return
+  [[ "$relative" == "~"* ]] && __warn "~ not allowed" && return
 
+  [[ -d "{$relative} " ]] && __info "directory exists" ||  mkdir ${relative}
+  
   __OUTPUT=$(__abspath $relative)
- 
+
   mkdir -p ${__OUTPUT}/burp
   mkdir -p ${__OUTPUT}/target
   mkdir -p ${__OUTPUT}/domains
@@ -141,6 +143,7 @@ __abspath() {
     # generate absolute path from relative path
     # $1     : relative filename
     # return : absolute path
+
     if [ -d "$1" ]; then
         # dir
         (cd "$1"; pwd)

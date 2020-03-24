@@ -10,7 +10,7 @@ qq-install(){
 
   __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs tree
 
-  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev
+  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev jsbeautifier
 
   __pkgs nmap masscan tcpdump awscli exiftool tftp ftp lftp whois 
 
