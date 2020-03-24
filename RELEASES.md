@@ -1,5 +1,14 @@
 # Releases
 
+## 0.15
+
+* Added qq-enum-mssql.zsh
+* Added qq-enum-mysql.zsh
+* Added qq-enum-oracle.zsh
+* Added qq-enum-nfs.zsh
+* Added qq-enum-pop3.zsh
+* qq-srv.zsh: added 3 new listeners for tar, nc>file and b64
+
 ## 0.14 3/24/2020
 
 * quiver.plugin.zsh: added zstyle tab autocompletion

