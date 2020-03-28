@@ -8,7 +8,7 @@ autoload colors; colors
 # Contributors: 
 #############################################################
 
-export __VER=0.16
+export __VER=0.16.1
 
 ############################################################# 
 # Constants
@@ -16,6 +16,8 @@ export __VER=0.16
 
 export __PLUGIN="${0:A:h}"
 export __LOGFILE="${__PLUGIN}/log.txt"
+export __REMOTE_CHK="${__PLUGIN}/remote_checked.txt"
+export __REMOTE_VER="${__PLUGIN}/remote_ver.txt"
 export __SCRIPTS="${0:A:h}/scripts"
 
 ############################################################# 
@@ -28,7 +30,6 @@ __info() echo "$fg[cyan][*]$reset_color $@"
 __ok() echo "$fg[blue][+]$reset_color $@"
 __warn() echo "$fg[yellow][>]$reset_color $@"
 __err() echo "$fg[red][!]$reset_color $@ "
-
 __ask() echo "$fg[cyan]$@ $reset_color"
 __prompt() echo "$fg[cyan][?] $@ $reset_color"
 
@@ -37,9 +38,32 @@ __prompt() echo "$fg[cyan][?] $@ $reset_color"
 # Self Update
 #############################################################
 
+__version-check() {
+
+  local seconds=$((60*60*24*1))
+
+  if test -f "$__REMOTE_CHK" ; then
+      if test "$(($(date "+%s")-$(date -f "$__REMOTE_CHK" "+%s")))" -lt "$seconds" ; then
+            echo "[*] Version already checked today: $__REMOTE_CHK" >> ${__LOGFILE}
+          exit 1
+      fi
+  fi
+
+  date -R > $__REMOTE_CHK
+
+  echo "$(curl -s https://raw.githubusercontent.com/stevemcilwain/quiver/master/VERSION)" > $__REMOTE_VER
+  
+  echo "[*] Version checked and stored in:  $__REMOTE_VER" >> ${__LOGFILE}
+
+}
+
+(__version-check &)
+
 qq-update() {
   cd $HOME/.oh-my-zsh/custom/plugins/quiver
   git pull
+  rm $__REMOTE_VER
+  rm $__REMOTE_CHK
   cd - > /dev/null
   source $HOME/.zshrc
 }
@@ -82,5 +106,22 @@ echo "[*] quiver loaded." >> ${__LOGFILE}
 #############################################################
 
 echo " "
-echo "$fg[cyan][*] Quiver ${__VER} ZSH plugin loaded $reset_color"
+
+if [[ -f "$__REMOTE_VER" ]]; then
+  
+  echo "[*] Remote version file exists: $__REMOTE_VER " >> ${__LOGFILE}
+
+  rv=$(cat ${__REMOTE_VER})
+
+  if [[ ! -z $rv ]]; then
+
+    echo "[*] Remote version is |${rv}|" >> ${__LOGFILE}
+
+    [[ "$rv" == "$__VER" ]] && __info "Quiver is up to date" || __warn "Quiver update available: $rv, use qq-update to install"
+
+  fi
+
+fi
+
+__info "Quiver ${__VER} ZSH plugin loaded "
 

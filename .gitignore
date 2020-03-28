@@ -2,3 +2,5 @@
 # ignore qq-custom.zsh module
 modules/qq-custom.zsh
 log.txt
+remote_checked.txt
+remote_ver.txt
