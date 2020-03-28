@@ -6,15 +6,13 @@
 
 qq-bounty-scope() {
   qq-vars-set-output
-  local word 
-  [[ -z $1 ]] && word=$1 || read "word?WORD: "
+  local word && read "word?$fg[cyan]WORD:$reset_color "
   print -z "echo \"^.*?${word}\..*\$ \" >> ${__OUTPUT}/burp/scope.txt"
 }
 
 qq-bounty-rescope() {
   qq-vars-set-output
-  local url
-  [[ -z $1 ]] && url=$1 || read "url?URL(bounty): "
+  local url && read "url?$fg[cyan]URL:$reset_color "
   print -z "rescope --burp -u ${url} -o ${__OUTPUT}/burp/scope.json"
 }
 

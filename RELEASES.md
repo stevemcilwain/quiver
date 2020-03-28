@@ -1,6 +1,12 @@
 # Releases
 
-## 0.15
+## 0.16 3/28/2020
+
+* Fixed qq-bounty.zsh
+* Fixed qq-project.zsh: logfile and output settings
+* Fixed qq-vars.zsh recursively creating directories in __OUTPUT
+
+## 0.15 3/24/2020
 
 * Added qq-enum-mssql.zsh
 * Added qq-enum-mysql.zsh

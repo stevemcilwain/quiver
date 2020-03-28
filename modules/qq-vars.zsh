@@ -36,23 +36,8 @@ alias var-url="qq-vars-set-url"
 
 qq-vars-set-output() {
   local relative=$(rlwrap -S "$fg[cyan]OUTPUT: $reset_color" -P "${__OUTPUT}" -e '' -c -o cat)
-  
   [[ "$relative" == "~"* ]] && __warn "~ not allowed" && return
-
-  [[ -d "{$relative} " ]] && __info "directory exists" ||  mkdir ${relative}
-  
   __OUTPUT=$(__abspath $relative)
-
-  mkdir -p ${__OUTPUT}/burp
-  mkdir -p ${__OUTPUT}/target
-  mkdir -p ${__OUTPUT}/domains
-  mkdir -p ${__OUTPUT}/networks
-  mkdir -p ${__OUTPUT}/recon
-  mkdir -p ${__OUTPUT}/hosts
-  mkdir -p ${__OUTPUT}/files
-  mkdir -p ${__OUTPUT}/notes/screenshots
-  mkdir -p ${__OUTPUT}/data
-
 }
 alias var-out="qq-vars-set-output"
 

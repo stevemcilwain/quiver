@@ -10,7 +10,9 @@ qq-install(){
 
   __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs tree
 
-  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev jsbeautifier
+  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev 
+  
+  __pkgs jsbeautifier npm
 
   __pkgs nmap masscan tcpdump awscli exiftool tftp ftp lftp whois 
 
@@ -21,6 +23,11 @@ qq-install(){
   __pkgs impacket-scripts atftpd wordlists seclists 
 
   __pkgs metasploit-framework exploitdb
+
+  __info "Installing node packages"
+
+  sudo npm install --global n
+  sudo npm install --global eslint
 
   __info "Installing python packages... "
 
@@ -90,6 +97,10 @@ qq-install(){
   sudo pip3 install -r requirements.txt
   cd -
 
+  sudo git clone https://github.com/GerbenJavado/LinkFinder.git /opt/enum/LinkFinder
+  cd /opt/enum/LinkFinder
+  sudo python setup.py install
+  
   __info "Installation completed "
 
 }

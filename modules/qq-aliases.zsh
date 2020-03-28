@@ -11,6 +11,8 @@ alias agi="sudo apt-get install"
 alias agr="sudo apt autoremove"
 alias agfix="sudo apt-get install --fix-broken && sudo apt-get autoremove && sudo apt-get update"
 
+alias mega-update="sudo apt-get update && sudo apt-get full-upgrade && go get -u -v all && sudo npm install npm@latest -g && sudo n stable"
+
 #nav
 alias cd..="cd ../"
 alias cls="clear"
@@ -57,6 +59,7 @@ alias tgf="qq-aliases-tail-grep-follow"
 alias rnf="qq-aliases-replace-in-file"
 alias sfu="qq-aliases-sort-file-uniq"
 alias sfip="qq-aliases-sort-file-uniq-ip"
+alias sfuc="qq-aliases-sort-file-uniq-counts"
 alias dos2unix="qq-aliases-dos-to-unix"
 alias unix2dos="qq-aliases-unix-to-dos"
 alias fsync="qq-aliases-rsync-folders"
@@ -79,6 +82,7 @@ qq-aliases-tail-grep-follow() { tail -f $1 | grep --line-buffered $2 }
 qq-aliases-replace-in-file() {print -z "sed 's/$1/$2/g' <file>"} #replace $1 with $2 in file
 qq-aliases-sort-file-uniq() { cat $1 | sort -u -o $1 }  
 qq-aliases-sort-file-uniq-ip() { cat $1 | sort -u | sort -V -o $1 } 
+qq-aliases-sort-file-uniq-counts() {cat $1 | sort | uniq -c | sort -n}
 qq-aliases-dos-to-unix() { tr -d '\015' < $1 > $2 }
 qq-aliases-unix-to-dos() { sed -e 's/$/\r/' $1 > $2 } 
 qq-aliases-rsync-folders() { rsync -avu $1/ $2 }

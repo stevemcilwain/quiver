@@ -34,6 +34,8 @@ qq-project-zd-start() {
     
     __PD="${pid}-${pname}-${__CONSULTANT_NAME// /}"
 
+    __OUTPUT=${__PROJECT_ROOT}/${__PD}
+
     mkdir -p ${__PROJECT_ROOT}/${__PD}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
 
     # wanted this to be an optional step, sometimes I'll create folders in advance due to calls with clients ahead of the test or prep work
