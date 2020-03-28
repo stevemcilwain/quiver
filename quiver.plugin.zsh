@@ -8,13 +8,12 @@ autoload colors; colors
 # Contributors: 
 #############################################################
 
-export __VER=0.16.1
-
 ############################################################# 
 # Constants
 #############################################################
 
 export __PLUGIN="${0:A:h}"
+export __VER=$(cat ${__PLUGIN}/VERSION)
 export __LOGFILE="${__PLUGIN}/log.txt"
 export __REMOTE_CHK="${__PLUGIN}/remote_checked.txt"
 export __REMOTE_VER="${__PLUGIN}/remote_ver.txt"
