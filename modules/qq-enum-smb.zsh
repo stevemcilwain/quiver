@@ -77,3 +77,14 @@ qq-enum-smb-bluecheck() {
   qq-vars-set-rhost
   print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${__RHOST}"
 }
+
+qq-enum-smb-nbtscan() {
+  qq-vars-set-network
+  print -z "nbtscan ${__NETWORK}"
+}
+
+qq-enum-smb-rpcclient() {
+  qq-vars-set-rhost
+  local u && read "u?$fg[cyan]USER:$reset_color "
+  print -z "rpcclient -U \" \" ${__RHOST}"
+}

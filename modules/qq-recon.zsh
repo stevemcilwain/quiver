@@ -36,4 +36,3 @@ qq-recon-headers-curl() {
   qq-vars-set-url
   print -z "curl -X GET -I -L -A \"${__UA}\" ${__URL}"
 }
-

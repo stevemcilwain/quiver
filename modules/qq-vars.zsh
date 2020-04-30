@@ -4,6 +4,37 @@
 # qq-vars
 #############################################################
 
+qq-vars-help() {
+  cat << END
+
+qq-vars
+-------
+The vars namespace manages environment variables used in other functions.
+
+Variables
+---------
+__OUTPUT: the root directory used for all output, ex: /projects/example
+__IFACE: the interface to use for commands, ex: eth0
+__DOMAIN: the domain to use for commands, ex: www.example.org
+__NETWORK: the subnet to use for commands, ex: 10.1.2.0/24
+__RHOST: the remote host or target, ex: 10.1.2.3, example: www.example.org
+__LHOST: the accessible local IP address, ex: 10.1.2.3
+__URL: a target URL, example: https://www.example.org
+__UA: the user agent to use for commands, ex: googlebot
+__WORDLIST: path to a wordlist file, ex: /usr/share/wordlists/example.txt
+__PASSLIST: path to a wordlist for password brute forcing, ex: /usr/share/wordlists/rockyou.txt
+
+Commands
+--------
+qq-vars: list all current variable values
+qq-vars-save: save all current variable values ($HOME/.quiver)
+qq-vars-load: restores all current variable values ($HOME/.quiver)
+qq-vars-clear: clears all current variable values
+qq-vars-set-*: used to set each individual variable
+
+END
+}
+
 export __OUTPUT=""
 export __IFACE=""
 export __DOMAIN=""
@@ -216,4 +247,3 @@ __menu-wordlist-fav() {
 __menu-wordlist-web() {
   __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/Web-Content | sort))
 }
-

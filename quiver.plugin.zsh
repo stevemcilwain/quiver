@@ -73,6 +73,10 @@ qq-status() {
   cd - > /dev/null
 }
 
+qq-whatsnew() {
+  cat $__PLUGIN/RELEASES.md
+}
+
 qq-debug() {
   cat ${__LOGFILE}
 }

@@ -15,3 +15,7 @@ qq-recon-github-by-domain-gwen-001() {
     print -z "python3 /opt/recon/github-search/github-endpoints.py -t ${GH_TOKEN} -d ${__DOMAIN}"
 }
 
+qq-recon-github-gitleaks() {
+    local u && read "u?$fg[cyan]URL:$reset_color "
+    print -z "gitleaks -v --pretty -r=${u}"
+}

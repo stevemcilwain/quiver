@@ -39,13 +39,21 @@ qq-install(){
   __info "Installing golang and packages... "
 
   __install_golang
-  go get -v -u github.com/projectdiscovery/subfinder/cmd/subfinder 
+  go get -v -u github.com/projectdiscovery/subfinder/cmd/subfinder
+  go get -v -u github.com/subfinder/goaltdns
   go get -v -u github.com/charmbracelet/glow
   go get -v -u github.com/tomnomnom/httprobe
   go get -v -u github.com/michenriksen/gitrob
   go get -v -u github.com/ffuf/ffuf
   go get -v -u github.com/root4loot/rescope
   go get -v -u github.com/tomnomnom/waybackurls
+  go get -v -u github.com/tomnomnom/gron
+  go get -v -u github.com/tomnomnom/meg
+  go get -v -u github.com/tomnomnom/hacks/filter-resolved
+  go get -v -u github.com/tomnomnom/hacks/html-tool
+  go get -v -u github.com/tomnomnom/hacks/inscope
+  go get -v -u github.com/tomnomnom/hacks/mirror
+  go get -v -u github.com/zricethezav/gitleaks/v4@latest
 
   __info "Installing wordlist repos... "
 

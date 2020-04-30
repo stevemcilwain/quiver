@@ -1,5 +1,12 @@
 # Releases
 
+## 0.17 4/30/2020
+
+* Added qq-<namespace>-help commands to all modules
+* Added qq-<namespace>-install commands to all modules
+* qq-srv: changed qq-srv-*-auto commands to qq-srv-*-srv for clearer naming
+
+
 ## 0.16 3/28/2020
 
 * Fixed qq-bounty.zsh

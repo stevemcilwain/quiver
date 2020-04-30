@@ -55,6 +55,7 @@ alias csvtolines="tr ',' '\n'"
 alias f3="sudo find /etc /var -mtime -3"  #files changed in last 3 days
 alias pa="qq-aliases-path-add"
 alias mcd="qq-aliases-make-dir-cd"
+alias mdd="mkdir $(date -I)-$(date +%R)"
 alias tgf="qq-aliases-tail-grep-follow"
 alias rnf="qq-aliases-replace-in-file"
 alias sfu="qq-aliases-sort-file-uniq"
@@ -66,6 +67,7 @@ alias fsync="qq-aliases-rsync-folders"
 alias umnt="qq-aliases-unmount"
 alias dt="qq-aliases-dtach"
 alias fs1="find . -type f -size +1M"
+alias mdd="mkdir $(date -I)-$(date +%R)"
 
 # out
 
@@ -97,7 +99,6 @@ qq-aliases-net-lsof() { print -z "_ lsof -P -i -n "}
 #scans
 qq-aliases-scan-gnmap-to-hosts() { grep -i "open" $1 | cut -d' ' -f2 > $2 }
 
-
 #git
 qq-aliases-git-add-commit-push() {
   git add .
@@ -109,4 +110,5 @@ qq-aliases-git-add-commit-push() {
 qq-aliases-sys-mem10() { print -z "_ ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}' "}
 qq-aliases-sys-disk10() { print -z "_ du -sk ./* | sort -r -n | head -10"}
 
+#jobs
 qq-aliases-dtach() { dtach -A $1 /bin/zsh }

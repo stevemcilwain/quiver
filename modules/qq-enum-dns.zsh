@@ -33,4 +33,14 @@ qq-enum-dns-brute-rev() {
   print -z "for h in {1..254}; do host ${network}.$h ${__RHOST}; done | grep pointer"
 }
 
+qq-enum-dns-srv-dig() {
+  qq-vars-set-rhost
+  print -z "dig -t srv @${__RHOST}"
+}
+
+qq-enum-dns-ad-nmap() {
+  local d && read "d?$fg[cyan]DOMAIN:$reset_color "
+  print -z "nmap --script dns-srv-enum --script-args dns-srv-enum.domain=${d}"
+}
+
 

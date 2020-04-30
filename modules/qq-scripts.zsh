@@ -17,3 +17,6 @@ qq-scripts-recon() {
   print -z "zsh ${__SCRIPTS}/recon.zsh ${d} \"${o}\""
 }
 
+qq-scripts-wildcards() {
+  print -z "bash ${__SCRIPTS}/wildcards.sh"
+}

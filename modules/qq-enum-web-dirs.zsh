@@ -31,8 +31,3 @@ qq-enum-web-dirs-gobuster() {
   qq-vars-set-wordlist
   print -z "gobuster dir -u ${__URL} -a \"${__UA}\" -t1 -k -w ${__WORDLIST} > $(__urlpath)/gobuster-dirs.txt "
 }
-
-qq-enum-web-js-endpoint-finder() {
-  local u && read "u?$fg[cyan]URL(JS):$reset_color "
-  print -z "python /opt/enum/Endpoint-Finder/EndPoint-Finder.py -u ${__URL}"
-}

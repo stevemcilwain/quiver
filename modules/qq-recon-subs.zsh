@@ -6,7 +6,7 @@
 
 qq-recon-subs-by-domain-gobuster() {
   qq-vars-set-domain
-  print -z "gobuster dns -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
+  print -z "gobuster dns -r 8.8.8.8 --wildcard -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 }
 
 qq-recon-subs-by-domain-amass() {

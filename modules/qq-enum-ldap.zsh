@@ -6,13 +6,13 @@
 
 qq-enum-ldap-sweep-nmap() {
     qq-vars-set-network
-    print -z "sudo nmap -n -Pn -sS -sU -p389,636 ${__NETWORK} -oA $(__netpath)/ldap-sweep"
+    print -z "sudo nmap -n -Pn -sS -sU -p389,636,3269 ${__NETWORK} -oA $(__netpath)/ldap-sweep"
 }
 
 qq-enum-ldap-tcpdump() {
     qq-vars-set-iface
     qq-vars-set-rhost
-    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 389 and port 636 -w $(__hostpath)/ldap.pcap"
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 389 and port 636 and port 3269 -w $(__hostpath)/ldap.pcap"
 }
 
 qq-enum-ldap-ctx() {
