@@ -2,9 +2,17 @@
 
 ## 0.17 4/30/2020
 
+I added help commands for each namespace to give a better overview.
+I also added an install command for each namespace's dependencies if 
+you prefer to install fewer packages up front with qq-install.
+
+
 * Added qq-<namespace>-help commands to all modules
 * Added qq-<namespace>-install commands to all modules
-* qq-srv: changed qq-srv-*-auto commands to qq-srv-*-srv for clearer naming
+* qq-srv: changed qq-srv-*-auto commands to qq-srv-*-srv for clearer naming, removed aliases, change to python3
+* qq-vars: added __RPORT and __LPORT variables + commands, removed aliases
+* qq-recon: renamed to qq-recon-org, moved eyewitness and curl commands to qq-enum-web
+* qq-recon-subs: removed by-domain from most commands, 
 
 
 ## 0.16 3/28/2020

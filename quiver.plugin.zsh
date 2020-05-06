@@ -17,7 +17,7 @@ export __VER=$(cat ${__PLUGIN}/VERSION)
 export __LOGFILE="${__PLUGIN}/log.txt"
 export __REMOTE_CHK="${__PLUGIN}/remote_checked.txt"
 export __REMOTE_VER="${__PLUGIN}/remote_ver.txt"
-export __SCRIPTS="${0:A:h}/scripts"
+
 
 ############################################################# 
 # Helpers
@@ -31,7 +31,7 @@ __warn() echo "$fg[yellow][>]$reset_color $@"
 __err() echo "$fg[red][!]$reset_color $@ "
 __ask() echo "$fg[cyan]$@ $reset_color"
 __prompt() echo "$fg[cyan][?] $@ $reset_color"
-
+__cyan() echo "$fg[cyan]$@ $reset_color"
 
 ############################################################# 
 # Self Update
@@ -95,6 +95,10 @@ for f in ${0:A:h}/modules/qq-* ; do
   echo "[+] sourcing $f ... "  >> ${__LOGFILE}
   source $f >> ${__LOGFILE} 2>&1
 done
+
+# check for essential packages
+
+dpkg -l | grep -qw rlwrap || sudo apt-get -y install rlwrap
 
 # completion enhancement
 # zstyle ':completion:*' matcher-list 'r:|[-]=**'

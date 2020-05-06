@@ -73,3 +73,21 @@ qq-enum-web-app-elastic-all() {
   print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
 }
 
+qq-enum-web-headers-curl() {
+  qq-vars-set-url
+  print -z "curl -X GET -I -L -A \"${__UA}\" ${__URL}"
+}
+
+qq-enum-web-screens-by-url-eyewitness(){
+  qq-vars-set-output
+  qq-vars-set-url
+  mkdir -p ${__OUTPUT}/recon/screens
+  print -z "eyewitness --web --user-agent \"${__UA}\" --single ${__URL} -d ${__OUTPUT}/recon/screens --no-dns --no-prompt "
+}
+
+qq-enum-web-screens-by-file-eyewitness(){
+  qq-vars-set-output
+  local f=$(rlwrap -S "$(__cyan FILE\(URLS\): )" -e '' -P "${__OUTPUT}" -c -o cat)
+  mkdir -p ${__OUTPUT}/recon/screens
+  print -z "eyewitness --web --user-agent \"${__UA}\" -f ${f} -d ${__OUTPUT}/recon/screens --no-dns --no-prompt "
+}

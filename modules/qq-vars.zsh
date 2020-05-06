@@ -18,7 +18,9 @@ __IFACE: the interface to use for commands, ex: eth0
 __DOMAIN: the domain to use for commands, ex: www.example.org
 __NETWORK: the subnet to use for commands, ex: 10.1.2.0/24
 __RHOST: the remote host or target, ex: 10.1.2.3, example: www.example.org
+__RPORT: the remote port; ex: 80
 __LHOST: the accessible local IP address, ex: 10.1.2.3
+__LPORT: the accessible local PORT, ex: 4444
 __URL: a target URL, example: https://www.example.org
 __UA: the user agent to use for commands, ex: googlebot
 __WORDLIST: path to a wordlist file, ex: /usr/share/wordlists/example.txt
@@ -40,7 +42,9 @@ export __IFACE=""
 export __DOMAIN=""
 export __NETWORK=""
 export __RHOST=""
+export __RPORT=""
 export __LHOST=""
+export __LPORT=""
 export __URL=""
 export __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 export __WORDLIST=""
@@ -53,88 +57,148 @@ export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
 
 # set
 
-qq-vars-set-domain() __DOMAIN=$(rlwrap -S "$fg[cyan]DOMAIN: $reset_color" -P "${__DOMAIN}" -e '' -o cat)
-alias var-domain="qq-vars-set-domain"
-
-qq-vars-set-network() __NETWORK=$(rlwrap -S "$fg[cyan]NETWORK: $reset_color" -P "${__NETWORK}" -e '' -o cat)
-alias var-network="qq-vars-set-network"
-
-qq-vars-set-rhost() __RHOST=$(rlwrap -S "$fg[cyan]RHOST: $reset_color" -P "${__RHOST}" -e '' -o cat)
-alias var-rhost="qq-vars-set-rhost"
-
-qq-vars-set-url() __URL=$(rlwrap -S "$fg[cyan]URL: $reset_color" -P "${__URL}" -e '' -o cat)
-alias var-url="qq-vars-set-url"
-
 qq-vars-set-output() {
-  local relative=$(rlwrap -S "$fg[cyan]OUTPUT: $reset_color" -P "${__OUTPUT}" -e '' -c -o cat)
-  [[ "$relative" == "~"* ]] && __warn "~ not allowed" && return
+  local relative=$(rlwrap -S "$(__cyan __OUTPUT: )" -P "${__OUTPUT}" -e '' -c -o cat)
+
+  # validate that ~ is not used
+  [[ "$relative" == "~"* ]] && __warn "~ not allowed, use the full path" && return
+
+  # get the full path
   __OUTPUT=$(__abspath $relative)
-}
-alias var-out="qq-vars-set-output"
+  [[ -z "${__OUTPUT}" ]] && __OUTPUT=$relative
 
-qq-vars-set-wordlist() {
-    [[ -z $__WORDLIST ]] && __ask "Choose a wordlist: " && __menu-wordlist-fav && return
-    __WORDLIST=$(rlwrap -S "$fg[cyan]WORDLIST: $reset_color" -P "${__WORDLIST}" -e '' -o cat)
+  # if the directory doesn't exist, create it
+  if [[ ! -d ${__OUTPUT} ]]
+  then
+    mkdir -p ${__OUTPUT}
+  fi
 }
-alias var-words="qq-vars-set-wordlist"
-
-qq-vars-set-lhost() {
-    [[ -z $__LHOST ]] && __ask "Choose a local IP address: " && __menu-lhost && return
-    __LHOST=$(rlwrap -S "$fg[cyan]LHOST: $reset_color" -P "${__LHOST}" -e '' -o cat)
-}
-alias var-lhost="qq-vars-set-lhost"
 
 qq-vars-set-iface() {
-    [[ -z $__IFACE ]] && __ask "Choose an interface: " && __menu-iface && return
-    __IFACE=$(rlwrap -S "$fg[cyan]IFACE: $reset_color" -P "${__IFACE}" -e '' -o cat)
+  if [[ -z "${__IFACE}" ]]
+  then
+    __ask "Choose an interface: "
+    __IFACE=$(__menu-helper $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')) 
+  else
+    __IFACE=$(rlwrap -S "$(__cyan __IFACE: )" -P "${__IFACE}" -e '' -o cat)
+  fi  
 }
-alias var-iface="qq-vars-set-iface"
+
+qq-vars-set-domain() __DOMAIN=$(rlwrap -S "$(__cyan __DOMAIN: )" -P "${__DOMAIN}" -e '' -o cat)
+
+qq-vars-set-network() __NETWORK=$(rlwrap -S "$(__cyan __NETWORK: )" -P "${__NETWORK}" -e '' -o cat)
+
+qq-vars-set-rhost() __RHOST=$(rlwrap -S "$(__cyan __RHOST: )" -P "${__RHOST}" -e '' -o cat)
+
+qq-vars-set-rport() __RPORT=$(rlwrap -S "$(__cyan __RPORT: )" -P "${__RPORT}" -e '' -o cat)
+
+qq-vars-set-lhost() {
+  if [[ -z $__LHOST ]]
+  then
+    __ask "Choose a local IP address: " 
+    __LHOST=$(__menu-helper $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
+  else
+    __LHOST=$(rlwrap -S "$(__cyan __LHOST: )" -P "${__LHOST}" -e '' -o cat)
+  fi
+}
+
+qq-vars-set-lport() __LPORT=$(rlwrap -S "$(__cyan __LPORT: )" -P "${__LPORT}" -e '' -o cat)
+
+qq-vars-set-url() __URL=$(rlwrap -S "$(__cyan __URL: )" -P "${__URL}" -e '' -o cat)
+
+qq-vars-set-ua() {
+  __ask "Choose a user agent: " 
+  __UA=$(__menu-helper \
+  "Googlebot/2.1 (+http://www.google.com/bot.html)"\
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"\
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"\
+  )
+}
+
+qq-vars-set-wordlist() {
+  if [[ -z $__WORDLIST ]]
+  then
+    __ask "Choose a wordlist: "
+    __WORDLIST=$(__menu-helper \
+    "/usr/share/seclists/Discovery/Web-Content/quickhits.txt"\
+    "/usr/share/seclists/Discovery/Web-Content/common.txt"\
+    "/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"\
+    "/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"\
+    "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"\
+    "/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"\
+    "/opt/words/nullenc/null.txt"\
+    "/usr/share/seclists/Discovery/Web-Content/swagger.txt"\
+    "/usr/share/seclists/Discovery/Web-Content/graphql.txt"\
+    )
+  else
+    __WORDLIST=$(rlwrap -S "$(__cyan __WORDLIST: )" -P "${__WORDLIST}" -e '' -o cat)
+  fi
+}
+
+qq-vars-set-wordlist-web() {
+  __ask "Choose a wordlist: "
+  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/Web-Content | sort))
+}
+
+qq-vars-set-wordlist-dns() {
+  __ask "Choose a wordlist: "
+  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/DNS | sort))
+}
+
+qq-vars-set-passlist() {
+  __ask "Choose a passlist: "
+  __PASSLIST=$(__menu-helper $(find  /usr/share/seclists/Passwords | sort))
+}
 
 # all settings
 
 qq-vars-clear() {
-    __OUTPUT=""
-    __IFACE=""
-    __DOMAIN=""
-    __NETWORK=""
-    __RHOST=""
-    __LHOST=""
-    __URL=""
-    __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-    __WORDLIST=""
-    __PASSLIST=""
+  __OUTPUT=""
+  __IFACE=""
+  __DOMAIN=""
+  __NETWORK=""
+  __RHOST=""
+  __RPORT=""
+  __LHOST=""
+  __LPORT=""
+  __URL=""
+  __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+  __WORDLIST=""
+  __PASSLIST=""
 }
-alias varcls="qq-vars-clear"
 
 qq-vars() {
-    echo "$fg[cyan] __OUTPUT:$reset_color ${__OUTPUT}"
-    echo "$fg[cyan] __IFACE:$reset_color ${__IFACE}"
-    echo "$fg[cyan] __DOMAIN:$reset_color ${__DOMAIN}"
-    echo "$fg[cyan] __NETWORK:$reset_color ${__NETWORK}"
-    echo "$fg[cyan] __RHOST:$reset_color ${__RHOST}"
-    echo "$fg[cyan] __LHOST:$reset_color ${__LHOST}"
-    echo "$fg[cyan] __URL:$reset_color ${__URL}"
-    echo "$fg[cyan] __WORDLIST:$reset_color ${__WORDLIST}"
-    echo "$fg[cyan] __PASSLIST:$reset_color ${__PASSLIST}"
+  echo "$(__cyan __OUTPUT: ) ${__OUTPUT}"
+  echo "$(__cyan __IFACE: ) ${__IFACE}"
+  echo "$(__cyan __DOMAIN: ) ${__DOMAIN}"
+  echo "$(__cyan __NETWORK: ) ${__NETWORK}"
+  echo "$(__cyan __RHOST: ) ${__RHOST}"
+  echo "$(__cyan __RPORT: ) ${__RPORT}"
+  echo "$(__cyan __LHOST: ) ${__LHOST}"
+  echo "$(__cyan __LPORT: ) ${__LPORT}"
+  echo "$(__cyan __URL: ) ${__URL}"
+  echo "$(__cyan __UA: ) ${__UA}"
+  echo "$(__cyan __WORDLIST: ) ${__WORDLIST}"
+  echo "$(__cyan __PASSLIST: ) ${__PASSLIST}"
 }
-alias var="qq-vars"
 
 qq-vars-save() {
-    local vars="$HOME/.quiver/vars"
-    mkdir -p $vars
+  local vars="$HOME/.quiver/vars"
+  mkdir -p $vars
 
-    echo "${__OUTPUT}" > $vars/OUTPUT
-    echo "${__IFACE}" > $vars/IFACE
-    echo "${__DOMAIN}" > $vars/DOMAIN
-    echo "${__NETWORK}" > $vars/NETWORK
-    echo "${__RHOST}" > $vars/RHOST
-    echo "${__LHOST}" > $vars/LHOST
-    echo "${__URL}" > $vars/URL
-    echo "${__UA}" > $vars/UA
-    echo "${__WORDLIST}" > $vars/WORDLIST
-    echo "${__PASSLIST}" > $vars/PASSLIST
+  echo "${__OUTPUT}" > $vars/OUTPUT
+  echo "${__IFACE}" > $vars/IFACE
+  echo "${__DOMAIN}" > $vars/DOMAIN
+  echo "${__NETWORK}" > $vars/NETWORK
+  echo "${__RHOST}" > $vars/RHOST
+  echo "${__RPORT}" > $vars/RPORT
+  echo "${__LHOST}" > $vars/LHOST
+  echo "${__LPORT}" > $vars/LPORT
+  echo "${__URL}" > $vars/URL
+  echo "${__UA}" > $vars/UA
+  echo "${__WORDLIST}" > $vars/WORDLIST
+  echo "${__PASSLIST}" > $vars/PASSLIST
 }
-alias varsav="qq-vars-save"
 
 qq-vars-load() {
     local vars="$HOME/.quiver/vars"
@@ -143,14 +207,15 @@ qq-vars-load() {
     __DOMAIN=$(cat $vars/DOMAIN)
     __NETWORK=$(cat $vars/NETWORK)
     __RHOST=$(cat $vars/RHOST)
+    __RPORT=$(cat $vars/RPORT)
     __LHOST=$(cat $vars/LHOST)
+    __LPORT=$(cat $vars/LPORT)
     __URL=$(cat $vars/URL)
     __UA=$(cat $vars/UA)
     __WORDLIST=$(cat $vars/WORDLIST)
     __PASSLIST=$(cat $vars/PASSLIST)
-    qq-vars-print
+    qq-vars
 }
-alias varload="qq-vars-load"
 
 # helpers
 
@@ -208,42 +273,8 @@ __rand() {
 }
 
 __menu-helper() {
-  PS3="$fg[cyan][#]:$reset_color "
+  PS3="$fg[cyan]Select:$reset_color "
   COLUMNS=6
   select o in $@; do break; done
   echo ${o}
-}
-
-__menu-ua() {
-  __UA=$(__menu-helper \
-  "Googlebot/2.1 (+http://www.google.com/bot.html)"\
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"\
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"\
-  )
-}
-
-__menu-iface() {
-  __IFACE=$(__menu-helper $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}'))
-}
-
-__menu-lhost() {
-  __LHOST=$(__menu-helper $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
-}
-
-__menu-wordlist-fav() {
-  __WORDLIST=$(__menu-helper \
-  "/usr/share/seclists/Discovery/Web-Content/quickhits.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/common.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"\
-  "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"\
-  "/opt/words/all/all.txt"\
-  "/opt/words/nullenc/null.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/swagger.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/graphql.txt"\
-  )
-}
-
-__menu-wordlist-web() {
-  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/Web-Content | sort))
 }

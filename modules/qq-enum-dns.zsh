@@ -43,4 +43,14 @@ qq-enum-dns-ad-nmap() {
   print -z "nmap --script dns-srv-enum --script-args dns-srv-enum.domain=${d}"
 }
 
+qq-enum-dns-dnsrecon() {
+  qq-vars-set-domain
+  print -z "dnsrecon -d ${__DOMAIN} -a -s -w -z --threads 10 -c ${__OUTPUT}/domains/dns.csv"
+}
+
+qq-enum-dns-rev-dnsrecon() {
+  qq-vars-set-domain
+  print -z "dnsrecon -r ${__NETWORK} -c ${__OUTPUT}/domains/revdns.csv"
+}
+
 
