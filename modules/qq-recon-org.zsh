@@ -10,6 +10,7 @@ qq-recon-org-help() {
 qq-recon-org
 ------------
 The recon namespace provides commands for the recon of an organization.
+Data from commands will be stored in $__PROJECT/recon.
 
 Commands
 --------
@@ -28,23 +29,23 @@ qq-recon-org-install() {
 }
 
 qq-recon-org-files-metagoofil() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-domain
-  mkdir -p ${__OUTPUT}/recon/files
+  mkdir -p ${__PROJECT}/recon/files
   local ft && read "ft?$(__cyan EXTENSIONS: )"
-  print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o ${__OUTPUT}/recon/files"
+  print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o ${__PROJECT}/recon/files"
 }
 
 qq-recon-org-wordlist-by-url-cewl() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-url
-  mkdir -p ${__OUTPUT}/recon
-  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w ${__OUTPUT}/recon/custom_list.txt ${__URL}"
+  mkdir -p ${__PROJECT}/recon
+  print -z "cewl -a -d 3 -m 5 -u \"${__UA}\" -w ${__PROJECT}/recon/cewl.txt ${__URL}"
 }
 
 qq-recon-org-theharvester() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-domain
-  mkdir -p ${__OUTPUT}/recon
-  print -z "theHarvester -d ${__DOMAIN} -l 50 -b all -f ${__OUTPUT}/recon/harvester.txt"
+  mkdir -p ${__PROJECT}/recon
+  print -z "theHarvester -d ${__DOMAIN} -l 50 -b all -f ${__PROJECT}/recon/harvested.txt"
 }

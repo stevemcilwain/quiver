@@ -4,35 +4,56 @@
 # qq-pivot
 #############################################################
 
-qq-pivot-mount-remote-sshfs() { 
-    local lm=$(rlwrap -S "$fg[cyan]LMOUNT:$reset_color " -e '' -c -o cat)
-    local rm && read "rm?$fg[cyan]RMOUNT:$reset_color "
-    local u && read "u?$fg[cyan]USER:$reset_color "
-    local r && read "r?$fg[cyan]RHOST:$reset_color "
-    print -z "sshfs ${u}@${r}:/${rm} /mnt/${lm}" 
+qq-pivot-help() {
+  cat << END
+
+qq-pivot
+------------
+The pivot namespace provides commands for using ssh to proxy and pivot.
+
+Commands
+--------
+qq-pivot-install: installs dependencies
+qq-pivot-mount-remote-sshfs: mounts a remote directory to local /mnt path using sshfs
+qq-pivot-ssh-dynamic-proxy: uses remote as a dynamic proxy
+qq-pivot-ssh-remote-to-local: forwards remote port to local port
+qq-pivot-ssh-remote-to-local-burp: forwards remote port 8080 to local port 8080
+
+END
 }
-alias qpmnt="qq-pivot-mount-remote-to-local-sshfs"
+
+qq-pivot-install() {
+
+    __pkgs sshfs
+
+}
+
+qq-pivot-mount-remote-sshfs() { 
+    local lm=$(rlwrap -S "$(__cyan LMOUNT: )" -e '' -c -o cat)
+    local rm && read "rm?$(__cyan RMOUNT: )"
+    local u && read "u?$(__cyan USER: )"
+    qq-vars-set-rhost
+    print -z "sshfs ${u}@${__RHOST}:/${rm} /mnt/${lm}" 
+}
 
 qq-pivot-ssh-dynamic-proxy() {
-    local u && read "u?$fg[cyan]USER:$reset_color "
-    local r && read "r?$fg[cyan]RHOST:$reset_color "
-    local lp && read "lp?$fg[cyan]LPORT:$reset_color "
-    print -z "ssh -D ${lp} -CqN ${u}@${r}" 
+    local u && read "u?$(__cyan USER: )"
+    qq-vars-set-rhost
+    qq-vars-set-lport
+    print -z "ssh -D ${__LPORT} -CqN ${u}@${__RHOST}" 
 }
-alias qpd="qq-pivot-ssh-dynamic-proxy"
 
 qq-pivot-ssh-remote-to-local() {
-    local u && read "u?$fg[cyan]USER:$reset_color "
-    local r && read "r?$fg[cyan]RHOST:$reset_color "
-    local rp && read "rp?$fg[cyan]RPORT:$reset_color "
-    local lp && read "lp?$fg[cyan]LPORT:$reset_color "
-    print -z "ssh -R ${lp}:127.0.0.1:${rp} ${u}@${r}" 
+    local u && read "u?$(__cyan USER: )"
+    qq-vars-set-rhost
+    qq-vars-set-rport
+    qq-vars-set-lport
+    print -z "ssh -R ${__LPORT}:127.0.0.1:${__RPORT} ${u}@${__RHOST}" 
 }
-alias qpr2l="qq-pivot-ssh-remote-to-local"
 
 qq-pivot-ssh-remote-to-local-burp() {
-    local u && read "u?$fg[cyan]USER:$reset_color "
-    local r && read "r?$fg[cyan]RHOST:$reset_color "
-    print -z "ssh -R 8080:127.0.0.1:8080 ${u}@${r}"
+    local u && read "u?$(__cyan USER: )"
+    local r && read "r?$(__cyan RHOST: )"
+    print -z "ssh -R 8080:127.0.0.1:8080 ${u}@${__RHOST}"
 }
-alias qpr2lb="qq-pivot-ssh-remote-to-local-burp"
+

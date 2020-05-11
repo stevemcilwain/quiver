@@ -15,14 +15,14 @@ such as web, ftp, smb and other services for data exfil or transfer.
 Commands
 --------
 qq-srv-install: install dependencies
-qq-srv-web: hosts a python3 web server
-qq-srv-ftp: hosts a python3 ftp server
-qq-srv-smb: hosts an impacket smb server 
-qq-srv-tftp: starts the atftpd service
-qq-srv-smtp: hosts a python3 smtp server
-qq-srv-updog: hosts an updog web server
-qq-srv-nc-tar: hosts a netcat server > tar file
-qq-srv-nc-file: hosts a netcat server > file
+qq-srv-web: hosts a python3 web server in current dir
+qq-srv-ftp: hosts a python3 ftp server in current dir
+qq-srv-smb: hosts an impacket smb server in current dir
+qq-srv-tftp: starts the atftpd service in /srv/tftp
+qq-srv-smtp: hosts a python3 smtp server in current dir
+qq-srv-updog: hosts an updog web server in current dir
+qq-srv-nc-tar: hosts a netcat server > tar file in current dir
+qq-srv-nc-file: hosts a netcat server > file in current dir
 qq-srv-web-srv: hosts a python3 web server in /srv, port as $1
 qq-srv-php-srv: hosts a php web server in /srv, port as $1
 qq-srv-ftp-srv: hosts a python3 ftp server in /srv

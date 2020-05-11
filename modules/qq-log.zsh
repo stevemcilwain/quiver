@@ -4,49 +4,74 @@
 # qq-log
 #############################################################
 
-qq-log-set() {
-    [[ -z $__OUTPUT ]] && qq-vars-set-output
+qq-log-help() {
+  cat << END
 
-    local log="${__OUTPUT}/logbook.md"
+qq-log
+-------------
+The log namespace provides commands that create a logbook in
+a directory you specify. Then use qq-log to append entries
+to the logbook. Display the log with qq-log-cat. Edit the log
+with qq-log-edit.
+
+Commands
+--------
+qq-log-install: installs dependencies
+qq-log: alias ql, appends $@ to an entry in the logbook
+qq-log-cat: alias qlc, cats the logbook
+qq-log-edit: alias qle, edits the logbook using $EDITOR
+qq-log-set: creates or uses existing logbook.md in the path specified
+
+END
+}
+
+qq-log-install() {
+
+  qq-install-golang
+  go get -u github.com/charmbracelet/glow
+
+}
+
+qq-log-set() {
+    qq-vars-set-logbook
+
+    # [[ -z $__PROJECT ]] && qq-vars-sezt-project
+
+    # local log="${__PROJECT}/logbook.md"
     
-    if [[ -f "${log}" ]]; then
-        __warn "${log} already exists, set as active log"
-    else
-        touch ${log}
-        echo "# Logbook" >> ${log}
-        echo " " >> ${log}
-        __ok "${log} created."
-    fi
+    # if [[ -f "${log}" ]]; then
+    #     __warn "${log} already exists, set as active log"
+    # else
+    #     touch ${log}
+    #     echo "# Logbook" >> ${log}
+    #     echo " " >> ${log}
+    #     __ok "${log} created."
+    # fi
 }
 alias qls="qq-log-set"
 
 qq-log-cat() {
-    log="${__OUTPUT}/logbook.md"
-    __info "$log"
-    glow ${log}
+    __check-logbook
+    __info "${__LOGBOOK}"
+    glow ${__LOGBOOK}
 }
 alias qlc="qq-log-cat"
 
 qq-log-edit() {
-    log="${__OUTPUT}/logbook.md"
-    nano ${log}
+    __check-logbook
+    $EDITOR ${__LOGBOOK}
 }
 alias qle="qq-log-edit"
 
 qq-log() {
-    log="${__OUTPUT}/logbook.md"
-    if [[ -f "${log}" ]]; then
+    __check-logbook
 
-        local stamp=$(date +'%m-%d-%Y : %r')
-        echo "## ${stamp}" >> ${log}
-        echo "\`\`\`" >> ${log}
-        echo "$@" >> ${log}
-        echo "\`\`\`" >> ${log}
-        echo " " >> ${log}
-
-    else
-        __err "Log file not set or not found"
-    fi
+    local stamp=$(date +'%m-%d-%Y : %r')
+    echo "## ${stamp}" >> ${__LOGBOOK}
+    echo "\`\`\`" >> ${__LOGBOOK}
+    echo "$@" >> ${__LOGBOOK}
+    echo "\`\`\`" >> ${__LOGBOOK}
+    echo " " >> ${__LOGBOOK}
 
 }
 alias ql="qq-log"

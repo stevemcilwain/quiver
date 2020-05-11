@@ -4,16 +4,40 @@
 # qq-bounty
 #############################################################
 
+qq-bounty-help() {
+  cat << END
+
+qq-bounty
+----------
+The bounty namespace provides commands for generating scope files
+and other system settings.
+
+Commands
+--------
+qq-bounty-install: installs dependencies
+qq-bounty-scope: generate a scope regex by root word (matches all to the left and right)
+qq-bounty-rescope: uses rescope to generate burp scope from a url
+qq-bounty-sudoers-easy: removes the requirment for sudo for common commands like nmap
+qq-bounty-sudoers-harden: removes sudo exclusions
+
+END
+}
+
+qq-bounty-install() {
+  qq-install-golang
+  go get -u github.com/root4loot/rescope
+}
+
 qq-bounty-scope() {
-  qq-vars-set-output
+  qq-vars-set-project
   local word && read "word?$fg[cyan]WORD:$reset_color "
-  print -z "echo \"^.*?${word}\..*\$ \" >> ${__OUTPUT}/burp/scope.txt"
+  print -z "echo \"^.*?${word}\..*\$ \" >> ${__PROJECT}/burp/scope.txt"
 }
 
 qq-bounty-rescope() {
-  qq-vars-set-output
+  qq-vars-set-project
   local url && read "url?$fg[cyan]URL:$reset_color "
-  print -z "rescope --burp -u ${url} -o ${__OUTPUT}/burp/scope.json"
+  print -z "rescope --burp -u ${url} -o ${__PROJECT}/burp/scope.json"
 }
 
 qq-bounty-sudoers-easy() {

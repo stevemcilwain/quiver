@@ -9,10 +9,20 @@ you prefer to install fewer packages up front with qq-install.
 
 * Added qq-<namespace>-help commands to all modules
 * Added qq-<namespace>-install commands to all modules
+* qq-install: refactored, change path for downloaded repos to $HOME/tools for less "sudo" required, better opsec
 * qq-srv: changed qq-srv-*-auto commands to qq-srv-*-srv for clearer naming, removed aliases, change to python3
-* qq-vars: added __RPORT and __LPORT variables + commands, removed aliases
+* qq-vars: added __LOGBOOK, __RPORT and __LPORT variables + commands, removed aliases, changed __OUTPUT to __PROJECT
 * qq-recon: renamed to qq-recon-org, moved eyewitness and curl commands to qq-enum-web
-* qq-recon-subs: removed by-domain from most commands, 
+* qq-recon-subs: removed by-domain from most commands, removed altdns, cleaned up namespace
+* qq-recon-github: cleaned up namespace, added gitrob
+* qq-recon-domains: cleaned up names of commands
+* qq-recon-networks: simplified namespace
+* qq-project: integrated with $__PROJECT, sets this to the /tool-output directory
+* qq-log: changed to use $__LOGBOOK in qq-vars, independent of $__PROJECT
+* qq-notes: reduce to 2 commands, both list all files, one search by filename and one search by content, added interactive notes display
+
+
+
 
 
 ## 0.16 3/28/2020

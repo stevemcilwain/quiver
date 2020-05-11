@@ -12,7 +12,7 @@ qq-enum-network-tcpdump() {
 
 qq-enum-network-tcpdump-bcasts() {
   qq-vars-set-iface
-  print -z "sudo tcpdump -i ${__IFACE} ether broadcast and ether multicast -w $__OUTPUT/networks/bcasts.pcap"
+  print -z "sudo tcpdump -i ${__IFACE} ether broadcast and ether multicast -w $__PROJECT/networks/bcasts.pcap"
 }
 
 qq-enum-network-nmap-ping-sweep() {

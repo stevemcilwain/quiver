@@ -10,117 +10,115 @@ qq-recon-subs-help() {
 qq-recon-subs
 -------------
 The recon namespace provides commands to recon vertical sub-domains of a root domain.
+All subdomains for a domain will be stored in $__PROJECT/amass and $__PROJECT/domains/$DOMAIN/subs.txt.
+You can sort unique this file in place with the "sfu" alias.
 
 Commands
 --------
 qq-recon-subs-install: installs dependencies
-qq-recon-subs-gobuster: brute force subdomain search using gobuster and a wordlist
-qq-recon-subs-amass: enumerate subdomains using amass
-qq-recon-subs-amass-diff: track changes between last 2 enumerations using amass
 
+Commands - enumeration
+----------------------
+qq-recon-subs-amass-enum: enumerate subdomains into amass db (api keys help)
+qq-recon-subs-amass-diff: track changes between last 2 enumerations using amass db
+qq-recon-subs-amass-names: list gathered subs in the amass db
+qq-recon-subs-crt.sh: gather subdomains from crt.sh
+qq-recon-subs-subfinder: gather subdomains from sources (api keys help)
+qq-recon-subs-assetfinder: gather subdomains from sources (api keys help)
+qq-recon-subs-wayback: gather subdomains from Wayback Machine
+
+Commands - brute force
+----------------------
+qq-recon-subs-brute-gobuster: brute force subdomains using gobuster and a wordlist
+qq-recon-subs-brute-dnsrecon: brute force subdomains using dnsrecon and a wordlist
+
+Commands - processing
+---------------------
+qq-recon-subs-resolve-massdns: resolve a file of subdomains using massdns
+qq-recon-subs-gen-wordlist: generate a wordlist of possible subs
 
 END
 }
 
 qq-recon-subs-install() {
-  sudo apt-get golang
-  sudo apt-get gobuster
-  sudo apt-get amass
-  sudo apt-get curl
-  sudo apt-get install sublist3r
-  sudo apt-get install seclists
-  sudo apt-get install dnsrecon
+
+  __pkgs gobuster amass curl seclists dnsrecon
+
+  qq-install-golang
+  go get -u github.com/projectdiscovery/subfinder/cmd/subfinder
+  go get -u github.com/tomnomnom/assetfinder
+  go get -u github.com/tomnomnom/waybackurls
+
+  qq-install-massdns
 }
 
-qq-recon-subs-gobuster() {
-  qq-vars-set-output
+qq-recon-subs-amass-enum() {
+  __check-project
   qq-vars-set-domain
-  local t && read "t?$(__cyan THREADS: )"
-  local dd=${__OUTPUT}/domains/${__DOMAIN}
-  mkdir -p ${dd}
-  print -z "gobuster dns -r 8.8.8.8 -t ${t} --wildcard -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt" -o ${dd}/subs-gobuster.txt
-}
-
-qq-recon-subs-amass() {
-  qq-vars-set-output
-  qq-vars-set-domain
-  mkdir -p ${__OUTPUT}/domains/amass
-  print -z "amass enum -active -ip -d ${__DOMAIN} -dir ${__OUTPUT}/domains/amass"
+  mkdir -p ${__PROJECT}/amass
+  print -z "amass enum -active -ip -d ${__DOMAIN} -dir ${__PROJECT}/amass"
 }
 
 qq-recon-subs-amass-diff() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-domain
-  mkdir -p ${__OUTPUT}/domains/amass
-  print -z "amass track -d ${__DOMAIN} -last 2 -dir ${__OUTPUT}/domains/amass"
+  mkdir -p ${__PROJECT}/amass
+  print -z "amass track -d ${__DOMAIN} -last 2 -dir ${__PROJECT}/amass"
+}
+
+qq-recon-subs-amass-names() {
+  __check-project
+  qq-vars-set-domain
+  mkdir -p ${__PROJECT}/amass
+  print -z "amass db -names -d ${__DOMAIN} -dir ${__PROJECT}/amass >> $(__dompath)/subs.txt"
 }
 
 qq-recon-subs-crt.sh() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-domain
-  local dd=${__OUTPUT}/domains/${__DOMAIN}
-  mkdir -p ${dd}
-  print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${__DOMAIN}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u > ${dd}/subs-crt.txt "
-}
-
-qq-recon-subs-crt.sh-file() {
-  qq-vars-set-output
-  mkdir -p ${__OUTPUT}/domains
-  local f=$(rlwrap -S "$(__cyan FILE\(DOMAINS\): )" -P \"${__OUTPUT}\" -e '' -c -o cat)
-  cmd="curl -s 'https://crt.sh/?q=%.\${d}' | grep -ie \"\${d}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >> ${__OUTPUT}/domains/subs.\${d}.txt"
-  print -z "for d in \$(cat ${f}); do ${cmd} ; done"
+  print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${__DOMAIN}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >>  $(__dompath)/subs.txt "
 }
 
 qq-recon-subs-subfinder() {
-  qq-vars-set-output
+  __check-project
   qq-vars-set-domain
   local t && read "t?$(__cyan THREADS: )"
-  local dd=${__OUTPUT}/domains/${__DOMAIN}
-  mkdir -p ${dd}
-  print -z "subfinder -t ${t} -d ${__DOMAIN} -nW -silent -o ${dd}/subs-subfinder.txt"
+  print -z "subfinder -t ${t} -d ${__DOMAIN} -nW -silent >> $(__dompath)/subs.txt"
 }
 
-qq-recon-subs-sublist3r() {
-  qq-vars-set-output
+qq-recon-subs-assetfinder() {
+  __check-project
+  qq-vars-set-domain
+  print -z "echo ${__DOMAIN} | assetfinder --subs-only >> $(__dompath)/subs.txt" 
+}
+
+qq-recon-subs-wayback() {
+  __check-project
+  qq-vars-set-domain 
+  print -z "echo ${__DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" >> $(__dompath)/subs.txt"
+}
+
+qq-recon-subs-brute-gobuster() {
+  __check-project
   qq-vars-set-domain
   local t && read "t?$(__cyan THREADS: )"
-  local dd=${__OUTPUT}/domains/${__DOMAIN}
-  mkdir -p ${dd}
-  print -z "sublist3r -d ${__DOMAIN} -b -p 80,443,8080,4443 -t ${t} -e Baido,Yahoo,Google,Bing,Ask,Netcraft,VirusTotal,SSL,ThreatCrowd,PassiveDNS -o $dd/subs-sublist3r.txt"
+  print -z "gobuster dns -r 8.8.8.8 -t ${t} --wildcard -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt >> $(__dompath)/subs.txt"
 }
 
-qq-recon-subs-dnsrecon() {
-  qq-vars-set-output
+qq-recon-subs-brute-dnsrecon() {
+  __check-project
   qq-vars-set-domain
-  local dd=${__OUTPUT}/domains/${__DOMAIN}
-  mkdir -p ${dd}
-  print -z "dnsrecon -d ${__DOMAIN} -t brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -c $dd/subs.csv "
+  print -z "dnsrecon -d ${__DOMAIN} -t brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -c $(__dompath)/subs.csv "
 }
 
-
-
-qq-recon-subs-by-file-massdns() {
-  local f=$(rlwrap -S "$fg[cyan]FILE(DOMAINS):$reset_color " -e '' -c -o cat) 
-  print -z "/opt/recon/massdns/bin/massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S ${f} -w massdns.results.txt"
+qq-recon-subs-resolve-massdns() {
+  __check-project
+  print -z "massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S -w ${__PROJECT}/domains/resolved.txt $(__dompath)/subs.txt"
 }
 
-qq-recon-subs-massdns-results-parse() {
-  local f=$(rlwrap -S "$fg[cyan]FILE(results):$reset_color " -e '' -c -o cat)
-  print -z "sed 's/A.*//' ${f} | sed 's/CN.*//' | sed 's/\..$//' | sort -u > massdns.clean.txt"
-}
-
-qq-recon-subs-gen-commonspeak-words() {
+qq-recon-subs-gen-wordlist() {
+  __check-project
   qq-vars-set-domain
-  print -z "for s in \$(cat /opt/words/commonspeak2-wordlists/subdomains/subdomains.txt); do echo \$s.${__DOMAIN} >> subs.wordlist.${d}.txt; done"
-}
-
-qq-recon-subs-by-brute-altdns() {
-  local f=$(rlwrap -S "$fg[cyan]FILE(domains):$reset_color " -e '' -c -o cat)
-  local w=$(rlwrap -S "$fg[cyan]FILE(wordlist):$reset_color " -e '' -c -o cat)
-  print -z "altdns -r -i ${f} -w ${w} -t 20 -o altsub.data.txt -s altsub.resolved.txt"
-}
-
-qq-recon-subs-by-file-wayback() {
-  local f=$(rlwrap -S "$fg[cyan]FILE(DOMAINS):$reset_color " -e '' -c -o cat) 
-  print -z "cat ${f} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" >> subs.txt"
+  local f=$(rlwrap -S "$(__cyan FILE: )" -e '' -P "/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt" -c -o cat)
+  print -z "for s in \$(cat ${f}); do echo \$s.${__DOMAIN} >> $(__dompath)/subs.wordlist.txt; done"
 }

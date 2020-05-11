@@ -45,12 +45,12 @@ qq-enum-dns-ad-nmap() {
 
 qq-enum-dns-dnsrecon() {
   qq-vars-set-domain
-  print -z "dnsrecon -d ${__DOMAIN} -a -s -w -z --threads 10 -c ${__OUTPUT}/domains/dns.csv"
+  print -z "dnsrecon -d ${__DOMAIN} -a -s -w -z --threads 10 -c ${__PROJECT}/domains/dns.csv"
 }
 
 qq-enum-dns-rev-dnsrecon() {
   qq-vars-set-domain
-  print -z "dnsrecon -r ${__NETWORK} -c ${__OUTPUT}/domains/revdns.csv"
+  print -z "dnsrecon -r ${__NETWORK} -c ${__PROJECT}/domains/revdns.csv"
 }
 
 

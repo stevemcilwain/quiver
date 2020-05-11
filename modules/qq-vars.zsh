@@ -13,7 +13,8 @@ The vars namespace manages environment variables used in other functions.
 
 Variables
 ---------
-__OUTPUT: the root directory used for all output, ex: /projects/example
+__PROJECT: the root directory used for all output, ex: /projects/example
+__LOGBOOK: the logbook.md markdown file used in qq-log commands 
 __IFACE: the interface to use for commands, ex: eth0
 __DOMAIN: the domain to use for commands, ex: www.example.org
 __NETWORK: the subnet to use for commands, ex: 10.1.2.0/24
@@ -37,7 +38,8 @@ qq-vars-set-*: used to set each individual variable
 END
 }
 
-export __OUTPUT=""
+export __PROJECT=""
+export __LOGBOOK=""
 export __IFACE=""
 export __DOMAIN=""
 export __NETWORK=""
@@ -57,22 +59,57 @@ export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
 
 # set
 
-qq-vars-set-output() {
-  local relative=$(rlwrap -S "$(__cyan __OUTPUT: )" -P "${__OUTPUT}" -e '' -c -o cat)
+qq-vars-set-project() {
+  __info "The project directory is the root directory for all command output (in subfolders)."
+  local relative=$(rlwrap -S "$(__cyan __PROJECT: )" -P "${__PROJECT}" -e '' -c -o cat)
 
   # validate that ~ is not used
   [[ "$relative" == "~"* ]] && __warn "~ not allowed, use the full path" && return
 
   # get the full path
-  __OUTPUT=$(__abspath $relative)
-  [[ -z "${__OUTPUT}" ]] && __OUTPUT=$relative
+  __PROJECT=$(__abspath $relative)
+  [[ -z "${__PROJECT}" ]] && __PROJECT=$relative
 
   # if the directory doesn't exist, create it
-  if [[ ! -d ${__OUTPUT} ]]
+  if [[ ! -d ${__PROJECT} ]]
   then
-    mkdir -p ${__OUTPUT}
+    mkdir -p ${__PROJECT}
   fi
+
 }
+
+__check-project() { [[ -z "${__PROJECT}" ]] && qq-vars-set-project }
+
+qq-vars-set-logbook() {
+  local relative=$(rlwrap -S "$(__cyan __LOGBOOK\(DIR\): )" -P "$HOME" -e '' -c -o cat)
+
+  # validate that ~ is not used
+  [[ "$relative" == "~"* ]] && __warn "~ not allowed, use the full path" && return
+
+  # get the full path
+  local logpath=$(__abspath $relative)
+  [[ -z "${logpath}" ]] && logpath=$relative
+
+  # if the directory doesn't exist, create it
+  if [[ ! -d ${logpath} ]]
+  then
+    mkdir -p ${logpath}
+  fi
+
+  __LOGBOOK="${logpath}/logbook.md"
+  
+  if [[ -f "${__LOGBOOK}" ]]; then
+      __warn "${__LOGBOOK} already exists, set as active log"
+  else
+      touch ${__LOGBOOK}
+      echo "# Logbook" >> ${__LOGBOOK}
+      echo " " >> ${__LOGBOOK}
+      __ok "${__LOGBOOK} created."
+  fi
+
+}
+
+__check-logbook() { [[ -z "${__LOGBOOK}" ]] && qq-vars-set-logbook }
 
 qq-vars-set-iface() {
   if [[ -z "${__IFACE}" ]]
@@ -81,12 +118,23 @@ qq-vars-set-iface() {
     __IFACE=$(__menu-helper $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')) 
   else
     __IFACE=$(rlwrap -S "$(__cyan __IFACE: )" -P "${__IFACE}" -e '' -o cat)
-  fi  
+  fi
+
 }
 
-qq-vars-set-domain() __DOMAIN=$(rlwrap -S "$(__cyan __DOMAIN: )" -P "${__DOMAIN}" -e '' -o cat)
+__check-iface() { [[ -z "${__IFACE}" ]] && qq-vars-set-iface }
 
-qq-vars-set-network() __NETWORK=$(rlwrap -S "$(__cyan __NETWORK: )" -P "${__NETWORK}" -e '' -o cat)
+qq-vars-set-domain() {
+  __DOMAIN=$(rlwrap -S "$(__cyan __DOMAIN: )" -P "${__DOMAIN}" -e '' -o cat)
+}
+
+__check-domain() { [[ -z "${__DOMAIN}" ]] && qq-vars-set-domain }
+
+qq-vars-set-network() {
+  __NETWORK=$(rlwrap -S "$(__cyan __NETWORK: )" -P "${__NETWORK}" -e '' -o cat)
+}
+
+__check-network() { [[ -z "${__NETWORK}" ]] && qq-vars-set-network }
 
 qq-vars-set-rhost() __RHOST=$(rlwrap -S "$(__cyan __RHOST: )" -P "${__RHOST}" -e '' -o cat)
 
@@ -115,6 +163,8 @@ qq-vars-set-ua() {
   )
 }
 
+__check-ua() { [[ -z "${__UA}" ]] && qq-vars-set-ua }
+
 qq-vars-set-wordlist() {
   if [[ -z $__WORDLIST ]]
   then
@@ -126,7 +176,6 @@ qq-vars-set-wordlist() {
     "/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"\
     "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"\
     "/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"\
-    "/opt/words/nullenc/null.txt"\
     "/usr/share/seclists/Discovery/Web-Content/swagger.txt"\
     "/usr/share/seclists/Discovery/Web-Content/graphql.txt"\
     )
@@ -153,7 +202,8 @@ qq-vars-set-passlist() {
 # all settings
 
 qq-vars-clear() {
-  __OUTPUT=""
+  __PROJECT=""
+  __LOGBOOK=""
   __IFACE=""
   __DOMAIN=""
   __NETWORK=""
@@ -168,7 +218,8 @@ qq-vars-clear() {
 }
 
 qq-vars() {
-  echo "$(__cyan __OUTPUT: ) ${__OUTPUT}"
+  echo "$(__cyan __PROJECT: ) ${__PROJECT}"
+  echo "$(__cyan __LOGBOOK: ) ${__LOGBOOK}"
   echo "$(__cyan __IFACE: ) ${__IFACE}"
   echo "$(__cyan __DOMAIN: ) ${__DOMAIN}"
   echo "$(__cyan __NETWORK: ) ${__NETWORK}"
@@ -186,7 +237,8 @@ qq-vars-save() {
   local vars="$HOME/.quiver/vars"
   mkdir -p $vars
 
-  echo "${__OUTPUT}" > $vars/OUTPUT
+  echo "${__PROJECT}" > $vars/PROJECT
+  echo "${__LOGBOOK}" > $vars/LOGBOOK
   echo "${__IFACE}" > $vars/IFACE
   echo "${__DOMAIN}" > $vars/DOMAIN
   echo "${__NETWORK}" > $vars/NETWORK
@@ -202,7 +254,8 @@ qq-vars-save() {
 
 qq-vars-load() {
     local vars="$HOME/.quiver/vars"
-    __OUTPUT=$(cat $vars/OUTPUT) 
+    __PROJECT=$(cat $vars/PROJECT) 
+    __LOGBOOK=$(cat $vars/LOGBOOK)
     __IFACE=$(cat $vars/IFACE)
     __DOMAIN=$(cat $vars/DOMAIN)
     __NETWORK=$(cat $vars/NETWORK)
@@ -240,25 +293,34 @@ __abspath() {
     fi
 }
 
+
+
 __netpath() { 
-  qq-vars-set-output
+  __check-project
   local net=$(echo ${__NETWORK} | cut -d'/' -f1)
-  local result=${__OUTPUT}/networks/${net}
+  local result=${__PROJECT}/networks/${net}
   mkdir -p "${result}"
   echo  "${result}"
 }
 
 __hostpath() { 
-  qq-vars-set-output
-  local result=${__OUTPUT}/hosts/${__RHOST}
+  __check-project
+  local result=${__PROJECT}/hosts/${__RHOST}
   mkdir -p "${result}"
   echo  "${result}"
 }
 
 __urlpath() { 
-  qq-vars-set-output
+  __check-project
   local host=$(echo ${__URL} | cut -d'/' -f3)
-  local result=${__OUTPUT}/hosts/${host}
+  local result=${__PROJECT}/hosts/${host}
+  mkdir -p "${result}"
+  echo  "${result}"
+}
+
+__dompath() { 
+  __check-project
+  local result=${__PROJECT}/domains/${__DOMAIN}
   mkdir -p "${result}"
   echo  "${result}"
 }

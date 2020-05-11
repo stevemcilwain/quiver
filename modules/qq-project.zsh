@@ -4,6 +4,22 @@
 # qq-project
 #############################################################
 
+qq-project-help() {
+  cat << END
+
+qq-project
+-------------
+The project namespace provides commands to setup custom project
+directory structures and variables.
+
+Commands
+--------
+qq-project-zd-start: scaffolds directory structure and logbook for "zd" projects
+qq-project-zd-end: zips and removes directories and data for "zd" projects
+
+END
+}
+
 export __PD=""
 
 qq-project-zd-start() {
@@ -22,21 +38,16 @@ qq-project-zd-start() {
         return
     fi
 
-    # if [[ -z $__CONSULTANT_EMAIL ]]
-    # then
-    #     __warn "Missing __CONSULTANT_EMAIL environment variable." 
-    #     __info "Add \"export __CONSULTANT_EMAIL=<name>\" to .zshrc"
-    #     return
-    # fi
-
-    local pid && read "pid?$fg[cyan]Project ID:$reset_color "
-    local pname && read "pname?$fg[cyan]Project Name:$reset_color "
+    local pid && read "pid?$(__cyan Project ID: )"
+    local pname && read "pname?$(__cyan Project Name: )"
     
     __PD="${pid}-${pname}-${__CONSULTANT_NAME// /}"
 
-    __OUTPUT=${__PROJECT_ROOT}/${__PD}
+    __ZD=${__PROJECT_ROOT}/${__PD}
 
-    mkdir -p ${__PROJECT_ROOT}/${__PD}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
+    mkdir -p ${__ZD}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
+
+    __PROJECT=${__ZD}/tool-output
 
     # wanted this to be an optional step, sometimes I'll create folders in advance due to calls with clients ahead of the test or prep work
     local setlog && read "setlog?$fg[cyan]Add a log file for this project (y/n)?:$reset_color "

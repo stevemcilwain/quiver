@@ -33,6 +33,7 @@ __ask() echo "$fg[cyan]$@ $reset_color"
 __prompt() echo "$fg[cyan][?] $@ $reset_color"
 __cyan() echo "$fg[cyan]$@ $reset_color"
 
+
 ############################################################# 
 # Self Update
 #############################################################

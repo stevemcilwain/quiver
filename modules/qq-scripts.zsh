@@ -22,7 +22,6 @@ Commands
 --------
 qq-scripts-recon: a zsh recon script
 qq-scripts-webrecon: a zsh webrecon script
-qq-scripts-wildcards: a bash wildcard recon script
 
 END
 }
@@ -32,16 +31,16 @@ export __SCRIPTS="${0:A:h}/scripts"
 qq-scripts-recon() {
   local d && read "d?$(__cyan DOMAIN: )"
   local o && read "o?$(__cyan ORG: )"
-  local out && read "out?$(__cyan OUTPUT: )"
-  print -z "zsh ${__SCRIPTS}/recon.zsh ${d} \"${o}\" \"${out}\""
+  local w && read "out?$(__cyan WORKING\(DIR\): )"
+  print -z "zsh ${__SCRIPTS}/recon.zsh ${d} \"${o}\" \"${w}\""
 }
 
 qq-scripts-webrecon() {
   local f=$(rlwrap -S "$(__cyan FILE:\(DOMAINS\))" -e '' -c -o cat)
-  __warn "Using output: $(pwd)"
+  local w && read "out?$(__cyan WORKING\(DIR\): )"
+  pushd ${w}
   print -z "zsh ${__SCRIPTS}/webrecon.zsh ${f}"
+  popd
 }
 
-qq-scripts-wildcards() {
-  print -z "bash ${__SCRIPTS}/wildcards.sh"
-}
+
