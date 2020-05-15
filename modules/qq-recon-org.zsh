@@ -25,7 +25,7 @@ END
 qq-recon-org-install() {
   sudo apt-get install metagoofil
   sudo apt-get install cewl
-  sudo apt-get install theHarvester
+  sudo apt-get install theharvester
 }
 
 qq-recon-org-files-metagoofil() {
@@ -34,6 +34,12 @@ qq-recon-org-files-metagoofil() {
   mkdir -p ${__PROJECT}/recon/files
   local ft && read "ft?$(__cyan EXTENSIONS: )"
   print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o ${__PROJECT}/recon/files"
+}
+
+qq-recon-org-files-urls() {
+  __check-project
+  qq-vars-set-domain
+  print -z "strings * | gf urls | grep $__DOMAIN >> ${__PROJECT}/recon/urls.txt"
 }
 
 qq-recon-org-wordlist-by-url-cewl() {

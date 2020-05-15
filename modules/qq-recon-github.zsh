@@ -47,7 +47,6 @@ qq-recon-github-endpoints() {
     print -z "github-endpoints.py -t ${GH_TOKEN} -d ${__DOMAIN} >> ${__PROJECT}/source/${__DOMAIN}.endpoints.txt "
 }
 
-
 qq-recon-github-gitrob() {
     __check-gh-token
     __check-project
