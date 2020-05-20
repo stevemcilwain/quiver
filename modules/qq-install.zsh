@@ -18,7 +18,7 @@ qq-install(){
 
   __pkgs whatweb gobuster wpscan wafw00f hydra nikto padbuster parsero dirb 
 
-  __pkgs  john theharvester eyewitness amass sublist3r dnsrecon 
+  __pkgs  john eyewitness amass sublist3r dnsrecon 
 
   __pkgs  wordlists seclists 
 
@@ -32,24 +32,18 @@ qq-install(){
   __info "Installing python packages... "
 
   sudo pip install wfuzz
-  sudo pip install shodan
-  sudo pip3 install updog
-
+ 
   __info "Installing golang and packages... "
 
   __install_golang
 
 
-
-
-  go get -v -u github.com/subfinder/goaltdns
-
   go get -v -u github.com/tomnomnom/httprobe
-  go get -v -u github.com/michenriksen/gitrob
   go get -v -u github.com/ffuf/ffuf
   
   
   go get -v -u github.com/tomnomnom/gron
+
   go get -v -u github.com/tomnomnom/meg
   go get -v -u github.com/tomnomnom/hacks/filter-resolved
   go get -v -u github.com/tomnomnom/hacks/html-tool
@@ -119,7 +113,7 @@ qq-install-golang() {
 qq-install-wordlist-commonspeak() {
   local name="commonspeak2"
   local url="https://github.com/assetnote/commonspeak2-wordlists.git"
-  local p="$HOME/tools/$name"
+  local p="$__TOOLS/$name"
 
   __info "$name"
  
@@ -138,7 +132,7 @@ qq-install-wordlist-commonspeak() {
 qq-install-massdns() {
   local name="massdns"
   local url="https://github.com/blechschmidt/massdns.git"
-  local p="$HOME/tools/$name"
+  local p="$__TOOLS/$name"
 
    __info "$name"
 
@@ -164,7 +158,7 @@ qq-install-massdns() {
 qq-install-github-search() {
   local name="github-search"
   local url="https://github.com/gwen001/github-search.git"
-  local p="$HOME/tools/$name"
+  local p="$__TOOLS/$name"
 
    __info "$name"
 
@@ -201,7 +195,7 @@ qq-install-gf() {
 qq-install-git-secrets() {
   local name="git-secrets"
   local url="https://github.com/awslabs/git-secrets.git"
-  local p="$HOME/tools/$name"
+  local p="$__TOOLS/$name"
 
    __info "$name"
 
@@ -242,9 +236,9 @@ qq-install-gitrob() {
 qq-install-pentest-tools() {
   local name="pentest-tools"
   local url="https://github.com/gwen001/pentest-tools.git"
-  local p="$HOME/tools/$name"
+  local p="$__TOOLS/$name"
 
-   __info "$name"
+  __info "$name"
 
   if [[ ! -d $p ]]
   then
@@ -259,6 +253,16 @@ qq-install-pentest-tools() {
     git pull
     popd
   fi
+}
+
+qq-install-protonvpn() {
+  local name="protonvpn"
+  __info "$name"
+
+  sudo apt install -y openvpn dialog python3-pip python3-setuptools
+  sudo pip3 install protonvpn-cli
+  __warn "ProtonVPN username and password required"
+  print -z "sudo protonvpn init"
 }
 
 

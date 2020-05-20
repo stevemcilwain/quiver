@@ -9,7 +9,9 @@ qq-vars-help() {
 
 qq-vars
 -------
-The vars namespace manages environment variables used in other functions.
+The vars namespace manages environment variables used in other functions. These
+variables are set per session, but can be saved with qq-vars-save and reloaded
+with qq-vars-load. The values are stored as files in .quiver/vars.
 
 Variables
 ---------
@@ -38,8 +40,72 @@ qq-vars-set-*: used to set each individual variable
 END
 }
 
-export __PROJECT=""
-export __LOGBOOK=""
+qq-vars() {
+  echo "$(__cyan __PROJECT: ) ${__PROJECT}"
+  echo "$(__cyan __LOGBOOK: ) ${__LOGBOOK}"
+  echo "$(__cyan __IFACE: ) ${__IFACE}"
+  echo "$(__cyan __DOMAIN: ) ${__DOMAIN}"
+  echo "$(__cyan __NETWORK: ) ${__NETWORK}"
+  echo "$(__cyan __RHOST: ) ${__RHOST}"
+  echo "$(__cyan __RPORT: ) ${__RPORT}"
+  echo "$(__cyan __LHOST: ) ${__LHOST}"
+  echo "$(__cyan __LPORT: ) ${__LPORT}"
+  echo "$(__cyan __URL: ) ${__URL}"
+  echo "$(__cyan __UA: ) ${__UA}"
+  echo "$(__cyan __WORDLIST: ) ${__WORDLIST}"
+  echo "$(__cyan __PASSLIST: ) ${__PASSLIST}"
+}
+
+qq-vars-clear() {
+  __PROJECT=""
+  __LOGBOOK=""
+  __IFACE=""
+  __DOMAIN=""
+  __NETWORK=""
+  __RHOST=""
+  __RPORT=""
+  __LHOST=""
+  __LPORT=""
+  __URL=""
+  __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+  __WORDLIST=""
+  __PASSLIST=""
+}
+
+qq-vars-save() {
+  echo "${__PROJECT}" > $__VARS/PROJECT
+  echo "${__LOGBOOK}" > $__VARS/LOGBOOK
+  echo "${__IFACE}" > $__VARS/IFACE
+  echo "${__DOMAIN}" > $__VARS/DOMAIN
+  echo "${__NETWORK}" > $__VARS/NETWORK
+  echo "${__RHOST}" > $__VARS/RHOST
+  echo "${__RPORT}" > $__VARS/RPORT
+  echo "${__LHOST}" > $__VARS/LHOST
+  echo "${__LPORT}" > $__VARS/LPORT
+  echo "${__URL}" > $__VARS/URL
+  echo "${__UA}" > $__VARS/UA
+  echo "${__WORDLIST}" > $__VARS/WORDLIST
+  echo "${__PASSLIST}" > $__VARS/PASSLIST
+}
+
+qq-vars-load() {
+    __PROJECT=$(cat $__VARS/PROJECT) 
+    __LOGBOOK=$(cat $__VARS/LOGBOOK)
+    __IFACE=$(cat $__VARS/IFACE)
+    __DOMAIN=$(cat $__VARS/DOMAIN)
+    __NETWORK=$(cat $__VARS/NETWORK)
+    __RHOST=$(cat $__VARS/RHOST)
+    __RPORT=$(cat $__VARS/RPORT)
+    __LHOST=$(cat $__VARS/LHOST)
+    __LPORT=$(cat $__VARS/LPORT)
+    __URL=$(cat $__VARS/URL)
+    __UA=$(cat $__VARS/UA)
+    __WORDLIST=$(cat $__VARS/WORDLIST)
+    __PASSLIST=$(cat $__VARS/PASSLIST)
+    qq-vars
+}
+
+
 export __IFACE=""
 export __DOMAIN=""
 export __NETWORK=""
@@ -52,51 +118,34 @@ export __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML
 export __WORDLIST=""
 export __PASSLIST="/usr/share/wordlists/rockyou.txt"
 
-# hard coded
+########## __PROJECT
 
-export __EXT_PHP=".php,.phtml,.pht,.xml,.inc,.log,.sql,.cgi"
-export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
-
-# set
+export __PROJECT=""
 
 qq-vars-set-project() {
-  __info "The project directory is the root directory for all command output (in subfolders)."
-  local relative=$(rlwrap -S "$(__cyan __PROJECT: )" -P "${__PROJECT}" -e '' -c -o cat)
+  __ask "Set the full path to the project root directory where all command output will be directed"
+  
+  local d=$(rlwrap -S "$(__cyan DIR: )" -P "${__PROJECT}" -e '' -c -o cat)
+  [[ "$d" == "~"* ]] && __err "~ not allowed, use the full path" && return
 
-  # validate that ~ is not used
-  [[ "$relative" == "~"* ]] && __warn "~ not allowed, use the full path" && return
-
-  # get the full path
-  __PROJECT=$(__abspath $relative)
-  [[ -z "${__PROJECT}" ]] && __PROJECT=$relative
-
-  # if the directory doesn't exist, create it
-  if [[ ! -d ${__PROJECT} ]]
-  then
-    mkdir -p ${__PROJECT}
-  fi
-
+  __PROJECT=$d && mkdir -p ${__PROJECT}
 }
 
 __check-project() { [[ -z "${__PROJECT}" ]] && qq-vars-set-project }
 
+########## __LOGBOOK
+
+export __LOGBOOK=""
+
 qq-vars-set-logbook() {
-  local relative=$(rlwrap -S "$(__cyan __LOGBOOK\(DIR\): )" -P "$HOME" -e '' -c -o cat)
+  __ask "Set the full path to the directory of the logbook file (filename not included)."
+  
+  local d=$(rlwrap -S "$(__cyan DIR: )" -P "$HOME" -e '' -c -o cat)
+  [[ "$d" == "~"* ]] && __err "~ not allowed, use the full path" && return
 
-  # validate that ~ is not used
-  [[ "$relative" == "~"* ]] && __warn "~ not allowed, use the full path" && return
+  mkdir -p $d
 
-  # get the full path
-  local logpath=$(__abspath $relative)
-  [[ -z "${logpath}" ]] && logpath=$relative
-
-  # if the directory doesn't exist, create it
-  if [[ ! -d ${logpath} ]]
-  then
-    mkdir -p ${logpath}
-  fi
-
-  __LOGBOOK="${logpath}/logbook.md"
+  __LOGBOOK="${d}/logbook.md"
   
   if [[ -f "${__LOGBOOK}" ]]; then
       __warn "${__LOGBOOK} already exists, set as active log"
@@ -199,101 +248,8 @@ qq-vars-set-passlist() {
   __PASSLIST=$(__menu-helper $(find  /usr/share/seclists/Passwords | sort))
 }
 
-# all settings
-
-qq-vars-clear() {
-  __PROJECT=""
-  __LOGBOOK=""
-  __IFACE=""
-  __DOMAIN=""
-  __NETWORK=""
-  __RHOST=""
-  __RPORT=""
-  __LHOST=""
-  __LPORT=""
-  __URL=""
-  __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-  __WORDLIST=""
-  __PASSLIST=""
-}
-
-qq-vars() {
-  echo "$(__cyan __PROJECT: ) ${__PROJECT}"
-  echo "$(__cyan __LOGBOOK: ) ${__LOGBOOK}"
-  echo "$(__cyan __IFACE: ) ${__IFACE}"
-  echo "$(__cyan __DOMAIN: ) ${__DOMAIN}"
-  echo "$(__cyan __NETWORK: ) ${__NETWORK}"
-  echo "$(__cyan __RHOST: ) ${__RHOST}"
-  echo "$(__cyan __RPORT: ) ${__RPORT}"
-  echo "$(__cyan __LHOST: ) ${__LHOST}"
-  echo "$(__cyan __LPORT: ) ${__LPORT}"
-  echo "$(__cyan __URL: ) ${__URL}"
-  echo "$(__cyan __UA: ) ${__UA}"
-  echo "$(__cyan __WORDLIST: ) ${__WORDLIST}"
-  echo "$(__cyan __PASSLIST: ) ${__PASSLIST}"
-}
-
-qq-vars-save() {
-  local vars="$HOME/.quiver/vars"
-  mkdir -p $vars
-
-  echo "${__PROJECT}" > $vars/PROJECT
-  echo "${__LOGBOOK}" > $vars/LOGBOOK
-  echo "${__IFACE}" > $vars/IFACE
-  echo "${__DOMAIN}" > $vars/DOMAIN
-  echo "${__NETWORK}" > $vars/NETWORK
-  echo "${__RHOST}" > $vars/RHOST
-  echo "${__RPORT}" > $vars/RPORT
-  echo "${__LHOST}" > $vars/LHOST
-  echo "${__LPORT}" > $vars/LPORT
-  echo "${__URL}" > $vars/URL
-  echo "${__UA}" > $vars/UA
-  echo "${__WORDLIST}" > $vars/WORDLIST
-  echo "${__PASSLIST}" > $vars/PASSLIST
-}
-
-qq-vars-load() {
-    local vars="$HOME/.quiver/vars"
-    __PROJECT=$(cat $vars/PROJECT) 
-    __LOGBOOK=$(cat $vars/LOGBOOK)
-    __IFACE=$(cat $vars/IFACE)
-    __DOMAIN=$(cat $vars/DOMAIN)
-    __NETWORK=$(cat $vars/NETWORK)
-    __RHOST=$(cat $vars/RHOST)
-    __RPORT=$(cat $vars/RPORT)
-    __LHOST=$(cat $vars/LHOST)
-    __LPORT=$(cat $vars/LPORT)
-    __URL=$(cat $vars/URL)
-    __UA=$(cat $vars/UA)
-    __WORDLIST=$(cat $vars/WORDLIST)
-    __PASSLIST=$(cat $vars/PASSLIST)
-    qq-vars
-}
 
 # helpers
-
-__abspath() {
-    # Thanks to: https://stackoverflow.com/questions/3915040/bash-fish-command-to-print-absolute-path-to-a-file/23002317#23002317
-    # generate absolute path from relative path
-    # $1     : relative filename
-    # return : absolute path
-
-    if [ -d "$1" ]; then
-        # dir
-        (cd "$1"; pwd)
-    elif [ -f "$1" ]; then
-        # file
-        if [[ $1 = /* ]]; then
-            echo "$1"
-        elif [[ $1 == */* ]]; then
-            echo "$(cd "${1%/*}"; pwd)/${1##*/}"
-        else
-            echo "$(pwd)/$1"
-        fi
-    fi
-}
-
-
 
 __netpath() { 
   __check-project

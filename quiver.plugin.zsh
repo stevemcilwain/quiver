@@ -29,10 +29,9 @@ __info() echo "$fg[cyan][*]$reset_color $@"
 __ok() echo "$fg[blue][+]$reset_color $@"
 __warn() echo "$fg[yellow][>]$reset_color $@"
 __err() echo "$fg[red][!]$reset_color $@ "
-__ask() echo "$fg[cyan]$@ $reset_color"
+__ask() echo "$fg[yellow]$@ $reset_color"
 __prompt() echo "$fg[cyan][?] $@ $reset_color"
 __cyan() echo "$fg[cyan]$@ $reset_color"
-
 
 ############################################################# 
 # Self Update
@@ -96,6 +95,16 @@ for f in ${0:A:h}/modules/qq-* ; do
   echo "[+] sourcing $f ... "  >> ${__LOGFILE}
   source $f >> ${__LOGFILE} 2>&1
 done
+
+# check for directories
+
+mkdir -p $HOME/.quiver/{vars,globals}
+
+export __VARS=$HOME/.quiver/vars
+export __GLOBALS=$HOME/.quiver/globals
+export __PAYLOADS="$__PLUGIN/payloads"
+export __SCRIPTS="$__PLUGIN/scripts"
+export __TOOLS="$HOME/tools"
 
 # check for essential packages
 

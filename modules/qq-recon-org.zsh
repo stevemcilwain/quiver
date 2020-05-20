@@ -23,17 +23,15 @@ END
 }
 
 qq-recon-org-install() {
-  sudo apt-get install metagoofil
-  sudo apt-get install cewl
-  sudo apt-get install theharvester
+  __pkgs whois metagoofil cewl theharvester
 }
 
 qq-recon-org-files-metagoofil() {
   __check-project
+  __check-ext-docs
   qq-vars-set-domain
   mkdir -p ${__PROJECT}/recon/files
-  local ft && read "ft?$(__cyan EXTENSIONS: )"
-  print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${ft} -o ${__PROJECT}/recon/files"
+  print -z "metagoofil -u \"${__UA}\" -d ${__DOMAIN} -t ${__EXT_DOCS} -o ${__PROJECT}/recon/files"
 }
 
 qq-recon-org-files-urls() {

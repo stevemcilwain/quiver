@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-############################################################# 
+#############################################################
 # wildcards.sh
 #
 # This script is intended to run on a VPS as a cron job.
@@ -14,19 +14,31 @@
 # Setup cron to run at a certain hour every night, example below at 2 am
 # crontab -e
 # m h  dom mon dow   command
-# 0 2 * * * /bin/bash /path/to/wildcards.sh
+# 0 2 * * * /bin/bash /path/to/wildcards.sh <domain> <webhook url>
 
-[[ -z $1 ]] && __err "Missing argument.\nUsage: bash $0 <file>" && exit
+DOMAIN=$1
+SLACK=$2
 
-FILE=$1
-DIR=$(pwd)
+if [[ -z "$DOMAIN" ]]
+then
+        echo "[x] Missing domain"
+        exit 1
+fi
 
-for WILDCARD in $(cat $FILE)
-do
-    amass enum -active -ip -d $DOMAIN
-    DIFF=$(amass track -d $DOMAIN -last 2 | grep Found | awk '{print $2}')
-    if [[ ! -z "$DIFF" ]]
-    then
-        curl -X POST --data-urlencode payload="{\"text\": \"$DIFF\"}" $__WILDCARDS_SLACK
-    fi
-done
+echo $(date) >> log.txt
+echo "$DOMAIN" >> log.txt
+echo "$SLACK" >> log.txt
+
+curl -X POST --data-urlencode payload="{\"text\": \"Wildcards starting for $DOMAIN \"}" $SLACK
+
+amass enum -active -ip -d $DOMAIN
+DIFF=$(amass track -d $DOMAIN -last 2 | grep Found | awk '{print $2}')
+
+echo "Diff: $DIFF" >> log.txt
+
+if [[ ! -z "$DIFF" ]]
+then
+        curl -X POST --data-urlencode payload="{\"text\": \"$DIFF\"}" $SLACK
+fi
+
+curl -X POST --data-urlencode payload="{\"text\": \"Wildcards completed for $DOMAIN \"}" $SLACK

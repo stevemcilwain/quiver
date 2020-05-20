@@ -14,10 +14,6 @@ scripts directory.
 
 ** IN DEVELOPMENT, NOT READY FOR USE **
 
-Variables
----------
-__SCRIPTS: location of the scripts directory, automatically generated
-
 Commands
 --------
 qq-scripts-recon: a zsh recon script
@@ -25,8 +21,6 @@ qq-scripts-webrecon: a zsh webrecon script
 
 END
 }
-
-export __SCRIPTS="${0:A:h}/scripts"
 
 qq-scripts-recon() {
   local d && read "d?$(__cyan DOMAIN: )"

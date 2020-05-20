@@ -29,20 +29,20 @@ qq-recon-subs-wayback: gather subdomains from Wayback Machine
 
 Commands - brute force
 ----------------------
-qq-recon-subs-brute-gobuster: brute force subdomains using gobuster and a wordlist
-qq-recon-subs-brute-dnsrecon: brute force subdomains using dnsrecon and a wordlist
+qq-recon-subs-brute-massdns: try to resolve a list of subdomains generated for brute forcing
+qq-recon-subs-gen-wordlist: generate a wordlist of possible sub domains 
 
 Commands - processing
 ---------------------
 qq-recon-subs-resolve-massdns: resolve a file of subdomains using massdns
-qq-recon-subs-gen-wordlist: generate a wordlist of possible subs
+qq-recon-subs-resolve-parse: parse resolved.txt into A, CNAME and IP's
 
 END
 }
 
 qq-recon-subs-install() {
 
-  __pkgs gobuster amass curl seclists dnsrecon
+  __pkgs gobuster amass curl wordlists seclists dnsrecon dnsutils
 
   qq-install-golang
   go get -u github.com/projectdiscovery/subfinder/cmd/subfinder
@@ -98,22 +98,28 @@ qq-recon-subs-wayback() {
   print -z "echo ${__DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" >> $(__dompath)/subs.txt"
 }
 
-qq-recon-subs-brute-gobuster() {
-  __check-project
-  qq-vars-set-domain
-  local t && read "t?$(__cyan THREADS: )"
-  print -z "gobuster dns -r 8.8.8.8 -t ${t} --wildcard -d ${__DOMAIN} -c -i -w /usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt >> $(__dompath)/subs.txt"
-}
-
-qq-recon-subs-brute-dnsrecon() {
-  __check-project
-  qq-vars-set-domain
-  print -z "dnsrecon -d ${__DOMAIN} -t brt -D /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -c $(__dompath)/subs.csv "
-}
-
 qq-recon-subs-resolve-massdns() {
   __check-project
-  print -z "massdns -r /opt/recon/massdns/lists/resolvers.txt -t A -o S -w ${__PROJECT}/domains/resolved.txt $(__dompath)/subs.txt"
+  __check-resolvers
+  qq-vars-set-domain
+  print -z "massdns -r ${__RESOLVERS} -s 100 -c 3 -t A -o S -w  $(__dompath)/resolved.txt $(__dompath)/subs.txt"
+}
+
+qq-recon-subs-brute-massdns() {
+  __check-project
+  __check-resolvers
+  qq-vars-set-domain
+  [[ -f $(__dompath)/subs.wordlist.txt ]] || __info "Use qq-recon-subs-gen-wordlist to create a wordlist of subdomains"
+  local f=$(rlwrap -S "$(__cyan FILE: )" -e '' -P "$(__dompath)" -c -o cat)
+  print -z "massdns -r ${__RESOLVERS} -s 100 -c 3 -t A -o S -w  $(__dompath)/resolved-brute.txt $f"
+}
+
+qq-recon-subs-resolve-parse() {
+  __check-project
+  qq-vars-set-domain
+  grep -ie "CNAME" $(__dompath)/resolved.txt | sort -u > $(__dompath)/resolved-CNAME.txt
+  grep -v "CNAME" $(__dompath)/resolved.txt | sort -u > $(__dompath)/resolved-A.txt
+  grep -v "CNAME" $(__dompath)/resolved.txt | sort -u | cut -d' ' -f3 | sort -u > $(__dompath)/resolved-IP.txt
 }
 
 qq-recon-subs-gen-wordlist() {

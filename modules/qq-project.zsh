@@ -10,44 +10,65 @@ qq-project-help() {
 qq-project
 -------------
 The project namespace provides commands to setup custom project
-directory structures and variables.
+directory structures and variables. This is an expirimental 
+namespace and not commonly used.
+
+Variables
+---------
+__PROJECT_ZD_CONSULTANT: a global variable for consultant name used in ZD projects
+__PROJECT_ZD_ROOT: a global variable for the project root folder used in ZD projects
 
 Commands
 --------
 qq-project-zd-start: scaffolds directory structure and logbook for "zd" projects
 qq-project-zd-end: zips and removes directories and data for "zd" projects
+qq-project-zd-root-set: sets the __PROJECT_ZD_ROOT variable
+qq-project-zd-consultant-set: sets the __PROJECT_ZD_CONSULTANT variable
 
 END
 }
 
-export __PD=""
+export __PROJECT_ZD=""
+export __PROJECT_ZD_CONSULTANT="$(cat ${__USER}/__PROJECT_ZD_CONSULTANT 2> /dev/null)"
+export __PROJECT_ZD_ROOT="$(cat ${__USER}/__PROJECT_ZD_ROOT 2> /dev/null)"
+
+__check-project-zd() {
+  if [[ -z $__PROJECT_ZD_CONSULTANT ]]
+  then
+    qq-project-zd-root-set
+  fi
+  if [[ -z $__PROJECT_ZD_ROOT ]]
+  then
+    qq-project-zd-consultant-set
+  fi
+}
+
+qq-project-zd-root-set() {
+  __warn "Enter the full path to the root folder of your projects."
+  __PROJECT_ZD_ROOT=$(rlwrap -S "$(__cyan DIR: )" -e '' -P "$HOME" -c -o cat)
+  echo "${__PROJECT_ZD_ROOT}" > ${__USER}/PROJECT_ZD_ROOT
+  __ok "Saved in ${__USER}/PROJECT_ZD_ROOT"
+}
+
+qq-project-zd-consultant-set() {
+  __warn "Enter consultant name below."
+  __PROJECT_ZD_CONSULTANT=$(rlwrap -S "$(__cyan NAME: )" -e '' -P "$HOME" -c -o cat)
+  echo "${__PROJECT_ZD_CONSULTANT}" > ${__USER}/PROJECT_ZD_CONSULTANT
+  __ok "Saved in ${__USER}/PROJECT_ZD_CONSULTANT"
+}
 
 qq-project-zd-start() {
 
-    if [[ -z $__PROJECT_ROOT ]]
-    then
-        __warn "Missing __PROJECT_ROOT environment variable." 
-        __info "Add \"export __PROJECT_ROOT=<path_to_root-directory>\" to .zshrc"
-        return
-    fi
+    __check-project-zd
 
-    if [[ -z $__CONSULTANT_NAME ]]
-    then
-        __warn "Missing __CONSULTANT_NAME environment variable." 
-        __info "Add \"export __CONSULTANT_NAME=<name>\" to .zshrc"
-        return
-    fi
+    local pid && read "pid?$(__cyan PROJECT ID: )"
+    local pname && read "pname?$(__cyan PROJECT Name: )"
+    local fname="${pid}-${pname}-${__CONSULTANT_NAME// /}"
+    local fullpath=${__PROJECT_ROOT}/${fname}
 
-    local pid && read "pid?$(__cyan Project ID: )"
-    local pname && read "pname?$(__cyan Project Name: )"
-    
-    __PD="${pid}-${pname}-${__CONSULTANT_NAME// /}"
-
-    __ZD=${__PROJECT_ROOT}/${__PD}
-
-    mkdir -p ${__ZD}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
-
-    __PROJECT=${__ZD}/tool-output
+    #scaffold
+    mkdir -p ${fullpath}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
+    __PROJECT=${fullpath}/tool-output
 
     # wanted this to be an optional step, sometimes I'll create folders in advance due to calls with clients ahead of the test or prep work
     local setlog && read "setlog?$fg[cyan]Add a log file for this project (y/n)?:$reset_color "
@@ -62,17 +83,11 @@ qq-project-zd-start() {
             echo ""
             ;;
     esac   
-
 }
 
 qq-project-zd-end() {
 
-    if [[ -z $__PROJECT_ROOT ]]
-    then
-        __warn "Missing __PROJECT_ROOT environment variable." 
-        __info "Add \"export __PROJECT_ROOT=<path_to_root-directory>\" to .zshrc"
-        return
-    fi
+    __check-project-zd
 
     __ask "Select a project folder: "
     local pd=$(__menu-helper $(find $__PROJECT_ROOT -mindepth 1 -maxdepth 1 -type d))

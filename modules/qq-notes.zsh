@@ -10,11 +10,6 @@ qq-notes-help() {
 qq-notes
 -------
 The notes namespace provides searching and reading of markdown notes.
-Define the path to your notes by settings __NOTES=<path> in your .zshrc file.
-
-Variables
----------
-__NOTES: the path to your markdown notes
 
 Commands
 --------
@@ -34,17 +29,6 @@ qq-notes-install() {
   sudo apt-get install ripgrep
   wget https://github.com/sharkdp/bat/releases/download/v0.15.0/bat_0.15.0_amd64.deb && sudo dpkg -i bat_0.15.0_amd64.deb
   
-}
-
-# helpers
-
-__notes-check() {
-  if [[ -z $__NOTES ]]
-  then
-    __warn "Missing __NOTES environment variable." 
-    __info "Add \"export __NOTES=<path_to_markdown_notes>\" to .zshrc"
-    return
-  fi
 }
 
 qq-notes() {

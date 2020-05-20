@@ -48,6 +48,14 @@ netss: list network connections
 netls: lists network sockets
 grip: grep for IP addresses
 
+Proton VPN
+----------
+pv-check: installs or updates the protonvpn cli
+pvt: intiate a TCP VPN connection
+pvu: initiate a UDP VPN connection
+pvd: disconnect the VPN
+pvs: check VPN status
+
 ZSH
 ---
 zprc: print zshrc
@@ -124,6 +132,13 @@ alias netwatch="qq-aliases-net-watch-netstat"
 alias netss="qq-aliases-net-ss"
 alias netls="qq-aliases-net-lsof"
 alias grip="grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'"
+
+#proton vpn
+alias pv-check="sudo pip3 install protonvpn-cli --upgrade"
+alias pvt="sudo protonvpn c -f"
+alias pvu="sudo protonvpn c -f -p udp"
+alias pvd="sudo protonvpn disconnect"
+alias pvs="sudo protonvpn status"
 
 #zsh
 alias zprc="cat ~/.zshrc"
