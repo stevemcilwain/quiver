@@ -28,6 +28,7 @@ qq-project-zd-consultant-set: sets the __PROJECT_ZD_CONSULTANT variable
 END
 }
 
+
 export __PROJECT_ZD=""
 export __PROJECT_ZD_CONSULTANT="$(cat ${__USER}/__PROJECT_ZD_CONSULTANT 2> /dev/null)"
 export __PROJECT_ZD_ROOT="$(cat ${__USER}/__PROJECT_ZD_ROOT 2> /dev/null)"

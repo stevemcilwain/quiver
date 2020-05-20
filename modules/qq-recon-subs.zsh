@@ -109,14 +109,15 @@ qq-recon-subs-brute-massdns() {
   __check-project
   __check-resolvers
   qq-vars-set-domain
-  [[ -f $(__dompath)/subs.wordlist.txt ]] || __info "Use qq-recon-subs-gen-wordlist to create a wordlist of subdomains"
-  local f=$(rlwrap -S "$(__cyan FILE: )" -e '' -P "$(__dompath)" -c -o cat)
+  __ask "Select the file containing a custom wordlist for ${__DOMAIN} (qq-recon-subs-gen-wordlist)"
+  local f=$(__askpath FILE $(__dompath))
   print -z "massdns -r ${__RESOLVERS} -s 100 -c 3 -t A -o S -w  $(__dompath)/resolved-brute.txt $f"
 }
 
 qq-recon-subs-resolve-parse() {
   __check-project
   qq-vars-set-domain
+  __info "Generating files resolved-*.txt"
   grep -ie "CNAME" $(__dompath)/resolved.txt | sort -u > $(__dompath)/resolved-CNAME.txt
   grep -v "CNAME" $(__dompath)/resolved.txt | sort -u > $(__dompath)/resolved-A.txt
   grep -v "CNAME" $(__dompath)/resolved.txt | sort -u | cut -d' ' -f3 | sort -u > $(__dompath)/resolved-IP.txt
@@ -125,6 +126,6 @@ qq-recon-subs-resolve-parse() {
 qq-recon-subs-gen-wordlist() {
   __check-project
   qq-vars-set-domain
-  local f=$(rlwrap -S "$(__cyan FILE: )" -e '' -P "/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt" -c -o cat)
+  local f=$(__askpath FILE /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt)
   print -z "for s in \$(cat ${f}); do echo \$s.${__DOMAIN} >> $(__dompath)/subs.wordlist.txt; done"
 }

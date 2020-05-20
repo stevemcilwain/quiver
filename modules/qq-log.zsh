@@ -34,19 +34,6 @@ qq-log-install() {
 
 qq-log-set() {
     qq-vars-set-logbook
-
-    # [[ -z $__PROJECT ]] && qq-vars-sezt-project
-
-    # local log="${__PROJECT}/logbook.md"
-    
-    # if [[ -f "${log}" ]]; then
-    #     __warn "${log} already exists, set as active log"
-    # else
-    #     touch ${log}
-    #     echo "# Logbook" >> ${log}
-    #     echo " " >> ${log}
-    #     __ok "${log} created."
-    # fi
 }
 alias qls="qq-log-set"
 

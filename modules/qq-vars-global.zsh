@@ -22,6 +22,8 @@ __EXT_DOCS: a list of common documents file types
 __API_GITHUB: your personal Github API key
 __RESOLVERS: path to public resolvers file 
 __NOTES: path to the directory containing your markdown notes for qq-notes
+__MNU_UA: path to the a file containing user-agent strings
+__MNU_WORDLISTS: path to the a file containing a list of favorite wordlists
 
 Commands
 --------
@@ -36,8 +38,10 @@ qq-vars-global() {
   echo "$(__cyan __EXT_PHP: ) ${__EXT_PHP}"
   echo "$(__cyan __EXT_DOCS: ) ${__EXT_DOCS}"
   echo "$(__cyan __API_GITHUB: ) ${__API_GITHUB}"
-  echo "$(__cyan __RESOLVERS: ) ${__RESOLVERS}"
   echo "$(__cyan __NOTES: ) ${__NOTES}"
+  echo "$(__cyan __RESOLVERS: ) ${__RESOLVERS}"
+  echo "$(__cyan __MNU_UA: ) ${__MNU_UA}"
+  echo "$(__cyan __MNU_WORDLISTS: ) ${__MNU_WORDLISTS}"
 }
 
 ########## __IMPACKET
@@ -46,7 +50,7 @@ export __IMPACKET=$(cat ${__GLOBALS}/IMPACKET || echo "/usr/share/doc/python3-im
 
 qq-vars-global-set-impacket() {
   __ask "Set the full path to the python3-impacket/examples directory."
-  __IMPACKET=$(rlwrap -S "$(__cyan DIR: )" -P "/" -e '' -c -o cat)
+  __IMPACKET=$(__askpath DIR /)
   echo "${__IMPACKET}" > ${__GLOBALS}/IMPACKET
 }
 
@@ -94,7 +98,7 @@ export __RESOLVERS=$(cat ${__GLOBALS}/RESOLVERS || echo "${__PAYLOADS}/resolvers
 
 qq-vars-global-set-resolvers() {
   __ask "Set the full path to the file containing a list of resolvers."
-  __RESOLVERS=$(rlwrap -S "$(__cyan FILE: )" -P "/" -e '' -c -o cat)
+  __RESOLVERS=$(__askpath FILE $HOME)
   echo "${__RESOLVERS}" > ${__GLOBALS}/RESOLVERS
 }
 
@@ -107,10 +111,28 @@ export __NOTES="$(cat ${__GLOBALS}/NOTES 2> /dev/null)"
 
 qq-vars-global-set-notes() {
   __ask "Set the full path to the directory containing markdown notes."
-  __NOTES=$(rlwrap -S "$(__cyan DIR: )" -P "/" -e '' -c -o cat)
+  __NOTES=$(__askpath DIR $HOME)
   echo "${__NOTES}" > ${__GLOBALS}/NOTES
 }
 
 __check-notes() { [[ -z "${__NOTES}" ]] && qq-vars-global-set-notes }
 
+########## __MNU_UA
 
+export __MNU_UA="$(cat ${__GLOBALS}/MNU_UA || echo "${__PAYLOADS}/user-agents.txt")"
+
+qq-vars-global-set-mnu-ua() {
+  __ask "Set the full path to the file containing a list of user agent strings"
+  __MNU_UA=$(__askpath FILE $HOME)
+  echo "${__MNU_UA}" > ${__GLOBALS}/MNU_UA
+}
+
+########## __MNU_WORDLISTS
+
+export __MNU_WORDLISTS="$(cat ${__GLOBALS}/MNU_WORDLISTS || echo "${__PAYLOADS}/wordlists.txt")"
+
+qq-vars-global-set-mnu-wordlists() {
+  __ask "Set the full path to the file containing a list of favorite wordlists"
+  __MNU_WORDLISTS=$(__askpath FILE $HOME)
+  echo "${__MNU_WORDLISTS}" > ${__GLOBALS}/MNU_WORDLISTS
+}

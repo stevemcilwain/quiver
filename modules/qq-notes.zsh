@@ -22,11 +22,9 @@ END
 }
 
 qq-notes-install() {
-  
+  __pkgs fzf ripgrep
   qq-install-golang
   go get -u github.com/charmbracelet/glow
-  sudo apt-get install fzf
-  sudo apt-get install ripgrep
   wget https://github.com/sharkdp/bat/releases/download/v0.15.0/bat_0.15.0_amd64.deb && sudo dpkg -i bat_0.15.0_amd64.deb
   
 }

@@ -24,7 +24,7 @@ END
 
 qq-pivot-install() {
 
-    __pkgs sshfs
+    __pkgs sshfs rsync
 
 }
 

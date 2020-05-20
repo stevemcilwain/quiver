@@ -33,19 +33,19 @@ qq-bounty-install() {
 
 qq-bounty-scope() {
   qq-vars-set-project
-  local word && read "word?$fg[cyan]WORD:$reset_color "
+  local word && read "word?$(__cyan WORD: )"
   print -z "echo \"^.*?${word}\..*\$ \" >> ${__PROJECT}/scope.txt"
 }
 
 qq-bounty-rescope-burp() {
   qq-vars-set-project
-  local url && read "url?$fg[cyan]URL:$reset_color "
+  local url && read "url?$(__cyan URL: )"
   print -z "rescope --burp -u ${url} -o ${__PROJECT}/burp/scope.json"
 }
 
 qq-bounty-rescope-txt() {
   qq-vars-set-project
-  local url && read "url?$fg[cyan]URL:$reset_color "
+  local url && read "url?$(__cyan URL: )"
   print -z "rescope --raw -u ${url} -o ${__PROJECT}/scope.txt"
 }
 
@@ -60,24 +60,38 @@ qq-bounty-sudoers-harden() {
 }
 alias hardmode="qq-bounty-sudoers-harden"
 
-qq-bounty-sync-data() {
+qq-bounty-sync-remote-to-local() {
   __warn "Enter your SSH connection username@remote_host"
   local ssh && read "ssh?$(__cyan SSH: )"
   __warn "Enter the full remote path to the directory your want to copy from"
-  local rdir $$ read "rdir?$(__cyan REMOTE DIR: )"
+  local rdir && read "rdir?$(__cyan REMOTE DIR: )"
   __warn "Enter the full local path to the directory to use as a mount point"
-  local mnt $$ read "mnt?$(__cyan LOCAL MOUNT: )"
+  local mnt && read "mnt?$(__cyan LOCAL MOUNT: )"
   __warn "Enter the full local path to the directory to sync the data to"
-  local ldir $$ read "ldir?$(__cyan LOCAL DIR: )"
+  local ldir && read "ldir?$(__cyan LOCAL DIR: )"
 
+  sudo mkdir -p $mnt
+  
   __ok "Mounting $rdir to $mnt ..."
-  sshfs ${ssh}:${rdir} ${mnt}
+  sudo sshfs ${ssh}:${rdir} ${mnt}
 
   __ok "Syncing data from $mnt to $ldir ..."
-  rsync -avuc ${mnt} ${ldir}
+  sudo rsync -avuc ${mnt} ${ldir}
 
   __ok "Unmounting $mnt. ..."
   sudo fusermount -u ${mnt}
 
   __ok "Sync Completed"
 }
+
+qq-bounty-sync-local-file-to-remote() {
+  __warn "Enter your SSH connection username@remote_host"
+  local ssh && read "ssh?$(__cyan SSH: )"
+  __warn "Enter the full local path to the file you want to copy to your remote server"
+  local lfile=$(__askpath "LOCAL FILE" $HOME)
+  __warn "Enter the full remote path to the directory your want to copy the file to"
+  local rdir && read "rdir?$(__cyan REMOTE DIR: )"
+  print -z "rsync -avz -e \"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\" --progress $lfile $ssh:$rdir"
+}
+
+

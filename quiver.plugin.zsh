@@ -33,6 +33,27 @@ __ask() echo "$fg[yellow]$@ $reset_color"
 __prompt() echo "$fg[cyan][?] $@ $reset_color"
 __cyan() echo "$fg[cyan]$@ $reset_color"
 
+__askpath() { rlwrap -S "$(__cyan $1: )" -P "$2" -e '' -c -o cat }
+__prefill() { rlwrap -S "$(__cyan $1: )" -P "$2" -e '' -o cat }
+
+__rand() {
+    if [ "$#" -eq  "1" ]
+    then
+        head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 ; echo ''
+    else
+        head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16 ; echo ''
+    fi  
+}
+
+__menu-helper() {
+  PS3="$(__cyan Select: )"
+  COLUMNS=6
+  select o in $@; do break; done
+  echo ${o}
+}
+
+
+
 ############################################################# 
 # Self Update
 #############################################################
