@@ -14,18 +14,18 @@ Commands are executed against specific name servers (__RHOST) rather than public
 
 Commands
 --------
-qq-enum-dns-install: installs dependencies
-qq-enum-dns-nmap-sweep: scan a network for services
-qq-enum-dns-tcpdump: capture traffic to and from a host
-qq-enum-dns-host-txfr: attempt a zone transfer
-qq-enum-dns-host-all: list all types
-qq-enum-dns-host-txt: list txt records
-qq-enum-dns-host-mx: list mx records
-qq-enum-dns-host-ns: list ns records
-qq-enum-dns-host-srv: list srv records
-qq-enum-dns-nmap-ad: discover Active Directory related records
-qq-enum-dns-dnsrecon: discover dns records, servers and attempt zone txfrs
-qq-enum-dns-dnsrecon-reverse: do reverse lookups on an IP network
+qq-enum-dns-install:              installs dependencies
+qq-enum-dns-nmap-sweep:           scan a network for services
+qq-enum-dns-tcpdump:              capture traffic to and from a host
+qq-enum-dns-host-txfr:            attempt a zone transfer
+qq-enum-dns-host-all:             list all types
+qq-enum-dns-host-txt:             list txt records
+qq-enum-dns-host-mx:              list mx records
+qq-enum-dns-host-ns:              list ns records
+qq-enum-dns-host-srv:             list srv records
+qq-enum-dns-nmap-ad:              discover Active Directory related records
+qq-enum-dns-dnsrecon:             discover dns records, servers and attempt zone txfrs
+qq-enum-dns-dnsrecon-reverse:     do reverse lookups on an IP network
 
 END
 }

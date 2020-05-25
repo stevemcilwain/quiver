@@ -18,27 +18,27 @@ as the list of favorite user-agents or wordlists (qq-vars-global-help).
 
 Variables
 ---------
-__PROJECT: the root directory used for all output, ex: /projects/example
-__LOGBOOK: the logbook.md markdown file used in qq-log commands 
-__IFACE: the interface to use for commands, ex: eth0
-__DOMAIN: the domain to use for commands, ex: example.org
-__NETWORK: the subnet to use for commands, ex: 10.1.2.0/24
-__RHOST: the remote host or target, ex: 10.1.2.3, example: target.example.org
-__RPORT: the remote port; ex: 80
-__LHOST: the accessible local IP address, ex: 10.1.2.3
-__LPORT: the accessible local PORT, ex: 4444
-__URL: a target URL, example: https://target.example.org
-__UA: the user agent to use for commands, ex: googlebot
-__WORDLIST: path to a wordlist file, ex: /usr/share/wordlists/example.txt
-__PASSLIST: path to a wordlist for password brute forcing, ex: /usr/share/wordlists/rockyou.txt
+__PROJECT:     the root directory used for all output, ex: /projects/example
+__LOGBOOK:     the logbook.md markdown file used in qq-log commands 
+__IFACE:       the interface to use for commands, ex: eth0
+__DOMAIN:      the domain to use for commands, ex: example.org
+__NETWORK:     the subnet to use for commands, ex: 10.1.2.0/24
+__RHOST:       the remote host or target, ex: 10.1.2.3, example: target.example.org
+__RPORT:       the remote port; ex: 80
+__LHOST:       the accessible local IP address, ex: 10.1.2.3
+__LPORT:       the accessible local PORT, ex: 4444
+__URL:         a target URL, example: https://target.example.org
+__UA:          the user agent to use for commands, ex: googlebot
+__WORDLIST:    path to a wordlist file, ex: /usr/share/wordlists/example.txt
+__PASSLIST:    path to a wordlist for password brute forcing, ex: /usr/share/wordlists/rockyou.txt
 
 Commands
 --------
-qq-vars: alias qv, list all current variable values
-qq-vars-save: alias qvs, save all current variable values ($HOME/.quiver)
-qq-vars-load: alias qvl, restores all current variable values ($HOME/.quiver)
-qq-vars-clear: clears all current variable values
-qq-vars-set-*: used to set each individual variable
+qq-vars:           alias qv, list all current variable values
+qq-vars-save:      alias qvs, save all current variable values ($HOME/.quiver)
+qq-vars-load:      alias qvl, restores all current variable values ($HOME/.quiver)
+qq-vars-clear:     clears all current variable values
+qq-vars-set-*:     used to set each individual variable
 
 END
 }
@@ -162,9 +162,9 @@ qq-vars-set-iface() {
   if [[ -z "${__IFACE}" ]]
   then
     __ask "Choose an interface: "
-    __IFACE=$(__menu-helper $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')) 
+    __IFACE=$(__menu $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')) 
   else
-    __IFACE=$(__prefill __IFACE ${__IFACE})
+    __prefill __IFACE IFACE ${__IFACE}
   fi
 
 }
@@ -175,7 +175,7 @@ __check-iface() { [[ -z "${__IFACE}" ]] && qq-vars-set-iface }
 
 export __DOMAIN=""
 
-qq-vars-set-domain() { __DOMAIN=$(__prefill __DOMAIN ${__DOMAIN}) }
+qq-vars-set-domain() { __prefill __DOMAIN DOMAIN ${__DOMAIN} }
 
 __check-domain() { [[ -z "${__DOMAIN}" ]] && qq-vars-set-domain }
 
@@ -184,7 +184,7 @@ __check-domain() { [[ -z "${__DOMAIN}" ]] && qq-vars-set-domain }
 
 export __NETWORK=""
 
-qq-vars-set-network() { __NETWORK=$(__prefill __NETWORK ${__NETWORK}) }
+qq-vars-set-network() { __prefill __NETWORK NETWORK ${__NETWORK} }
 
 __check-network() { [[ -z "${__NETWORK}" ]] && qq-vars-set-network }
 
@@ -192,13 +192,13 @@ __check-network() { [[ -z "${__NETWORK}" ]] && qq-vars-set-network }
 
 export __RHOST=""
 
-qq-vars-set-rhost() { __RHOST=$(__prefill __RHOST ${__RHOST}) }
+qq-vars-set-rhost() { __prefill __RHOST RHOST ${__RHOST} }
 
 ########## __RPORT
 
 export __RPORT=""
 
-qq-vars-set-rport() { __RPORT=$(__prefill __RPORT ${__RPORT}) }
+qq-vars-set-rport() { __prefill __RPORT RPORT ${__RPORT} }
 
 ########## __LHOST
 
@@ -208,9 +208,9 @@ qq-vars-set-lhost() {
   if [[ -z $__LHOST ]]
   then
     __ask "Choose a local IP address: " 
-    __LHOST=$(__menu-helper $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
+    __LHOST=$(__menu $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
   else
-    __LHOST=$(__prefill __LHOST ${__LHOST})
+    __prefill __LHOST LHOST ${__LHOST}
   fi
 }
 
@@ -218,14 +218,17 @@ qq-vars-set-lhost() {
 
 export __LPORT=""
 
-qq-vars-set-lport() { __LPORT=$(__prefill __LPORT ${__LPORT}) }
+qq-vars-set-lport() { __prefill __LPORT LPORT ${__LPORT} }
 
 
 ########## __URL
 
 export __URL=""
 
-qq-vars-set-url() { __URL=$(__prefill __URL ${__URL}) }
+qq-vars-set-url() { 
+  local u && __prefill u URL ${__URL}
+  __URL=$(echo ${u} | sed 's/\/$//')
+}
 
 ########## __UA
 
@@ -234,7 +237,7 @@ export __UA="Mozilla/5.0"
 qq-vars-set-ua() {
   IFS=$'\n'
   __ask "Choose a user agent: " 
-  __UA=$(__menu-helper $(cat  ${__MNU_UA}))
+  __UA=$(__menu $(cat  ${__MNU_UA}))
 }
 
 __check-ua() { [[ -z "${__UA}" ]] && qq-vars-set-ua }
@@ -247,20 +250,21 @@ qq-vars-set-wordlist() {
   if [[ -z $__WORDLIST ]]
   then
     __ask "Choose a wordlist: "
-    __WORDLIST=$(__menu-helper $(cat  ${__MNU_WORDLISTS}))
+    __WORDLIST=$(__menu $(cat  ${__MNU_WORDLISTS}))
   else
-    __WORDLIST=$(rlwrap -S "$(__cyan __WORDLIST: )" -P "${__WORDLIST}" -e '' -o cat)
+
+    __WORDLIST= __prefill __WORDLIST WORDLIST ${__WORDLIST}
   fi
 }
 
 qq-vars-set-wordlist-web() {
   __ask "Choose a wordlist: "
-  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/Web-Content | sort))
+  __WORDLIST=$(__menu $(find  /usr/share/seclists/Discovery/Web-Content | sort))
 }
 
 qq-vars-set-wordlist-dns() {
   __ask "Choose a wordlist: "
-  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/DNS | sort))
+  __WORDLIST=$(__menu $(find  /usr/share/seclists/Discovery/DNS | sort))
 }
 
 ########## __PASSLIST
@@ -269,11 +273,24 @@ export __PASSLIST="/usr/share/wordlists/rockyou.txt"
 
 qq-vars-set-passlist() {
   __ask "Choose a passlist: "
-  __PASSLIST=$(__menu-helper $(find  /usr/share/seclists/Passwords | sort))
+  __PASSLIST=$(__menu $(find  /usr/share/seclists/Passwords | sort))
 }
 
 
 # helpers
+
+export __THREADS
+__check-threads() { __askvar __THREADS THREADS }
+
+export __USER
+__check-user() { __askvar __USER USER }
+
+export __ORG
+__check-org() { __askvar __ORG ORG }
+
+export __ASN
+__check-asn() { __askvar __ASN ASN }
+
 
 __netpath() { 
   __check-project

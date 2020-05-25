@@ -11,27 +11,26 @@ qq-project
 -------------
 The project namespace provides commands to setup custom project
 directory structures and variables. This is an expirimental 
-namespace and not commonly used.
+namespace and not commonly used yet.
 
 Variables
 ---------
-__PROJECT_ZD_CONSULTANT: a global variable for consultant name used in ZD projects
-__PROJECT_ZD_ROOT: a global variable for the project root folder used in ZD projects
+__PROJECT_ZD_CONSULTANT:     a global variable for consultant name used in ZD projects
+__PROJECT_ZD_ROOT:           a global variable for the project root folder used in ZD projects
 
 Commands
 --------
-qq-project-zd-start: scaffolds directory structure and logbook for "zd" projects
-qq-project-zd-end: zips and removes directories and data for "zd" projects
-qq-project-zd-root-set: sets the __PROJECT_ZD_ROOT variable
-qq-project-zd-consultant-set: sets the __PROJECT_ZD_CONSULTANT variable
+qq-project-zd-start:              scaffolds directory structure and logbook for "zd" projects
+qq-project-zd-end:                zips and removes directories and data for "zd" projects
+qq-project-zd-root-set:           sets the __PROJECT_ZD_ROOT variable
+qq-project-zd-consultant-set:     sets the __PROJECT_ZD_CONSULTANT variable
 
 END
 }
 
-
 export __PROJECT_ZD=""
-export __PROJECT_ZD_CONSULTANT="$(cat ${__USER}/__PROJECT_ZD_CONSULTANT 2> /dev/null)"
-export __PROJECT_ZD_ROOT="$(cat ${__USER}/__PROJECT_ZD_ROOT 2> /dev/null)"
+export __PROJECT_ZD_CONSULTANT="$(cat ${__GLOBALS}/__PROJECT_ZD_CONSULTANT 2> /dev/null)"
+export __PROJECT_ZD_ROOT="$(cat ${__GLOBALS}/__PROJECT_ZD_ROOT 2> /dev/null)"
 
 __check-project-zd() {
   if [[ -z $__PROJECT_ZD_CONSULTANT ]]
@@ -46,29 +45,30 @@ __check-project-zd() {
 
 qq-project-zd-root-set() {
   __warn "Enter the full path to the root folder of your projects."
-  __PROJECT_ZD_ROOT=$(rlwrap -S "$(__cyan DIR: )" -e '' -P "$HOME" -c -o cat)
-  echo "${__PROJECT_ZD_ROOT}" > ${__USER}/PROJECT_ZD_ROOT
-  __ok "Saved in ${__USER}/PROJECT_ZD_ROOT"
+  __prefill __PROJECT_ZD_ROOT DIR $HOME
+  echo "${__PROJECT_ZD_ROOT}" > ${__GLOBALS}/PROJECT_ZD_ROOT
 }
 
 qq-project-zd-consultant-set() {
   __warn "Enter consultant name below."
-  __PROJECT_ZD_CONSULTANT=$(rlwrap -S "$(__cyan NAME: )" -e '' -P "$HOME" -c -o cat)
-  echo "${__PROJECT_ZD_CONSULTANT}" > ${__USER}/PROJECT_ZD_CONSULTANT
-  __ok "Saved in ${__USER}/PROJECT_ZD_CONSULTANT"
+  __askvar __PROJECT_ZD_CONSULTANT NAME 
+  echo "${__PROJECT_ZD_CONSULTANT}" > ${__GLOBALS}/PROJECT_ZD_CONSULTANT
 }
 
 qq-project-zd-start() {
 
     __check-project-zd
 
-    local pid && read "pid?$(__cyan PROJECT ID: )"
-    local pname && read "pname?$(__cyan PROJECT Name: )"
+    local pid && __askvar pid "PROJECT ID"
+    local pname && __askvar pname "PROJECT NAME"
+
     local fname="${pid}-${pname}-${__CONSULTANT_NAME// /}"
     local fullpath=${__PROJECT_ROOT}/${fname}
 
     #scaffold
     mkdir -p ${fullpath}/{burp/{log,intruder,http-requests},client-supplied-info/emails,files/{downloads,uploads},notes/screenshots,scans/{raw,pretty},ssl,tool-output}
+    
+    #set project to be tool-output
     __PROJECT=${fullpath}/tool-output
 
     # wanted this to be an optional step, sometimes I'll create folders in advance due to calls with clients ahead of the test or prep work
@@ -91,7 +91,7 @@ qq-project-zd-end() {
     __check-project-zd
 
     __ask "Select a project folder: "
-    local pd=$(__menu-helper $(find $__PROJECT_ROOT -mindepth 1 -maxdepth 1 -type d))
+    local pd=$(__menu $(find $__PROJECT_ROOT -mindepth 1 -maxdepth 1 -type d))
     __ok "Selected: ${pd}"
 
 

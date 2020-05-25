@@ -14,10 +14,10 @@ Data from commands will be stored in $__PROJECT/recon.
 
 Commands
 --------
-qq-recon-org-install: installs dependencies
-qq-recon-org-files-metagoofil: uses metagoofil to search and download files for a domain
-qq-recon-org-wordlist-cewl: uses cewl to create a custom wordlist from a url
-qq-recon-org-theharvester: uses theHarvester to mine data about a target domain
+qq-recon-org-install:               installs dependencies
+qq-recon-org-files-metagoofil:      uses metagoofil to search and download files for a domain
+qq-recon-org-wordlist-cewl:         uses cewl to create a custom wordlist from a url
+qq-recon-org-theharvester:          uses theHarvester to mine data about a target domain
 
 END
 }

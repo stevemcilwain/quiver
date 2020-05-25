@@ -14,31 +14,28 @@ All output will be stored under $__PROJECT/source
 
 Commands
 --------
-qq-recon-github-install: installs dependencies
-qq-recon-github-user-repos: uses curl to get a list of repos for a github user
-qq-recon-github-endpoints: gets a list of urls from all repos of a domain on github
-qq-recon-github-gitrob: clones (in mem) repos and searches for github dorks
-qq-recon-github-api-set: set github API key global variable
+qq-recon-github-install:        installs dependencies
+qq-recon-github-user-repos:     uses curl to get a list of repos for a github user
+qq-recon-github-endpoints:      gets a list of urls from all repos of a domain on github
+qq-recon-github-gitrob:         clones (in mem) repos and searches for github dorks
+qq-recon-github-api-set:        set github API key global variable
 
 END
 }
 
 qq-recon-github-install() {
-
     __pkgs curl jq python3 
     qq-install-golang
     qq-install-github-search
     qq-install-git-secrets
     qq-install-gitrob
-
 }
-
 
 qq-recon-github-user-repos() {
     __check-project
-    local u && read "u?$(__cyan USER: )"
+    __check-user
     mkdir -p ${__PROJECT}/source
-    print -z "curl -s \"https://api.github.com/users/${u}/repos?per_page=1000\" | jq '.[].git_url' >> ${__PROJECT}/source/${u}.txt "
+    print -z "curl -s \"https://api.github.com/users/${__USER}/repos?per_page=1000\" | jq '.[].git_url' >> ${__PROJECT}/source/${__USER}.txt "
 }
 
 qq-recon-github-endpoints() {
@@ -52,11 +49,11 @@ qq-recon-github-endpoints() {
 qq-recon-github-gitrob() {
     __check-api-github
     __check-project
-    local u && read "u?$(__cyan USER: )"
-    local d=${__PROJECT}/source/${u}
+    __check-user
+    local d=${__PROJECT}/source/${__USER}
     mkdir -p $d
     cp $HOME/go/src/github.com/codeEmitter/gitrob/filesignatures.json $d
     __info "Gitrob UI: http://127.0.0.1:9393/"
-    print -z "pushd $d ;gitrob -in-mem-clone -save \"$d/output.json\" -github-access-token $__API_GITHUB ${u} && popd"
+    print -z "pushd $d ;gitrob -in-mem-clone -save \"$d/output.json\" -github-access-token $__API_GITHUB ${__USER} && popd"
 }
 

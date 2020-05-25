@@ -14,11 +14,16 @@ an individual host.
 
 Commands
 --------
-qq-enum-host-install: installs dependencies
-qq-enum-host-tcpdump: capture traffic to and from a host
-qq-enum-host-nmap-top: syn scan of the top 1000 ports
-qq-enum-host-nmap-top-discovery: syn scan of the top 1000 ports with versioning and scripts
-
+qq-enum-host-install:                 installs dependencies
+qq-enum-host-tcpdump:                 capture traffic to and from a host
+qq-enum-host-nmap-top:                syn scan of the top 1000 ports
+qq-enum-host-nmap-top-discovery:      syn scan of the top 1000 ports with versioning and scripts
+qq-enum-host-nmap-all:                syn scan all ports 
+qq-enum-host-nmap-all-discovery:      syn scan all ports with versioning and scripts
+qq-enum-host-nmap-udp:                udp scan top 100 ports
+qq-enum-host-masscan-all-tcp:         scan all tcp ports
+qq-enum-host-masscan-all-udp:         scan all udp ports
+qq-enum-host-nmap-lse-grep:           search nmap lse scripts
 
 END
 }

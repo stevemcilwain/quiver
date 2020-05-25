@@ -13,89 +13,88 @@ Helpful aliases and functions.
 
 Package Management
 ------------------
-agu: apt-get update
-aguu: apt-get update and upgrade
-agi: apt-get install
-agr: apt autoremove
-agfix: fixes broken packages
-mega-update: apt-get full-upgrade, go get all, npm update
-repull: pull all git repos in $HOME/tools
+agu:            apt-get update
+aguu:           apt-get update and upgrade
+agi:            apt-get install
+agr:            apt autoremove
+agfix:          fixes broken packages
+mega-update:    apt-get full-upgrade, go get all, npm update
 
 Navigation
 ----------
-cd..: up one directory (handles typo)
-cls: clear
-path: echos path as a string
-cp: cp -iv (interactive, verbose)
-mv: mv -iv (interactive, verbose)
-lf: list files only
-ldir: list dirs only
+cd..:      up one directory (handles typo)
+cls:       clear
+path:      echos path as a string
+cp:        cp -iv (interactive, verbose)
+mv:        mv -iv (interactive, verbose)
+lf:        list files only
+ldir:      list dirs only
 
 System
 ------
-mounted: show all mounted file systems
-mem10: list top 10 procs by mem usage
-disk10: list top 10 largest directories in current path (recursive)
-df: display disk usage report
+mounted:    show all mounted file systems
+mem10:      list top 10 procs by mem usage
+disk10:     list top 10 largest directories in current path (recursive)
+df:         display disk usage report
 
 Network
 -------
-hp: shortcut for httprobe -t 3000 -c 50 
-pcap: reads a pcap file $1
-myip: curls current public IP
-netwatch: list listening and established connections
-netss: list network connections
-netls: lists network sockets
-grip: grep for IP addresses
+hp:         shortcut for httprobe -t 3000 -c 50 
+pcap:       reads a pcap file $1
+myip:       curls current public IP
+netwatch:   list listening and established connections
+netss:      list network connections
+netls:      lists network sockets
+grip:       grep for IP addresses
 
 Proton VPN
 ----------
-pv-check: installs or updates the protonvpn cli
-pvt: intiate a TCP VPN connection
-pvu: initiate a UDP VPN connection
-pvd: disconnect the VPN
-pvs: check VPN status
+pv-check:   installs or updates the protonvpn cli
+pvt:        intiate a TCP VPN connection
+pvu:        initiate a UDP VPN connection
+pvd:        disconnect the VPN
+pvs:        check VPN status
 
 ZSH
 ---
-zprc: print zshrc
-zerc: edit zshrc
-zsrc: source zshrc
+zprc:       print zshrc
+zerc:       edit zshrc
+zsrc:       source zshrc
 
 Git
 ---
-gacp: add all, commit (message is $@) and push current repo dir
+gacp:       add all, commit (message is $@) and push current repo dir
 
 Media
 -----
-arec: asciinema start recording
-aplay: asciinema start playing
+arec:      asciinema start recording
+aplay:     asciinema start playing
 
 File System
 -----------
-linestocsv: convert lines to a csv string
-csvtolines: convert a csv string to lines
-f3: files changed in last 3 days
-pa: add directory, $1, to the path (appended to .zshrc)
-mcd: mkdir $1 then cd to it
-mdd: mkdir using current date
-tgf: tail/follow file, $1, grep pattern, $2
-rnf: replace $1 with $2 in file, $3
-sfu: sort file uniq in place $1
-sfip: sort file uniq in place (IP addresses) $1
-sfuc: sort file uniq and report count $1
-dos2unix: convert file from dos line endings to unix, $1 to $2
-unix2dos: convert file from unix line endings to dos, $1 to $2
-fsync: rsync folders, $1 to $2
-umnt: unmount folder, $1
-dt: detach zsh script, $1
+linestocsv:      convert lines to a csv string
+csvtolines:      convert a csv string to lines
+f3:              files changed in last 3 days
+pa:              add directory, $1, to the path (appended to .zshrc)
+mcd:             mkdir $1 then cd to it
+mdd:             mkdir using current date
+tgf:             tail/follow file, $1, grep pattern, $2
+rnf:             replace $1 with $2 in file, $3
+sfu:             sort file uniq in place $1
+sfip:            sort file uniq in place (IP addresses) $1
+sfuc:            sort file uniq and report count $1
+dos2unix:        convert file from dos line endings to unix, $1 to $2
+unix2dos:        convert file from unix line endings to dos, $1 to $2
+fsync:           rsync folders, $1 to $2
+umnt:            unmount folder, $1
+dt:              detach zsh script, $1
 
 Strings
 -------
-trim1: trims the last 1 chars
-trim2: trims the last 2 chars
-trim3: trims the last 3 chars
-trim4: trims the last 4 chars
+trim1:      trims the last 1 chars
+trim2:      trims the last 2 chars
+trim3:      trims the last 3 chars
+trim4:      trims the last 4 chars
 
 END
 }
@@ -107,7 +106,7 @@ alias agi="sudo apt-get install"
 alias agr="sudo apt autoremove"
 alias agfix="sudo apt-get install --fix-broken && sudo apt-get autoremove && sudo apt-get update"
 alias mega-update="sudo apt-get update && sudo apt-get full-upgrade && go get -u all && sudo npm install npm@latest -g && sudo n stable"
-alias repull="cd \$HOME/tools; for d in \$(ls -d */);do cd \$d && git pull && cd - ; done; cd"
+
 
 #nav
 alias cd..="cd ../"
@@ -122,7 +121,10 @@ alias ldir='ls -d */'
 alias mounted="sudo mount | column -t"
 alias mem10="qq-aliases-sys-mem10"
 alias disk10="qq-aliases-sys-disk10"
-alias df='df -mTh'
+alias df="df -mTh --total"
+alias free="free -mt"
+alias ps="ps auxf"
+alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
 
 #network
 alias hp="httprobe -t 3000 -c 50 "

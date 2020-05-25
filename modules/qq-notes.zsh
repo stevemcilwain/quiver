@@ -9,14 +9,15 @@ qq-notes-help() {
 
 qq-notes
 -------
-The notes namespace provides searching and reading of markdown notes.
+The notes namespace provides searching and reading of markdown notes that are
+stored in a directory specified by the __NOTES environment variable (qq-vars-global).
 
 Commands
 --------
-qq-notes-install: installs dependencies
-qq-notes: lists all notes in $__NOTES or searches notes by filename if $1 is supplied
-qq-notes-content: list all notes in $__NOTES or searches notes by content if $1 is supplied
-qq-notes-menu: display an interactive menu for reading notes
+qq-notes-install:     installs dependencies
+qq-notes:             lists all notes in $__NOTES or searches notes by filename if $1 is supplied
+qq-notes-content:     list all notes in $__NOTES or searches notes by content if $1 is supplied
+qq-notes-menu:        display an interactive menu for reading notes
 
 END
 }

@@ -8,6 +8,15 @@ autoload colors; colors
 # Contributors: 
 #############################################################
 
+# check for essential packages
+
+dpkg -l | grep -qw rlwrap || sudo apt-get -y install rlwrap
+dpkg -l | grep -qw rlwrap || sudo apt-get -y install git
+
+# check for directories
+
+mkdir -p $HOME/.quiver/{vars,globals}
+
 ############################################################# 
 # Constants
 #############################################################
@@ -17,42 +26,12 @@ export __VER=$(cat ${__PLUGIN}/VERSION)
 export __LOGFILE="${__PLUGIN}/log.txt"
 export __REMOTE_CHK="${__PLUGIN}/remote_checked.txt"
 export __REMOTE_VER="${__PLUGIN}/remote_ver.txt"
-
-
-############################################################# 
-# Helpers
-#############################################################
-
 export __STATUS=$(cd ${__PLUGIN} && git status | grep On | cut -d" " -f2,3)
-
-__info() echo "$fg[cyan][*]$reset_color $@"
-__ok() echo "$fg[blue][+]$reset_color $@"
-__warn() echo "$fg[yellow][>]$reset_color $@"
-__err() echo "$fg[red][!]$reset_color $@ "
-__ask() echo "$fg[yellow]$@ $reset_color"
-__prompt() echo "$fg[cyan][?] $@ $reset_color"
-__cyan() echo "$fg[cyan]$@ $reset_color"
-
-__askpath() { rlwrap -S "$(__cyan $1: )" -P "$2" -e '' -c -o cat }
-__prefill() { rlwrap -S "$(__cyan $1: )" -P "$2" -e '' -o cat }
-
-__rand() {
-    if [ "$#" -eq  "1" ]
-    then
-        head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 ; echo ''
-    else
-        head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16 ; echo ''
-    fi  
-}
-
-__menu-helper() {
-  PS3="$(__cyan Select: )"
-  COLUMNS=6
-  select o in $@; do break; done
-  echo ${o}
-}
-
-
+export __VARS=$HOME/.quiver/vars
+export __GLOBALS=$HOME/.quiver/globals
+export __PAYLOADS="$__PLUGIN/payloads"
+export __SCRIPTS="$__PLUGIN/scripts"
+export __TOOLS="$HOME/tools"
 
 ############################################################# 
 # Self Update
@@ -79,29 +58,6 @@ __version-check() {
 
 (__version-check &)
 
-qq-update() {
-  cd $HOME/.oh-my-zsh/custom/plugins/quiver
-  git pull
-  rm $__REMOTE_VER
-  rm $__REMOTE_CHK
-  cd - > /dev/null
-  source $HOME/.zshrc
-}
-
-qq-status() {
-  cd $HOME/.oh-my-zsh/custom/plugins/quiver
-  git status | grep On | cut -d" " -f2,3
-  cd - > /dev/null
-}
-
-qq-whatsnew() {
-  cat $__PLUGIN/RELEASES.md
-}
-
-qq-debug() {
-  cat ${__LOGFILE}
-}
-
 ############################################################# 
 # Diagnostic Log
 #############################################################
@@ -112,24 +68,10 @@ echo "[*] loading... " >> ${__LOGFILE}
 
 #Source all qq scripts
 
-for f in ${0:A:h}/modules/qq-* ; do
+for f in ${0:A:h}/modules/qq* ; do
   echo "[+] sourcing $f ... "  >> ${__LOGFILE}
   source $f >> ${__LOGFILE} 2>&1
 done
-
-# check for directories
-
-mkdir -p $HOME/.quiver/{vars,globals}
-
-export __VARS=$HOME/.quiver/vars
-export __GLOBALS=$HOME/.quiver/globals
-export __PAYLOADS="$__PLUGIN/payloads"
-export __SCRIPTS="$__PLUGIN/scripts"
-export __TOOLS="$HOME/tools"
-
-# check for essential packages
-
-dpkg -l | grep -qw rlwrap || sudo apt-get -y install rlwrap
 
 # completion enhancement
 # zstyle ':completion:*' matcher-list 'r:|[-]=**'

@@ -15,9 +15,9 @@ You can sort unique this file in place with the "sfu" alias.
 
 Commands
 --------
-qq-recon-domains-install: installs dependencies
-qq-recon-domains-amass-whois: find domains with whois
-qq-recon-domains-amass-asn: find domains by asn
+qq-recon-domains-install:          installs dependencies
+qq-recon-domains-amass-whois:      find domains with whois
+qq-recon-domains-amass-asn:        find domains by asn
 
 END
 }
@@ -36,8 +36,8 @@ qq-recon-domains-amass-whois() {
 
 qq-recon-domains-amass-asn() {
   __check-project
-  local a && read "a?$(__cyan ASN: )"
+  __check-asn
   mkdir -p ${__PROJECT}/amass
   mkdir -p ${__PROJECT}/domains
-  print -z "amass intel -active -asn ${a} -dir ${__PROJECT}/amass >> ${__PROJECT}/domains/domains.txt"
+  print -z "amass intel -active -asn ${__ASN} -dir ${__PROJECT}/amass >> ${__PROJECT}/domains/domains.txt"
 }
