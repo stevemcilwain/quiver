@@ -23,7 +23,7 @@ qq-enum-rdp-exploit-bluekeep:   bluekeep exploit reference
 END
 }
 
-qq-enum-pop3-install() {
+qq-enum-rdp-install() {
     __pkgs nmap tcpdump ncrack 
 }
 
@@ -51,6 +51,9 @@ qq-enum-rdp-exploit-bluekeep() {
   __info "https://sploitus.com/exploit?id=EDB-ID:47683" 
   print -z "searchsploit bluekeep"
 }
+
+
+qq-enum-rdp-
 
 
 nn-shell-handler-multi-linux-mtrp() {

@@ -20,13 +20,15 @@ qq-bounty-rescope-txt:         uses rescope to generate scope from a url
 qq-bounty-rescope-burp:        uses rescope to generate burp scope (JSON) from a url
 qq-bounty-sudoers-easy:        removes the requirment for sudo for common commands like nmap
 qq-bounty-sudoers-harden:      removes sudo exclusions
-qq-bounty-sync-data:           sync data from a remote server directory, such as your VPS to a local directory using SSHFS
+qq-bounty-sync-remote-to-local:      sync data from a remote server directory to a local directory using SSHFS
+qq-bounty-sync-local-file-to-remote: sync a local file to a remote server using rsync over SSH
+qq-bounty-google-domain-dyn:   update IP address using Google domains hosted dynamic record
 
 END
 }
 
 qq-bounty-install() {
-  __pkgs fusermount sshfs rsync
+  __pkgs fusermount sshfs rsync curl
   qq-install-golang
   go get -u github.com/root4loot/rescope
 }
@@ -98,7 +100,10 @@ qq-bounty-sync-local-file-to-remote() {
 }
 
 
-qq-bounty-google-domains-dyn() {
-
-  print -z "curl -s -a \"${__UA}\" https://$u:$p@domains.google.com/nic/update?hostname=qq.cawtcha.com&myip=1.2.3.4  "
+qq-bounty-google-domain-dyn() {
+  local u && __askvar u USERNAME
+  local p && __askvar p PASSWORD
+  local d && __askvar d DOMAIN
+  qq-vars-set-lhost 
+  print -z "curl -s -a \"${__UA}\" https://$u:$p@domains.google.com/nic/update?hostname=${d}&myip=${__LHOST} "
 }
