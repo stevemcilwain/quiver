@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-aws-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-web-aws
 ---------------
@@ -19,7 +19,7 @@ qq-enum-web-aws-s3-ls:       use the awscli to list files in an S3 bucket
 qq-enum-web-aws-s3-write:    use the awscli to copy a local file to an S3 bucket
 qq-enum-web-aws-s3-scanner:  scan a list of buckets
 
-END
+DOC
 }
 
 qq-enum-web-aws-install() {

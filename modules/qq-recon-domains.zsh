@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-domains-help() {
-  cat << END
+  cat << "DOC"
 
 qq-recon-domains
 -------------
@@ -19,7 +19,7 @@ qq-recon-domains-install:          installs dependencies
 qq-recon-domains-amass-whois:      find domains with whois
 qq-recon-domains-amass-asn:        find domains by asn
 
-END
+DOC
 }
 
 qq-recon-domains-install() {
@@ -31,7 +31,7 @@ qq-recon-domains-amass-whois() {
   qq-vars-set-domain
   mkdir -p ${__PROJECT}/amass
   mkdir -p ${__PROJECT}/domains
-  print -z "amass intel -active -whois -d ${__DOMAIN} -dir ${__PROJECT}/amass >> ${__PROJECT}/domains/domains.txt"
+  print -z "amass intel -active -whois -d ${__DOMAIN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
 }
 
 qq-recon-domains-amass-asn() {
@@ -39,5 +39,5 @@ qq-recon-domains-amass-asn() {
   __check-asn
   mkdir -p ${__PROJECT}/amass
   mkdir -p ${__PROJECT}/domains
-  print -z "amass intel -active -asn ${__ASN} -dir ${__PROJECT}/amass >> ${__PROJECT}/domains/domains.txt"
+  print -z "amass intel -active -asn ${__ASN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
 }

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-oracle-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-oracle
 --------------s
@@ -28,7 +28,7 @@ qq-enum-oracle-oscanner:          oscanner enumeration
 qq-enum-oracle-hydra-listener:    brute force passwords 
 qq-enum-oracle-hydra-sid:         brute force passwords
 
-END
+DOC
 }
 
 qq-enum-oracle-install() {

@@ -1,0 +1,11 @@
+windows/x64/meterpreter/reverse_http
+windows/x64/meterpreter/reverse_https
+windows/x64/meterpreter/reverse_named_pipe
+windows/x64/meterpreter/reverse_tcp
+windows/x64/meterpreter/reverse_winhttp
+windows/x64/meterpreter/reverse_winhttps
+windows/x64/shell/reverse_tcp
+windows/x64/shell/reverse_tcp_rc4
+windows/x64/shell/reverse_tcp_uuid
+windows/x64/shell_bind_tcp
+windows/x64/shell_reverse_tcp

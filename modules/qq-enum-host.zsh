@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-host-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-host
 -------------
@@ -25,12 +25,12 @@ qq-enum-host-masscan-all-tcp:         scan all tcp ports
 qq-enum-host-masscan-all-udp:         scan all udp ports
 qq-enum-host-nmap-lse-grep:           search nmap lse scripts
 
-END
+DOC
 }
 
 qq-enum-host-install() {
 
-  __pkgs tcpdump nmap masscan 
+  __pkgs tcpdump nmap masscan curl
 
 }
 
@@ -86,5 +86,12 @@ qq-enum-host-masscan-all-udp() {
 }
 
 qq-enum-host-nmap-lse-grep() {
-  print -z "ls /usr/share/nmap/scripts/* | grep <pattern>"
+  local q && __askvar q QUERY
+  print -z "ls /usr/share/nmap/scripts/* | grep -ie \"${q}\" "
+}
+
+qq-enum-host-ip() {
+  __check-project
+  qq-vars-set-rhost
+  print -z "curl -s \"https://iplist.cc/api/${__RHOST}\" | tee $(__hostpath/ip.json) "
 }

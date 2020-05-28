@@ -5,7 +5,7 @@
 #############################################################
 
 qq-vars-global-help() {
-  cat << END
+  cat << "DOC"
 
 qq-vars-global
 --------------
@@ -25,13 +25,14 @@ __NOTES:          path to the directory containing your markdown notes for qq-no
 __MNU_UA:         path to the file containing user-agent strings
 __MNU_WORDLISTS:  path to the file containing a list of favorite wordlists
 __TCP_PORTS:      path to the file of favorite TCP ports
+__SHELL_SSL_CERT: path to the file of an impersonated SSL cert used for reverse shell IDS evasion
 
 Commands
 --------
 qq-vars-global:            list all current global variable values
 qq-vars-global-set-*:      used to set and save each individual variable
 
-END
+DOC
 }
 
 qq-vars-global() {
@@ -162,4 +163,14 @@ qq-vars-global-set-tcp-ports() {
   __ask "Set the full path to the file containing a list of favorite TCP ports"
   __askpath __TCP_PORTS FILE $HOME
   echo "${__TCP_PORTS}" > ${__GLOBALS}/TCP_PORTS
+}
+
+########## __SHELL_SSL_CERT
+
+export __SHELL_SSL_CERT="$(cat ${__GLOBALS}/SHELL_SSL_CERT 2> /dev/null || echo "${__PAYLOADS}/aka.ms.pem")"
+
+qq-vars-global-set-shell-ssl-cert() {
+  __ask "Set the full path to an impersonated SSL certificate in PEM format to use with reverse shells"
+  __askpath __SHELL_SSL_CERT FILE $HOME
+  echo "${__SHELL_SSL_CERT}" > ${__GLOBALS}/SHELL_SSL_CERT
 }

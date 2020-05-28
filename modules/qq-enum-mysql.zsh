@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-mysql-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-mysql
 -------------
@@ -21,7 +21,7 @@ qq-enum-mysql-client:              connect using the mysql client
 qq-enum-mysql-auth-bypass:         attempt auth bypass
 qq-enum-mysql-hydra:               brute force passwords for a user account
 
-END
+DOC
 }
 
 qq-enum-mysql-install() {

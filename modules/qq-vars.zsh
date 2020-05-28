@@ -5,7 +5,7 @@
 #############################################################
 
 qq-vars-help() {
-  cat << END
+  cat << "DOC"
 
 qq-vars
 -------
@@ -40,7 +40,7 @@ qq-vars-load:      alias qvl, restores all current variable values ($HOME/.quive
 qq-vars-clear:     clears all current variable values
 qq-vars-set-*:     used to set each individual variable
 
-END
+DOC
 }
 
 qq-vars() {
@@ -120,10 +120,12 @@ export __PROJECT=""
 qq-vars-set-project() {
   __ask "Set the full path to the project root directory where all command output will be directed"
   
-  local d=$(__askpath "PROJECT DIR" ${__PROJECT})
+  local d && __askpath d "PROJECT DIR" ${__PROJECT}
   [[ "$d" == "~"* ]] && __err "~ not allowed, use the full path" && return
 
-  __PROJECT=$d && mkdir -p ${__PROJECT}
+  __PROJECT=$d
+  mkdir -p ${__PROJECT}
+  
 }
 
 __check-project() { [[ -z "${__PROJECT}" ]] && qq-vars-set-project }
@@ -284,6 +286,9 @@ __check-threads() { __askvar __THREADS THREADS }
 
 export __USER
 __check-user() { __askvar __USER USER }
+
+export __SHARE
+__check-share() { __askvar __SHARE SHARE }
 
 export __ORG
 __check-org() { __askvar __ORG ORG }

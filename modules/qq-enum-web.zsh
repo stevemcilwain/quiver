@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-web
 -----------
@@ -24,7 +24,7 @@ qq-enum-web-eyewitness:             scrape screenshots from target URL
 qq-enum-web-wordpress:              enumerate Wordpress information
 qq-enum-web-headers:                grab headers from a target url using curl
 qq-enum-web-mirror:                 mirrors the target website locally
-END
+DOC
 }
 
 qq-enum-web-install() {
@@ -49,7 +49,7 @@ qq-enum-web-tcpdump() {
 qq-enum-web-whatweb() {
   __check-project
   qq-vars-set-url
-  print -z "whatweb ${__URL} -a 3 > $(__urlpath)/whatweb.txt"
+  print -z "whatweb ${__URL} -a 3 | tee $(__urlpath)/whatweb.txt"
 }
 
 qq-enum-web-waf() {
@@ -88,7 +88,7 @@ qq-enum-web-wordpress() {
 qq-enum-web-headers() {
   __check-project
   qq-vars-set-url
-  print -z "curl -s -X GET -I -L -A \"${__UA}\" \"${__URL}\" > $(__urlpath)/headers.txt"
+  print -z "curl -s -X GET -I -L -A \"${__UA}\" \"${__URL}\" | tee $(__urlpath)/headers.txt"
 }
 
 qq-enum-web-mirror() {

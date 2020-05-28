@@ -5,7 +5,7 @@
 #############################################################
 
 qq-help() {
-  cat << END
+  cat << "DOC"
 
 qq
 --
@@ -40,6 +40,7 @@ Each namespace has its own install and help commands.
  ---------
  qq-encoding-     Used for encoding / decoding data
  qq-aliases-      A collection of shell aliases and functions
+ qq-sys-          Variety of commands for managing linux
 
  Engagement / Project / Bounty
  -----------------------------
@@ -86,14 +87,17 @@ Each namespace has its own install and help commands.
  Exploitation Phase
  ------------------
 
- qq-srv-         Commands for spawning file hosting services
- qq-exploit-     Commands for compiling exploits
-
+ qq-srv-                     Commands for spawning file hosting services
+ qq-exploit-                 Commands for compiling exploits
+ qq-shell-tty-               Commands for upgrading shells to tty
+ qq-shell-handlers-          Commands for spawning reverse shell handlers
+ qq-shell-handlers-msf-      Commands for spawning reverse shells with Metasploit
+  
  Post-Exploitation Phase
  -----------------------
  qq-pivot-     Commands for pivoting with ssh
 
-END
+DOC
 }
 
 qq-update() {
@@ -122,40 +126,45 @@ qq-debug() {
 
 ##### Output Helpers
 
-__info() echo "$fg[cyan][*]$reset_color $@" 
-__ok() echo "$fg[blue][+]$reset_color $@"
-__warn() echo "$fg[yellow][>]$reset_color $@"
-__err() echo "$fg[red][!]$reset_color $@ "
 __cyan() echo "$fg[cyan]$@ $reset_color"
+__green() echo "$fg[green]$@ $reset_color"
+__blue() echo "$fg[blue]$@ $reset_color"
+__yellow() echo "$fg[yellow]$@ $reset_color"
+__err() echo "$fg[red]$@ $reset_color"
+
+__info() __blue "[!] $@"
+__ok() __green "[*] $@"
+__warn() __yellow "[>] $@"
+__err() __red "[!] $@"
 
 ##### Input Helpers
 
-__ask() echo "$fg[yellow]$@ $reset_color"
-__prompt() echo "$fg[cyan][?] $@ $reset_color"
+__ask() __yellow "$@"
+__prompt() __cyan "[?] $@"
 
 __askvar() { 
     local retval=$1
     local question=$2
-    local r
-    read "r?$fg[cyan]${question}:$reset_color "
-    eval $retval="'$r'"
+    local tmpval
+    read "tmpval?$fg[cyan]${question}:$reset_color "
+    eval $retval="'$tmpval'"
 }
 
 __askpath() { 
     local retval=$1
     local question=$2
     local prefill=$3
-    local i=$(rlwrap -S "$fg[cyan]${question}: $reset_color" -P "${prefill}" -e '' -c -o cat)
-    local r=$(echo "${i}" | sed 's/\/$//' )
-    eval $retval="'$r'"
+    local tmpinput=$(rlwrap -S "$fg[cyan]${question}: $reset_color" -P "${prefill}" -e '' -c -o cat)
+    local tmpval=$(echo "${tmpinput}" | sed 's/\/$//' )
+    eval $retval="'$tmpval'"
 }
 
 __prefill() { 
     local retval=$1
     local question=$2
     local prefill=$3
-    local r=$(rlwrap -S "$fg[cyan]${question}: $reset_color" -P "${prefill}" -e '' -o cat)
-    eval $retval="'$r'"
+    local tmpval=$(rlwrap -S "$fg[cyan]${question}: $reset_color" -P "${prefill}" -e '' -o cat)
+    eval $retval="'$tmpval'"
 }
 
 __menu() {
@@ -168,6 +177,8 @@ __menu() {
 ##### String Helpers
 
 __trim-slash() { echo $1 | sed 's/\/$//' }
+__trim-quotes() { echo $1 | tr -d \" }
+__trim-newline() { echo $1 | tr -d "\n"}
 
 __rand() {
     if [ "$#" -eq  "1" ]
@@ -176,4 +187,13 @@ __rand() {
     else
         head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16 ; echo ''
     fi  
+}
+
+
+##### Tool Helpers
+
+__msf() {
+  local msfcmd=$(cat $@)
+  print -z "msfconsole -n -q -x \"${msfcmd}\" "
+
 }

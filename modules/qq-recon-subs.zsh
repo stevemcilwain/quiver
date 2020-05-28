@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-subs-help() {
-  cat << END
+  cat << "DOC"
 
 qq-recon-subs
 -------------
@@ -37,7 +37,7 @@ Commands - processing
 qq-recon-subs-resolve-massdns:   resolve a file of subdomains using massdns
 qq-recon-subs-resolve-parse:     parse resolved.txt into A, CNAME and IP's
 
-END
+DOC
 }
 
 qq-recon-subs-install() {
@@ -70,32 +70,32 @@ qq-recon-subs-amass-names() {
   __check-project
   qq-vars-set-domain
   mkdir -p ${__PROJECT}/amass
-  print -z "amass db -names -d ${__DOMAIN} -dir ${__PROJECT}/amass >> $(__dompath)/subs.txt"
+  print -z "amass db -names -d ${__DOMAIN} -dir ${__PROJECT}/amass | tee -a $(__dompath)/subs.txt"
 }
 
 qq-recon-subs-crt.sh() {
   __check-project
   qq-vars-set-domain
-  print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${__DOMAIN}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u >>  $(__dompath)/subs.txt "
+  print -z "curl -s 'https://crt.sh/?q=%.${__DOMAIN}' | grep -i \"${__DOMAIN}\" | cut -d '>' -f2 | cut -d '<' -f1 | grep -v \" \" | sort -u | tee -a  $(__dompath)/subs.txt "
 }
 
 qq-recon-subs-subfinder() {
   __check-project
   qq-vars-set-domain
   __check-threads
-  print -z "subfinder -t ${__THREADS} -d ${__DOMAIN} -nW -silent >> $(__dompath)/subs.txt"
+  print -z "subfinder -t ${__THREADS} -d ${__DOMAIN} -nW -silent | tee -a $(__dompath)/subs.txt"
 }
 
 qq-recon-subs-assetfinder() {
   __check-project
   qq-vars-set-domain
-  print -z "echo ${__DOMAIN} | assetfinder --subs-only >> $(__dompath)/subs.txt" 
+  print -z "echo ${__DOMAIN} | assetfinder --subs-only | tee -a $(__dompath)/subs.txt" 
 }
 
 qq-recon-subs-wayback() {
   __check-project
   qq-vars-set-domain 
-  print -z "echo ${__DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" >> $(__dompath)/subs.txt"
+  print -z "echo ${__DOMAIN} | waybackurls | cut -d "/" -f3 | sort -u | grep -v \":80\" | tee -a $(__dompath)/subs.txt"
 }
 
 qq-recon-subs-resolve-massdns() {

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-nfs-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-nfs
 -----------
@@ -20,7 +20,7 @@ qq-enum-nfs-tcpdump:        capture traffic to and from a host
 qq-enum-nfs-show:           show remote NFS shares
 qq-enum-nfs-mount:          mount a remote NFS share locally
 
-END
+DOC
 }
 
 qq-enum-nfs-install() {

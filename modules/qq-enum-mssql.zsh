@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-mssql-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-mssql
 -------------
@@ -21,7 +21,7 @@ qq-enum-mssql-sqsh:                make an interactive database connection
 qq-enum-mssql-impacket-client:     connect using impacket as a sql client
 qq-enum-mssql-hydra:               brute force passwords for a user account
 
-END
+DOC
 }
 
 qq-enum-mssql-install() {

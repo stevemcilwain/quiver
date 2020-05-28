@@ -5,7 +5,7 @@
 #############################################################
 
 qq-log-help() {
-  cat << END
+  cat << "DOC"
 
 qq-log
 -------------
@@ -22,7 +22,7 @@ qq-log-cat:          alias qlc, cats the logbook
 qq-log-edit:         alias qle, edits the logbook using $EDITOR
 qq-log-set:          creates or uses existing logbook.md in the path specified
 
-END
+DOC
 }
 
 qq-log-install() {

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-notes-help() {
-  cat << END
+  cat << "DOC"
 
 qq-notes
 -------
@@ -19,7 +19,7 @@ qq-notes:             lists all notes in $__NOTES or searches notes by filename 
 qq-notes-content:     list all notes in $__NOTES or searches notes by content if $1 is supplied
 qq-notes-menu:        display an interactive menu for reading notes
 
-END
+DOC
 }
 
 qq-notes-install() {

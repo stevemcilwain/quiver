@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-network-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-network
 -------------
@@ -27,7 +27,7 @@ qq-enum-network-masscan-windows:      sweep a network for common Windows ports
 qq-enum-network-masscan-linux:        sweep a network for common Linux ports
 qq-enum-network-masscan-web:          sweep a network for common web server ports
 
-END
+DOC
 }
 
 qq-enum-network-install() {

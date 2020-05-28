@@ -5,7 +5,7 @@
 #############################################################
 
 # qq-scripts-help() {
-#   cat << END
+#   cat << "DOC"
 
 # qq-scripts
 # -------
@@ -19,7 +19,7 @@
 # qq-scripts-recon: a zsh recon script
 # qq-scripts-webrecon: a zsh webrecon script
 
-# END
+# DOC
 # }
 
 # qq-scripts-recon() {

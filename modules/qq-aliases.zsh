@@ -5,7 +5,7 @@
 #############################################################
 
 qq-aliases-help() {
-  cat << END
+  cat << "DOC"
 
 qq-aliases
 ----------
@@ -33,8 +33,6 @@ ldir:      list dirs only
 System
 ------
 mounted:    show all mounted file systems
-mem10:      list top 10 procs by mem usage
-disk10:     list top 10 largest directories in current path (recursive)
 df:         display disk usage report
 
 Network
@@ -65,11 +63,6 @@ Git
 ---
 gacp:       add all, commit (message is $@) and push current repo dir
 
-Media
------
-arec:      asciinema start recording
-aplay:     asciinema start playing
-
 File System
 -----------
 linestocsv:      convert lines to a csv string
@@ -96,7 +89,7 @@ trim2:      trims the last 2 chars
 trim3:      trims the last 3 chars
 trim4:      trims the last 4 chars
 
-END
+DOC
 }
 
 # packages
@@ -119,8 +112,6 @@ alias ldir='ls -d */'
 
 #sys
 alias mounted="sudo mount | column -t"
-alias mem10="qq-aliases-sys-mem10"
-alias disk10="qq-aliases-sys-disk10"
 alias df="df -mTh --total"
 alias free="free -mt"
 alias ps="ps auxf"
@@ -150,10 +141,6 @@ alias zsrc="source ~/.zshrc"
 #git
 alias gacp="qq-aliases-git-add-commit-push"
 
-#media
-alias arec="asciinema rec"
-alias aplay="asciinema play"
-
 # files and directory
 alias linestocsv="paste -s -d, -"
 alias csvtolines="tr ',' '\n'"
@@ -171,7 +158,6 @@ alias unix2dos="qq-aliases-unix-to-dos"
 alias fsync="qq-aliases-rsync-folders"
 alias umnt="qq-aliases-unmount"
 alias dt="qq-aliases-dtach"
-alias fs1="find . -type f -size +1M"
 
 # out
 
@@ -210,9 +196,6 @@ qq-aliases-git-add-commit-push() {
   git push
 }
 
-#usage
-qq-aliases-sys-mem10() { print -z "_ ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}' "}
-qq-aliases-sys-disk10() { print -z "_ du -sk ./* | sort -r -n | head -10"}
 
 #jobs
 qq-aliases-dtach() { dtach -A $1 /bin/zsh }

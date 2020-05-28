@@ -5,7 +5,7 @@
 #############################################################
 
 qq-srv-help() {
-  cat << END
+  cat << "DOC"
 
 qq-srv
 -------
@@ -28,7 +28,7 @@ qq-srv-php-hosted:       hosts a php web server in /srv, port as $1
 qq-srv-ftp-hosted:       hosts a python3 ftp server in /srv
 qq-srv-updog-hosted:     hosts an updog web server in /srv
 
-END
+DOC
 }
 
 qq-srv-install() {

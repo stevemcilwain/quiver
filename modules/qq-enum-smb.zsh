@@ -4,12 +4,47 @@
 # qq-enum-smb
 #############################################################
 
-qq-enum-smb-sweep-nmap() {
+qq-enum-smb-help() {
+  cat << "DOC"
+
+qq-enum-smb
+------------
+The qq-enum-smb namespace contains commands for scanning
+and enumerating smb services.
+
+Commands
+--------
+qq-enum-smb-install:                  installs dependencies
+qq-enum-smb-nmap-sweep:               scan a network for services
+qq-enum-smb-tcpdump:                  capture traffic to and from a host
+qq-enum-smb-null-smbmap:              query with smbmap null session
+qq-enum-smb-user-smbmap:              query with smbmap authenticated session
+qq-enum-smb-null-enum4:               enumerate with enum4linux
+qq-enum-smb-null-smbclient-list:      list shares with a null session
+qq-enum-smb-null-smbclient-connect:   connect with a null session
+qq-enum-smb-user-smbclient-connect:   connect with an authenticated session
+qq-enum-user-smb-mount:               mount an SMB share
+qq-enum-smb-samrdump:                 dump info using impacket
+qq-enum-smb-responder:                spoof and get responses using responder
+qq-enum-smb-net-use-null:             print a net use statement for windows
+qq-enum-smb-nbtscan:                  scan a local network 
+qq-enum-smb-rpcclient:                use rcpclient for queries
+
+DOC
+}
+
+qq-enum-smb-install() {
+    __pkgs nmap tcpdump smbmap enum4linux smbclient impacket-scripts responder nbtscan rpcclient
+}
+
+qq-enum-smb-nmap-sweep() {
+  __check-project
   qq-vars-set-network
   print -z "nmap -n -Pn -sS -sU -p445,137-139 ${__NETWORK} -oA $(__netpath)/smb-sweep"
 }
 
 qq-enum-smb-tcpdump() {
+  __check-project
   qq-vars-set-iface
   qq-vars-set-rhost
   print -z "tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 445 -w $(__hostpath)/smb.pcap"
@@ -22,14 +57,14 @@ qq-enum-smb-null-smbmap() {
 
 qq-enum-smb-user-smbmap() {
   qq-vars-set-rhost
-  local u && read "u?$fg[cyan]USER:$reset_color "
+  __check-user
   __info "Usage with creds: -u <user> -p <pass> -d <domain>"
-  print -z "smbmap -u ${u} -H ${__RHOST}"
+  print -z "smbmap -u ${__USER} -H ${__RHOST}"
 }
 
 qq-enum-smb-null-enum4() {
   qq-vars-set-rhost
-  print -z "enum4linux -a ${__RHOST}"
+  print -z "enum4linux -a ${__RHOST} | tee $(__hostpath)/enum4linux.txt "
 }
 
 qq-enum-smb-null-smbclient-list() {
@@ -39,23 +74,23 @@ qq-enum-smb-null-smbclient-list() {
 
 qq-enum-smb-null-smbclient-connect() {
   qq-vars-set-rhost
-  local share && read "share?$fg[cyan]SHARE:$reset_color "
-  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -N "
+  __check-share
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${__SHARE} -N "
 }
 
 qq-enum-smb-user-smbclient-connect() {
   qq-vars-set-rhost
-  local u && read "u?$fg[cyan]USER:$reset_color "
-  local share && read "share?$fg[cyan]SHARE:$reset_color "
-  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${share} -U ${u} "
+  __check-user
+  __check-share
+  print -r -z "smbclient \\\\\\\\${__RHOST}\\\\${__SHARE} -U ${__USER} "
 }
 
 qq-enum-user-smb-mount() {
   qq-vars-set-rhost
-  local share && read "share?$fg[cyan]SHARE:$reset_color "
-  local u && read "u?$fg[cyan]USER:$reset_color "
-  local p && read "p?$fg[cyan]PASSWORD:$reset_color "
-  print -z "mount //${__RHOST}/${share} /mnt/${share} -o username=${u},password=${p}"
+  __check-user
+  local p && __askvar p PASSWORD
+  __check-share
+  print -z "mount //${__RHOST}/${__SHARE} /mnt/${__SHARE} -o username=${__USER},password=${p}"
 }
 
 qq-enum-smb-samrdump() {
@@ -73,11 +108,6 @@ qq-enum-smb-net-use-null() {
   __info "net use \\\\\\\\${__RHOST}\\IPC$ \"\" /u:\"\" "
 }
 
-qq-enum-smb-bluecheck() {
-  qq-vars-set-rhost
-  print -z "nmap -Pn -p445 --open --max-hostgroup 3 --script smb-vuln-ms17-010 ${__RHOST}"
-}
-
 qq-enum-smb-nbtscan() {
   qq-vars-set-network
   print -z "nbtscan ${__NETWORK}"
@@ -85,6 +115,5 @@ qq-enum-smb-nbtscan() {
 
 qq-enum-smb-rpcclient() {
   qq-vars-set-rhost
-  local u && read "u?$fg[cyan]USER:$reset_color "
   print -z "rpcclient -U \" \" ${__RHOST}"
 }

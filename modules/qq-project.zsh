@@ -5,7 +5,7 @@
 #############################################################
 
 qq-project-help() {
-  cat << END
+  cat << "DOC"
 
 qq-project
 -------------
@@ -25,7 +25,7 @@ qq-project-zd-end:                zips and removes directories and data for "zd"
 qq-project-zd-root-set:           sets the __PROJECT_ZD_ROOT variable
 qq-project-zd-consultant-set:     sets the __PROJECT_ZD_CONSULTANT variable
 
-END
+DOC
 }
 
 export __PROJECT_ZD=""

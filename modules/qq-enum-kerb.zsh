@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-kerb-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-kerb
 ------------
@@ -20,7 +20,7 @@ qq-enum-kerb-tcpdump:        capture traffic to and from a host
 qq-enum-kerb-users:          enumerate domain users
 qq-enum-kerb-kerberoast:     get SPN for a service account
 
-END
+DOC
 }
 
 qq-enum-kerb-install() {

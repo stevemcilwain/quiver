@@ -5,7 +5,7 @@
 #############################################################
 
 qq-encoding-help() {
-  cat << END
+  cat << "DOC"
 
 qq-encoding
 ----------
@@ -16,7 +16,7 @@ Commands
 qq-encoding-file-to-b64:       encodes plain text file to base64
 qq-encoding-file-from-b64:     decodes base64 file to plain text
 
-END
+DOC
 }
 
 qq-encoding-file-to-b64() {

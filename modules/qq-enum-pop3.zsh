@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-pop3-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-pop3
 ------------
@@ -19,7 +19,7 @@ qq-enum-pop3-nmap-sweep:  scan a network for services
 qq-enum-pop3-tcpdump:     capture traffic to and from a host
 qq-enum-pop3-hydra:       brute force passwords for a user account
 
-END
+DOC
 }
 
 qq-enum-pop3-install() {

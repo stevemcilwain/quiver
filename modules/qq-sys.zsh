@@ -5,7 +5,7 @@
 #############################################################
 
 qq-sys-help() {
-  cat << END
+  cat << "DOC"
 
 qq-sys
 ----------
@@ -45,7 +45,7 @@ qq-sys-file-unix-to-dos:     convert file with unix endings to dos
 qq-sys-file-sort-uniq:       sort a file uniq in place 
 qq-sys-file-sort-uniq-ip:    sort a file of IP addresses uniq in place
 
-END
+DOC
 }
 
 qq-sys-pkgs-apt-upgrade() { print -z "sudo apt-get update && sudo apt-get full-upgrade && sudo apt-get autoremove" }

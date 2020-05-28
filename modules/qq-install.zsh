@@ -28,13 +28,14 @@ qq-install-all() {
   qq-enum-nfs-install
   qq-enum-oracle-install
   qq-enum-pop3-install
-
-
+  qq-enum-rdp-install
+  qq-enum-smb-install
   qq-enum-web-aws-install
   qq-enum-web-dirs-install
   qq-enum-web-elastic-install
-
-
+  
+  qq-enum-web-vuln-install
+  qq-enum-web-ssl-install
   qq-enum-web-install
   qq-notes-install
   qq-log-install
@@ -45,7 +46,11 @@ qq-install-all() {
   qq-recon-networks-install
   qq-recon-org-install
   qq-recon-subs-install
+  qq-shell-handlers-msf-install
+  qq-shell-handlers-install
+  #qq-shell-handlers-tty-install
   qq-srv-install
+
   
 }
 
@@ -69,7 +74,6 @@ qq-install(){
 
   __pkgs   exiftool     
 
-  nikto padbuster dirb 
 
   __pkgs  john 
 

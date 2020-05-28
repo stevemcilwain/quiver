@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-elastic-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-web-elastic
 -------------------
@@ -21,7 +21,7 @@ qq-enum-web-elastic-indices:     query the target using curl for indices
 qq-enum-web-elastic-search:      query an index using curl
 qq-enum-web-elastic-all:         query for 1000 records in an index using curl
 
-END
+DOC
 }
 
 qq-enum-web-elastic-install() {
@@ -57,5 +57,5 @@ qq-enum-web-elastic-all() {
   __check-project
   qq-vars-set-url
   local i && __askvar i "INDEX"
-  print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/${i}/_search?size=1000\" > $(__urlpath)/elastic-docs.json"
+  print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/${i}/_search?size=1000\" | tee $(__urlpath)/elastic-docs.json"
 }

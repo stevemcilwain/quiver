@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-ftp-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-ftp
 -------------
@@ -20,7 +20,7 @@ qq-enum-ftp-hydra:             brute force passwords for a user account
 qq-enum-ftp-lftp-grep:         search (grep) the target system
 qq-enum-ftp-wget-mirror:       mirror the FTP server locally
 
-END
+DOC
 }
 
 qq-enum-ftp-install() {

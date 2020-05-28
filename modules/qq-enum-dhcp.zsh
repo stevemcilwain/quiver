@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-dhcp-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-dhcp
 -------------
@@ -18,7 +18,7 @@ qq-enum-dhcp-nmap-sweep:        scan a network for services
 qq-enum-dhcp-tcpdump:           capture traffic to and from a host
 qq-enum-dhcp-discover-nmap:     broadcast DHCP discover packets
 
-END
+DOC
 }
 
 qq-enum-dhcp-install() {

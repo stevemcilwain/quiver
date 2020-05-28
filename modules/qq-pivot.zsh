@@ -5,7 +5,7 @@
 #############################################################
 
 qq-pivot-help() {
-  cat << END
+  cat << "DOC"
 
 qq-pivot
 ------------
@@ -19,7 +19,7 @@ qq-pivot-ssh-dynamic-proxy:            uses remote as a dynamic proxy
 qq-pivot-ssh-remote-to-local:          forwards remote port to local port
 qq-pivot-ssh-remote-to-local-burp:     forwards remote port 8080 to local port 8080
 
-END
+DOC
 }
 
 qq-pivot-install() {

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-org-help() {
-  cat << END
+  cat << "DOC"
 
 qq-recon-org
 ------------
@@ -19,7 +19,7 @@ qq-recon-org-files-metagoofil:      uses metagoofil to search and download files
 qq-recon-org-wordlist-cewl:         uses cewl to create a custom wordlist from a url
 qq-recon-org-theharvester:          uses theHarvester to mine data about a target domain
 
-END
+DOC
 }
 
 qq-recon-org-install() {
@@ -37,7 +37,7 @@ qq-recon-org-files-metagoofil() {
 qq-recon-org-files-urls() {
   __check-project
   qq-vars-set-domain
-  print -z "strings * | gf urls | grep $__DOMAIN >> ${__PROJECT}/recon/urls.txt"
+  print -z "strings * | gf urls | grep $__DOMAIN | tee -a ${__PROJECT}/recon/urls.txt"
 }
 
 qq-recon-org-wordlist-by-url-cewl() {

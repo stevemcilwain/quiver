@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-dirs-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-web-dirs
 ----------------
@@ -20,7 +20,7 @@ qq-enum-web-dirs-wfuzz:        brute force dirs and files with wfuzz
 qq-enum-web-dirs-ffuf:         brute force dirs and files with ffuf
 qq-enum-web-dirs-gobuster:     brute force dirs and files with gobuster
 
-END
+DOC
 }
 
 qq-enum-web-dirs-install() {
@@ -36,13 +36,13 @@ qq-enum-web-dirs-install() {
 qq-enum-web-dirs-robots() {
   __check-project
   qq-vars-set-url
-  print -z "curl -s -L --user-agent \"${__UA}\" \"${__URL}/robots.txt\" > $(__urlpath)/robots.txt"
+  print -z "curl -s -L --user-agent \"${__UA}\" \"${__URL}/robots.txt\" | tee $(__urlpath)/robots.txt"
 }
 
 qq-enum-web-dirs-parsero() {
   __check-project
   qq-vars-set-url
-  print -z "parsero -u \"${__URL}\" -o -sb > $(__urlpath)/robots.txt"
+  print -z "parsero -u \"${__URL}\" -o -sb | tee $(__urlpath)/robots.txt"
 }
 
 qq-enum-web-dirs-wfuzz() {
@@ -67,5 +67,5 @@ qq-enum-web-dirs-gobuster() {
   qq-vars-set-url
   qq-vars-set-wordlist
   __check-threads
-  print -z "gobuster dir -u ${__URL} -a \"${__UA}\" -t1 -k -w ${__WORDLIST} > $(__urlpath)/gobuster-dirs.txt "
+  print -z "gobuster dir -u ${__URL} -a \"${__UA}\" -t1 -k -w ${__WORDLIST} | tee $(__urlpath)/gobuster-dirs.txt "
 }

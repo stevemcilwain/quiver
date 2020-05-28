@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-ldap-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-ldap
 ------------
@@ -23,7 +23,7 @@ qq-enum-ldap-search-auth:    connect with authenticated bind and query ldap
 qq-enum-ldap-whoami:         send ldap whoami request
 qq-enum-ldap-hydra:          brute force passwords for a user account
 
-END
+DOC
 }
 
 qq-enum-ldap-install() {

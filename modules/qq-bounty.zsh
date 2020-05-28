@@ -5,7 +5,7 @@
 #############################################################
 
 qq-bounty-help() {
-  cat << END
+  cat << "DOC"
 
 qq-bounty
 ----------
@@ -24,7 +24,7 @@ qq-bounty-sync-remote-to-local:      sync data from a remote server directory to
 qq-bounty-sync-local-file-to-remote: sync a local file to a remote server using rsync over SSH
 qq-bounty-google-domain-dyn:   update IP address using Google domains hosted dynamic record
 
-END
+DOC
 }
 
 qq-bounty-install() {
@@ -98,7 +98,6 @@ qq-bounty-sync-local-file-to-remote() {
   local rdir && __askvar rdir "REMOTE DIR"
   print -z "rsync -avz -e \"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\" --progress $lfile $ssh:$rdir"
 }
-
 
 qq-bounty-google-domain-dyn() {
   local u && __askvar u USERNAME

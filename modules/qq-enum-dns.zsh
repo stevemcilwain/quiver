@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-dns-help() {
-  cat << END
+  cat << "DOC"
 
 qq-enum-dns
 -------------
@@ -27,7 +27,7 @@ qq-enum-dns-nmap-ad:              discover Active Directory related records
 qq-enum-dns-dnsrecon:             discover dns records, servers and attempt zone txfrs
 qq-enum-dns-dnsrecon-reverse:     do reverse lookups on an IP network
 
-END
+DOC
 }
 
 qq-enum-dns-install() {

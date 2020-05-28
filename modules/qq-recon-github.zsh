@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-github-help() {
-  cat << END
+  cat << "DOC"
 
 qq-recon-github
 ------------
@@ -20,7 +20,7 @@ qq-recon-github-endpoints:      gets a list of urls from all repos of a domain o
 qq-recon-github-gitrob:         clones (in mem) repos and searches for github dorks
 qq-recon-github-api-set:        set github API key global variable
 
-END
+DOC
 }
 
 qq-recon-github-install() {
@@ -35,7 +35,7 @@ qq-recon-github-user-repos() {
     __check-project
     __check-user
     mkdir -p ${__PROJECT}/source
-    print -z "curl -s \"https://api.github.com/users/${__USER}/repos?per_page=1000\" | jq '.[].git_url' >> ${__PROJECT}/source/${__USER}.txt "
+    print -z "curl -s \"https://api.github.com/users/${__USER}/repos?per_page=1000\" | jq '.[].git_url' | tee -a ${__PROJECT}/source/${__USER}.txt "
 }
 
 qq-recon-github-endpoints() {
@@ -43,7 +43,7 @@ qq-recon-github-endpoints() {
     __check-project
     qq-vars-set-domain
     mkdir -p ${__PROJECT}/source
-    print -z "github-endpoints.py -t ${__API_GITHUB} -d ${__DOMAIN} >> ${__PROJECT}/source/${__DOMAIN}.endpoints.txt "
+    print -z "github-endpoints.py -t ${__API_GITHUB} -d ${__DOMAIN} | tee -a ${__PROJECT}/source/${__DOMAIN}.endpoints.txt "
 }
 
 qq-recon-github-gitrob() {
