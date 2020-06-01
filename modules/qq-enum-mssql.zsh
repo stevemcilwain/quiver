@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-mssql-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-mssql
 -------------
@@ -25,41 +25,40 @@ DOC
 }
 
 qq-enum-mssql-install() {
-
-  __pkgs tcpdump nmap sqsh impacket-scripts hydra
-
+    __info "Running $0..."
+    __pkgs tcpdump nmap sqsh impacket-scripts hydra
 }
 
 qq-enum-mssql-nmap-sweep() {
-  __check-project
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sS -sU -p T:1433,U:1434 ${__NETWORK} -oA $(__netpath)/mssql-sweep"
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -sU -p T:1433,U:1434 ${__NETWORK} -oA $(__netpath)/mssql-sweep"
 }
 
 qq-enum-mssql-tcpdump() {
-  __check-project
-  qq-vars-set-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 1433 -w $(__hostpath)/mssql.pcap"
+    __check-project
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 1433 -w $(__hostpath)/mssql.pcap"
 }
 
 qq-enum-mssql-sqsh() {
-  __check-project
-  qq-vars-set-rhost
-  __check-user
-  print -z "sqsh -S ${__RHOST} -U ${__USER}"
+    __check-project
+    qq-vars-set-rhost
+    __check-user
+    print -z "sqsh -S ${__RHOST} -U ${__USER}"
 }
 
 qq-enum-mssql-impacket-client() {
-  qq-vars-set-rhost
-  __check-user
-  local db && __askvar db DATABASE
-  print -z "python3 ${__IMPACKET}/mssqlclient.py ${__USER}@${__RHOST} -db ${db} -windows-auth "
+    qq-vars-set-rhost
+    __check-user
+    local db && __askvar db DATABASE
+    print -z "python3 ${__IMPACKET}/mssqlclient.py ${__USER}@${__RHOST} -db ${db} -windows-auth "
 }
 
 qq-enum-mssql-hydra() {
-  __check-project
-  qq-vars-set-rhost
-  __check-user
-  print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/mssql-hydra-brute.txt ${__RHOST} MS-SQL"
+    __check-project
+    qq-vars-set-rhost
+    __check-user
+    print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/mssql-hydra-brute.txt ${__RHOST} MS-SQL"
 }

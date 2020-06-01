@@ -5,7 +5,7 @@
 #############################################################
 
 qq-shell-handlers-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-shell-handlers
 -----------------
@@ -25,30 +25,30 @@ DOC
 }
 
 qq-shell-handlers-install() {
+    __info "Running $0..."
     __pkgs netcat socat
 }
 
 # netcat
 
 qq-shell-handlers-nc() {
-  qq-vars-set-lport
-  print -z "nc -nlvp ${__LPORT}"
+    qq-vars-set-lport
+    print -z "nc -nlvp ${__LPORT}"
 }
 
 qq-shell-handlers-ncrl() {
-  qq-vars-set-lport
-  print -z "rlwrap nc -nlvp ${__LPORT}"
+    qq-vars-set-lport
+    print -z "rlwrap nc -nlvp ${__LPORT}"
 }
 
 qq-shell-handlers-nc-udp() {
-  qq-vars-set-lport
-  print -z "nc -nlvu ${__LPORT}"
+    qq-vars-set-lport
+    print -z "nc -nlvu ${__LPORT}"
 }
 
 # socat
 
 qq-shell-handlers-socat() {
-  qq-vars-set-lport
-  print -z "socat file:`tty`,raw,echo=0 tcp-listen:${__LPORT}"
+    qq-vars-set-lport
+    print -z "socat file:`tty`,raw,echo=0 tcp-listen:${__LPORT}"
 }
-

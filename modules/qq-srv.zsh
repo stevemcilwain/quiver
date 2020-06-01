@@ -5,7 +5,7 @@
 #############################################################
 
 qq-srv-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-srv
 -------
@@ -32,6 +32,7 @@ DOC
 }
 
 qq-srv-install() {
+    __info "Running $0..."
     __pkgs netcat atftpd 
     __pkgs php python3 python3-pip python3-smb python3-pyftpdlib impacket-scripts
     sudo pip3 install updog

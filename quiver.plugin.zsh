@@ -11,7 +11,7 @@ autoload colors; colors
 # check for essential packages
 
 dpkg -l | grep -qw rlwrap || sudo apt-get -y install rlwrap
-dpkg -l | grep -qw rlwrap || sudo apt-get -y install git
+dpkg -l | grep -qw git || sudo apt-get -y install git
 
 # check for directories
 

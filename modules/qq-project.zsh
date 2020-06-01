@@ -5,7 +5,7 @@
 #############################################################
 
 qq-project-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-project
 -------------
@@ -33,26 +33,26 @@ export __PROJECT_ZD_CONSULTANT="$(cat ${__GLOBALS}/__PROJECT_ZD_CONSULTANT 2> /d
 export __PROJECT_ZD_ROOT="$(cat ${__GLOBALS}/__PROJECT_ZD_ROOT 2> /dev/null)"
 
 __check-project-zd() {
-  if [[ -z $__PROJECT_ZD_CONSULTANT ]]
-  then
-    qq-project-zd-root-set
-  fi
-  if [[ -z $__PROJECT_ZD_ROOT ]]
-  then
-    qq-project-zd-consultant-set
-  fi
+    if [[ -z $__PROJECT_ZD_CONSULTANT ]]
+    then
+        qq-project-zd-root-set
+    fi
+    if [[ -z $__PROJECT_ZD_ROOT ]]
+    then
+        qq-project-zd-consultant-set
+    fi
 }
 
 qq-project-zd-root-set() {
-  __warn "Enter the full path to the root folder of your projects."
-  __prefill __PROJECT_ZD_ROOT DIR $HOME
-  echo "${__PROJECT_ZD_ROOT}" > ${__GLOBALS}/PROJECT_ZD_ROOT
+    __warn "Enter the full path to the root folder of your projects."
+    __prefill __PROJECT_ZD_ROOT DIR $HOME
+    echo "${__PROJECT_ZD_ROOT}" > ${__GLOBALS}/PROJECT_ZD_ROOT
 }
 
 qq-project-zd-consultant-set() {
-  __warn "Enter consultant name below."
-  __askvar __PROJECT_ZD_CONSULTANT NAME 
-  echo "${__PROJECT_ZD_CONSULTANT}" > ${__GLOBALS}/PROJECT_ZD_CONSULTANT
+    __warn "Enter consultant name below."
+    __askvar __PROJECT_ZD_CONSULTANT NAME 
+    echo "${__PROJECT_ZD_CONSULTANT}" > ${__GLOBALS}/PROJECT_ZD_CONSULTANT
 }
 
 qq-project-zd-start() {
@@ -108,7 +108,7 @@ qq-project-zd-end() {
     tree -C -F -H ./ > ${pd}/tree.html 
     [[ -f "${pd}/tree.html" ]] && __ok "Created ${pd}/tree.html." || __err "Failed creating ${pd}/tree.html"
     cd - > /dev/null 2>&1
-    
+
     # Task 3: zip up engagement folder
     local zf=$(basename ${pd})
     7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=1024m -ms=on ${__PROJECT_ROOT}/${zf}.7z ${pd} > /dev/null 2>&1

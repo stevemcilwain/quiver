@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-ftp-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-ftp
 -------------
@@ -24,41 +24,40 @@ DOC
 }
 
 qq-enum-ftp-install() {
-
-  __pkgs tcpdump nmap hydra ftp lftp wget 
-
+    __info "Running $0..."
+    __pkgs tcpdump nmap hydra ftp lftp wget 
 }
 
 qq-enum-ftp-sweep-nmap() {
-  __check-project
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sS -p21 ${__NETWORK} -oA $(__netpath)/ftp-sweep"
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -p21 ${__NETWORK} -oA $(__netpath)/ftp-sweep"
 }
 
 qq-enum-ftp-tcpdump() {
-  __check-project
-  qq-vars-set-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 21 -w $(__hostpath)/ftp.pcap"
+    __check-project
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 21 -w $(__hostpath)/ftp.pcap"
 }
 
 qq-enum-ftp-hydra() {
-  __check-project
-  qq-vars-set-rhost
-  __check-user
-  print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/ftp-hydra-brute.txt ${__RHOST} FTP"
+    __check-project
+    qq-vars-set-rhost
+    __check-user
+    print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/ftp-hydra-brute.txt ${__RHOST} FTP"
 }
 
 qq-enum-ftp-lftp-grep() {
-  qq-vars-set-rhost
-  local q && __askvar q QUERY
-  print -z "lftp ${__RHOST}:/ > find | grep -i \"${QUERY}\" "
+    qq-vars-set-rhost
+    local q && __askvar q QUERY
+    print -z "lftp ${__RHOST}:/ > find | grep -i \"${QUERY}\" "
 }
 
 qq-enum-ftp-wget-mirror() {
-  __warn "The destination site will be mirrored in the current directory"
-  qq-vars-set-rhost
-  local u && __prefill u USER "anonymous"
-  local p && __prefill p PASSWORD "anonymous@example.com"
-  print -z "wget --mirror ftp://${u}:${p}@${__RHOST}"
+    __warn "The destination site will be mirrored in the current directory"
+    qq-vars-set-rhost
+    local u && __prefill u USER "anonymous"
+    local p && __prefill p PASSWORD "anonymous@example.com"
+    print -z "wget --mirror ftp://${u}:${p}@${__RHOST}"
 }

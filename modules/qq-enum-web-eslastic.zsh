@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-elastic-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-web-elastic
 -------------------
@@ -25,24 +25,25 @@ DOC
 }
 
 qq-enum-web-elastic-install() {
+    __info "Running $0..."
     __pkgs nmap curl
     qq-install-nmap-elasticsearch-nse
 }
 
 qq-enum-web-elastic-nmap() {
-  __check-project
-  qq-vars-set-rhost
-  print -z "sudo nmap -n -Pn -p9200 --script=elasticsearch ${__RHOST} -oN $(__hostpath)/nmap-elastic.txt"
+    __check-project
+    qq-vars-set-rhost
+    print -z "sudo nmap -n -Pn -p9200 --script=elasticsearch ${__RHOST} -oN $(__hostpath)/nmap-elastic.txt"
 }
 
 qq-enum-web-elastic-health() {
-  qq-vars-set-url
-  print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/_cluster/health?pretty\""
+    qq-vars-set-url
+    print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/_cluster/health?pretty\""
 }
 
 qq-enum-web-elastic-indices() {
-  qq-vars-set-url
-  print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/_cat/indices?v\""
+    qq-vars-set-url
+    print -z "curl -A \"${__UA}\" -XGET \"${__URL}:9200/_cat/indices?v\""
 }
 
 qq-enum-web-elastic-search() {

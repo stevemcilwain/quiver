@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-dns-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-dns
 -------------
@@ -31,77 +31,76 @@ DOC
 }
 
 qq-enum-dns-install() {
-
-  __pkgs tcpdump nmap dnsutils dnsrecon 
-
+    __info "Running $0..."
+    __pkgs tcpdump nmap dnsutils dnsrecon 
 }
 
 qq-enum-dns-nmap-sweep() {
-  __check-project
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sS -sU -p53 ${__NETWORK} -oA $(__netpath)/dns-sweep"
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -sU -p53 ${__NETWORK} -oA $(__netpath)/dns-sweep"
 }
 
 qq-enum-dns-tcpdump() {
-  __check-project  
-  __check-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 53 -w $(__hostpath)/dns.pcap"
+    __check-project  
+    __check-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 53 -w $(__hostpath)/dns.pcap"
 }
 
 qq-enum-dns-host-txfr() {
-  qq-vars-set-rhost
-  qq-vars-set-domain
-  print -z "host -l ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-rhost
+    qq-vars-set-domain
+    print -z "host -l ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-host-all() {
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "host -a ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "host -a ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-host-txt() {
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "host -t txt ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "host -t txt ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-host-mx() {
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "host -t mx ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "host -t mx ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-host-ns() {
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "host -t ns ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "host -t ns ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-host-srv() {
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "host -t srv ${__DOMAIN} ${__RHOST}"
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "host -t srv ${__DOMAIN} ${__RHOST}"
 }
 
 qq-enum-dns-nmap-ad() {
-  __check-project
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "nmap --script dns-srv-enum --script-args dns-srv-enum.domain=${__DOMAIN} ${__RHOST} -o $(__dompath)/nmap-AD.txt"
+    __check-project
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "nmap --script dns-srv-enum --script-args dns-srv-enum.domain=${__DOMAIN} ${__RHOST} -o $(__dompath)/nmap-AD.txt"
 }
 
 qq-enum-dns-dnsrecon() {
-  __check-project
-  qq-vars-set-domain
-  qq-vars-set-rhost
-  print -z "dnsrecon -d ${__DOMAIN} -n ${__RHOST} -a -s -w -z --threads 10 -c $(__dompath)/dns.csv"
+    __check-project
+    qq-vars-set-domain
+    qq-vars-set-rhost
+    print -z "dnsrecon -d ${__DOMAIN} -n ${__RHOST} -a -s -w -z --threads 10 -c $(__dompath)/dns.csv"
 }
 
 qq-enum-dns-dnsrecon-reverse() {
-  __check-project
-  qq-vars-set-rhost
-  mkdir -p ${__PROJECT}/domains
-  print -z "dnsrecon -r ${__NETWORK} -n ${__RHOST} -c ${__PROJECT}/domains/revdns.csv"
+    __check-project
+    qq-vars-set-rhost
+    mkdir -p ${__PROJECT}/domains
+    print -z "dnsrecon -r ${__NETWORK} -n ${__RHOST} -c ${__PROJECT}/domains/revdns.csv"
 }

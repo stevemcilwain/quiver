@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-github-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-recon-github
 ------------
@@ -24,6 +24,7 @@ DOC
 }
 
 qq-recon-github-install() {
+    __info "Running $0..."
     __pkgs curl jq python3 
     qq-install-golang
     qq-install-github-search
@@ -56,4 +57,3 @@ qq-recon-github-gitrob() {
     __info "Gitrob UI: http://127.0.0.1:9393/"
     print -z "pushd $d ;gitrob -in-mem-clone -save \"$d/output.json\" -github-access-token $__API_GITHUB ${__USER} && popd"
 }
-

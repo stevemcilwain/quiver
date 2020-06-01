@@ -5,7 +5,7 @@
 #############################################################
 
 qq-log-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-log
 -------------
@@ -26,10 +26,9 @@ DOC
 }
 
 qq-log-install() {
-
-  qq-install-golang
-  go get -u github.com/charmbracelet/glow
-
+    __info "Running $0..."
+    qq-install-golang
+    go get -u github.com/charmbracelet/glow
 }
 
 qq-log-set() {

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-smb-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-smb
 ------------
@@ -34,7 +34,8 @@ DOC
 }
 
 qq-enum-smb-install() {
-    __pkgs nmap tcpdump smbmap enum4linux smbclient impacket-scripts responder nbtscan rpcclient
+  __info "Running $0..."
+  __pkgs nmap tcpdump smbmap enum4linux smbclient impacket-scripts responder nbtscan rpcclient
 }
 
 qq-enum-smb-nmap-sweep() {

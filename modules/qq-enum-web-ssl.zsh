@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-web-ssl-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-web-ssl
 ----------------
@@ -26,9 +26,8 @@ DOC
 }
 
 qq-enum-web-ssl-install() {
-
-  __pkgs curl nmap tcpdump openssl testssl
-  
+    __info "Running $0..."
+    __pkgs curl nmap tcpdump openssl testssl
 }
 
 qq-enum-web-ssl-tcpdump() {

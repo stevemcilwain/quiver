@@ -5,7 +5,7 @@
 #############################################################
 
 qq-pivot-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-pivot
 ------------
@@ -23,6 +23,7 @@ DOC
 }
 
 qq-pivot-install() {
+    __info "Running $0..."
     __pkgs sshfs rsync
 }
 

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-dhcp-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-dhcp
 -------------
@@ -22,25 +22,23 @@ DOC
 }
 
 qq-enum-dhcp-install() {
-
-  __pkgs tcpdump nmap 
-
+    __info "Running $0..."
+    __pkgs tcpdump nmap 
 }
 
-
 qq-enum-dhcp-sweep-nmap() {
-  __check-project
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sU -p67 ${__NETWORK} -oA $(__netpath)/dhcp-sweep"
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sU -p67 ${__NETWORK} -oA $(__netpath)/dhcp-sweep"
 }
 
 qq-enum-dhcp-tcpdump() {
-  __check-project
-  qq-vars-set-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and udp port 67 and port 68 -w $(__hostpath)/dhcp.pcap"
+    __check-project
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and udp port 67 and port 68 -w $(__hostpath)/dhcp.pcap"
 }
 
 qq-enum-dhcp-discover-nmap() {
-  print -z "sudo nmap -v --script broadcast-dhcp-discover"
+    print -z "sudo nmap -v --script broadcast-dhcp-discover"
 }

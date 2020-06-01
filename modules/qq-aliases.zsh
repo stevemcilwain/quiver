@@ -5,7 +5,7 @@
 #############################################################
 
 qq-aliases-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-aliases
 ----------
@@ -191,12 +191,10 @@ qq-aliases-scan-gnmap-to-hosts() { grep -i "open" $1 | cut -d' ' -f2 > $2 }
 
 #git
 qq-aliases-git-add-commit-push() {
-  git add .
-  git commit -m "$@"
-  git push
+    git add .
+    git commit -m "$@"
+    git push
 }
-
 
 #jobs
 qq-aliases-dtach() { dtach -A $1 /bin/zsh }
-

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-enum-pop3-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-enum-pop3
 ------------
@@ -23,28 +23,26 @@ DOC
 }
 
 qq-enum-pop3-install() {
+    __info "Running $0..."
     __pkgs nmap tcpdump hydra
 }
 
 qq-enum-pop3-nmap-sweep() {
-  __check-project
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sS -p 110,995 ${__NETWORK} -oA $(__netpath)/pop3-sweep"
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -p 110,995 ${__NETWORK} -oA $(__netpath)/pop3-sweep"
 }
 
 qq-enum-pop3-tcpdump() {
-  __check-project
-  qq-vars-set-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 110 and port 995 -w $(__hostpath)/pop3.pcap"
+    __check-project
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 110 and port 995 -w $(__hostpath)/pop3.pcap"
 }
 
 qq-enum-pop3-hydra() {
-  __check-project
-  qq-vars-set-rhost
-  __check-user
-  print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/pop3-hydra-brute.txt ${__RHOST} POP3"
+    __check-project
+    qq-vars-set-rhost
+    __check-user
+    print -z "hydra -l ${__USER} -P ${__PASSLIST} -e -o $(__hostpath)/pop3-hydra-brute.txt ${__RHOST} POP3"
 }
-
-
-

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq
 --
@@ -101,28 +101,27 @@ DOC
 }
 
 qq-update() {
-  cd $HOME/.oh-my-zsh/custom/plugins/quiver
-  git pull
-  rm $__REMOTE_VER
-  rm $__REMOTE_CHK
-  cd - > /dev/null
-  source $HOME/.zshrc
+    cd $HOME/.oh-my-zsh/custom/plugins/quiver
+    git pull
+    rm $__REMOTE_VER
+    rm $__REMOTE_CHK
+    cd - > /dev/null
+    source $HOME/.zshrc
 }
 
 qq-status() {
-  cd $HOME/.oh-my-zsh/custom/plugins/quiver
-  git status | grep On | cut -d" " -f2,3
-  cd - > /dev/null
+    cd $HOME/.oh-my-zsh/custom/plugins/quiver
+    git status | grep On | cut -d" " -f2,3
+    cd - > /dev/null
 }
 
 qq-whatsnew() {
-  cat $__PLUGIN/RELEASES.md
+    cat $__PLUGIN/RELEASES.md
 }
 
 qq-debug() {
-  cat ${__LOGFILE}
+    cat ${__LOGFILE}
 }
-
 
 ##### Output Helpers
 
@@ -132,10 +131,10 @@ __blue() echo "$fg[blue]$@ $reset_color"
 __yellow() echo "$fg[yellow]$@ $reset_color"
 __err() echo "$fg[red]$@ $reset_color"
 
-__info() __blue "[!] $@"
-__ok() __green "[*] $@"
-__warn() __yellow "[>] $@"
-__err() __red "[!] $@"
+__info() __blue "[*] $@"
+__ok() __green "[+] $@"
+__warn() __yellow "[!] $@"
+__err() __red "[X] $@"
 
 ##### Input Helpers
 
@@ -167,11 +166,26 @@ __prefill() {
     eval $retval="'$tmpval'"
 }
 
+__check-proceed() {
+    PS3="$fg[cyan]Select: $reset_color"
+    COLUMNS=10
+    select yn in "Yes" "Cancel"; do
+    case $yn in
+        Yes) 
+            return 0
+            break;;
+        *)
+            return 1
+            break;;
+    esac
+    done
+}
+
 __menu() {
-  PS3="$fg[cyan]Select: $reset_color"
-  COLUMNS=6
-  select o in $@; do break; done
-  echo ${o}
+    PS3="$fg[cyan]Select: $reset_color"
+    COLUMNS=10
+    select o in $@; do break; done
+    echo ${o}
 }
 
 ##### String Helpers
@@ -189,11 +203,9 @@ __rand() {
     fi  
 }
 
-
 ##### Tool Helpers
 
 __msf() {
-  local msfcmd=$(cat $@)
-  print -z "msfconsole -n -q -x \"${msfcmd}\" "
-
+    local msfcmd=$(cat $@)
+    print -z "msfconsole -n -q -x \"${msfcmd}\" "
 }

@@ -5,7 +5,7 @@
 #############################################################
 
 qq-recon-domains-help() {
-  cat << "DOC"
+    cat << "DOC"
 
 qq-recon-domains
 -------------
@@ -23,21 +23,22 @@ DOC
 }
 
 qq-recon-domains-install() {
-  __pkgs amass 
+    __info "Running $0..."
+    __pkgs amass 
 }
 
 qq-recon-domains-amass-whois() {
-  __check-project
-  qq-vars-set-domain
-  mkdir -p ${__PROJECT}/amass
-  mkdir -p ${__PROJECT}/domains
-  print -z "amass intel -active -whois -d ${__DOMAIN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
+    __check-project
+    qq-vars-set-domain
+    mkdir -p ${__PROJECT}/amass
+    mkdir -p ${__PROJECT}/domains
+    print -z "amass intel -active -whois -d ${__DOMAIN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
 }
 
 qq-recon-domains-amass-asn() {
-  __check-project
-  __check-asn
-  mkdir -p ${__PROJECT}/amass
-  mkdir -p ${__PROJECT}/domains
-  print -z "amass intel -active -asn ${__ASN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
+    __check-project
+    __check-asn
+    mkdir -p ${__PROJECT}/amass
+    mkdir -p ${__PROJECT}/domains
+    print -z "amass intel -active -asn ${__ASN} -dir ${__PROJECT}/amass | tee -a ${__PROJECT}/domains/domains.txt"
 }
