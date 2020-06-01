@@ -9,8 +9,7 @@ qq-kali-help() {
 
 qq-kali
 ----------
-The qq-kali namespace provides commands that assist with managing Kali linux
-as well as quick shell aliases common functions.
+The qq-kali namespace provides commands that assist with managing Kali linux.
 
 Commands
 --------
@@ -27,6 +26,7 @@ qq-kali-mem-free:             show overall memory usage
 qq-kali-disk-top10:           show top 10 files by size in current directory
 qq-kali-ps-tree:              show a process tree
 qq-kali-ps-grep:              search list of processes
+qq-kali-ps-dtach:             run a script in the background
 qq-kali-net-watch:            display network active connections
 qq-kali-net-open4:            display open network connections ipv4
 qq-kali-net-open6:            display open network connections ipv6
@@ -82,6 +82,12 @@ qq-kali-ps-tree() { print -z "ps auxf" }
 qq-kali-ps-grep() { 
     local query && __askvar query QUERY 
     print -z "ps aux | grep -v grep | grep -i -e VSZ -e ${query}" 
+}
+
+qq-kali-ps-dtach() { 
+    __ask "Enter full path to script to run dtach'd"
+    local p && __askpath p PATH $(pwd)
+    dtach -A ${p} /bin/zsh 
 }
 
 qq-kali-net-watch() { print -z "sudo watch -n 0.3 'netstat -pantlu4 | grep \"ESTABLISHED\|LISTEN\"' " }

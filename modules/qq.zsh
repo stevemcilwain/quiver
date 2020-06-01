@@ -38,9 +38,8 @@ Each namespace has its own install and help commands.
 
  Utility
  ---------
- qq-encoding-     Used for encoding / decoding data
- qq-aliases-      A collection of shell aliases and functions
- qq-sys-          Variety of commands for managing linux
+ qq-encoding-      Used for encoding / decoding data
+ qq-kali-          Variety of commands for managing Kali linux
 
  Engagement / Project / Bounty
  -----------------------------
@@ -86,7 +85,6 @@ Each namespace has its own install and help commands.
 
  Exploitation Phase
  ------------------
-
  qq-srv-                     Commands for spawning file hosting services
  qq-exploit-                 Commands for compiling exploits
  qq-shell-tty-               Commands for upgrading shells to tty
