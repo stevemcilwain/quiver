@@ -26,6 +26,7 @@ __MNU_UA:         path to the file containing user-agent strings
 __MNU_WORDLISTS:  path to the file containing a list of favorite wordlists
 __TCP_PORTS:      path to the file of favorite TCP ports
 __SHELL_SSL_CERT: path to the file of an impersonated SSL cert used for reverse shell IDS evasion
+__ALIASES:        path to the file containing aliases that will be sourced
 
 Commands
 --------
@@ -46,6 +47,7 @@ qq-vars-global() {
     echo "$(__cyan MNU_WORDLISTS: ) ${__MNU_WORDLISTS}"
     echo "$(__cyan TCP_PORTS: ) ${__TCP_PORTS}"
     echo "$(__cyan SHELL_SSL_CERT: ) ${__SHELL_SSL_CERT}"
+    echo "$(__cyan ALIASES: ) ${__ALIASES}"
 }
 
 ########## __IMPACKET
@@ -174,4 +176,14 @@ qq-vars-global-set-shell-ssl-cert() {
     __ask "Set the full path to an impersonated SSL certificate in PEM format to use with reverse shells"
     __askpath __SHELL_SSL_CERT FILE $HOME
     echo "${__SHELL_SSL_CERT}" > ${__GLOBALS}/SHELL_SSL_CERT
+}
+
+########## __ALIASES
+
+export __ALIASES="$(cat ${__GLOBALS}/ALIASES 2> /dev/null || echo "${__PAYLOADS}/aliases.rc")"
+
+qq-vars-global-set-aliases() {
+    __ask "Set the full path to a file containing shell aliases"
+    __askpath __ALIASES FILE $HOME
+    echo "${__ALIASES}" > ${__GLOBALS}/ALIASES
 }

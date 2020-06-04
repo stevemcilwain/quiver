@@ -29,7 +29,7 @@ qq-enum-web-js-install() {
 
 qq-enum-web-js-beautify() {
     local f && __askpath f FILE $(pwd)
-    print -z "js-beautify ${f} > source-${f}"
+    print -z "js-beautify ${f} > source-$(basename ${f})"
 }
 
 qq-enum-web-js-link-finder-url() {

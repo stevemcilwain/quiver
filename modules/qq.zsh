@@ -32,68 +32,68 @@ Each namespace has its own install and help commands.
 
  Install and Configuration
  -------------------------
- qq-vars-global-     Persistent environment variables used in all commands, all sessions
- qq-install-         Installers for commonly used applications and global installer for all dependencies
- qq-notes-           Configure and read your markdown notes
+ qq-install-                    Installers for commonly used applications and global installer for all dependencies
+ qq-notes-                      Configure and read your markdown notes
+ qq-vars-global-                Persistent environment variables used in all commands, all sessions
 
  Utility
  ---------
- qq-encoding-      Used for encoding / decoding data
- qq-kali-          Variety of commands for managing Kali linux
+ qq-encoding-                   Used for encoding / decoding data
+ qq-kali-                       Variety of commands for managing Kali linux
 
  Engagement / Project / Bounty
  -----------------------------
- qq-log-         Configure and setup a logbook for current engagement
- qq-vars-        Per-session, per-engagement variables used in all commands
- qq-bounty-      Commands to assist in generating bug bounty scope files and data sync helpers
- qq-project-     Commands for custom project directory scaffolding (expirimental)
+ qq-log-                        Configure and setup a logbook for current engagement
+ qq-vars-                       Per-session, per-engagement variables used in all commands
+ qq-project-                    Commands to define scope and manage project data
+ qq-project-custom-             Commands for custom project directory scaffolding
 
  Recon Phase
  -----------
- qq-recon-org-          Recon commands for organization files and data
- qq-recon-github-       Recon commands for searching github repositories
- qq-recon-networks-     Recon commands for identiying an organization's networks
- qq-recon-domains-      Recon commands for horizontal domain enumeration
- qq-recon-subs-         Recon commands for vertical sub-domain enumeration 
+ qq-recon-org-                  Recon commands for organization files and data
+ qq-recon-github-               Recon commands for searching github repositories
+ qq-recon-networks-             Recon commands for identiying an organization's networks
+ qq-recon-domains-              Recon commands for horizontal domain enumeration
+ qq-recon-subs-                 Recon commands for vertical sub-domain enumeration 
 
  Active Enumeration Phase
  ------------------------
- qq-enum-network-         Enumerate and scan networks
- qq-enum-host-            Enumerate and scan an individual host
- qq-enum-dhcp-            Enumerate DHCP services
- qq-enum-dns-             Enumerate DNS services
- qq-enum-ftp-             Enumerate FTP services
- qq-enum-kerb-            Enumerate Kerberos services
- qq-enum-ldap-            Enumerate LDAP and Active Directory services
- qq-enum-mssql-           Enumerate MSSQL database services
- qq-enum-mysql-           Enumerate MYSQL database services
- qq-enum-nfs-             Enumerate NFS shares and services
- qq-enum-oracle-          Enumerate Oracle database services
- qq-enum-pop3-            Enumerate POP3 services
- qq-enum-rdp-             Enumerate RDP services
- qq-enum-smb-             Enumerate SMB services
- qq-enum-web-             Enumerate web servers and services
- qq-enum-web-aws-         Enumerate AWS hosted services
- qq-enum-web-dirs-        Enumerate directories and files
- qq-enum-web-elastic-     Enumerate elastic search services
- qq-enum-web-fuzz-        Fuzz inputs such as forms, cookies and headers
- qq-enum-web-js-          Mine javascript files for secrets
- qq-enum-web-php-         Enumerate php web servers
- qq-enum-web-ssl-         Enumerate SSL certs and services
- qq-enum-web-vuln-        Check for common web vulnerabilities
- qq-enum-web-xss-         XSS helpers
+ qq-enum-network-               Enumerate and scan networks
+ qq-enum-host-                  Enumerate and scan an individual host
+ qq-enum-dhcp-                  Enumerate DHCP services
+ qq-enum-dns-                   Enumerate DNS services
+ qq-enum-ftp-                   Enumerate FTP services
+ qq-enum-kerb-                  Enumerate Kerberos services
+ qq-enum-ldap-                  Enumerate LDAP and Active Directory services
+ qq-enum-mssql-                 Enumerate MSSQL database services
+ qq-enum-mysql-                 Enumerate MYSQL database services
+ qq-enum-nfs-                   Enumerate NFS shares and services
+ qq-enum-oracle-                Enumerate Oracle database services
+ qq-enum-pop3-                  Enumerate POP3 services
+ qq-enum-rdp-                   Enumerate RDP services
+ qq-enum-smb-                   Enumerate SMB services
+ qq-enum-web-                   Enumerate web servers and services
+ qq-enum-web-aws-               Enumerate AWS hosted services
+ qq-enum-web-dirs-              Enumerate directories and files
+ qq-enum-web-elastic-           Enumerate elastic search services
+ qq-enum-web-fuzz-              Fuzz inputs such as forms, cookies and headers
+ qq-enum-web-js-                Mine javascript files for secrets
+ qq-enum-web-php-               Enumerate php web servers
+ qq-enum-web-ssl-               Enumerate SSL certs and services
+ qq-enum-web-vuln-              Check for common web vulnerabilities
+ qq-enum-web-xss-               XSS helpers
 
  Exploitation Phase
  ------------------
- qq-srv-                     Commands for spawning file hosting services
- qq-exploit-                 Commands for compiling exploits
- qq-shell-tty-               Commands for upgrading shells to tty
- qq-shell-handlers-          Commands for spawning reverse shell handlers
- qq-shell-handlers-msf-      Commands for spawning reverse shells with Metasploit
+ qq-srv-                        Commands for spawning file hosting services
+ qq-exploit-                    Commands for compiling exploits
+ qq-shell-tty-                  Commands for upgrading shells to tty
+ qq-shell-handlers-             Commands for spawning reverse shell handlers
+ qq-shell-handlers-msf-         Commands for spawning reverse shells with Metasploit
   
  Post-Exploitation Phase
  -----------------------
- qq-pivot-     Commands for pivoting with ssh
+ qq-pivot-                      Commands for pivoting with ssh
 
 DOC
 }

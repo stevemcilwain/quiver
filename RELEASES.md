@@ -1,29 +1,21 @@
 # Releases
 
-## 0.17 4/30/2020
+## 1.0 6/4/2020
 
-I added help commands for each namespace to give a better overview.
-I also added an install command for each namespace's dependencies if 
-you prefer to install fewer packages up front with qq-install.
-
+Complete refactor and reorganization, including:
 
 * Added qq-<namespace>-help commands to all modules
 * Added qq-<namespace>-install commands to all modules
-* qq-install: refactored, change path for downloaded repos to $HOME/tools for less "sudo" required, better opsec
-* qq-srv: changed qq-srv-*-auto commands to qq-srv-*-srv for clearer naming, removed aliases, change to python3
-* qq-vars: added __LOGBOOK, __RPORT and __LPORT variables + commands, removed aliases, changed __OUTPUT to __PROJECT
-* qq-recon: renamed to qq-recon-org, moved eyewitness and curl commands to qq-enum-web
-* qq-recon-subs: removed by-domain from most commands, removed altdns, cleaned up namespace
-* qq-recon-github: cleaned up namespace, added gitrob
-* qq-recon-domains: cleaned up names of commands
-* qq-recon-networks: simplified namespace
-* qq-project: integrated with $__PROJECT, sets this to the /tool-output directory
-* qq-log: changed to use $__LOGBOOK in qq-vars, independent of $__PROJECT
-* qq-notes: reduce to 2 commands, both list all files, one search by filename and one search by content, added interactive notes display
-
-
-
-
+* More variables that auto-populate in qq-vars
+* Persistent variables in qq-vars-global for customization of settings
+* New qq-shell namespaces
+* Better organization in qq-recon namespaces
+* qq-bounty consolidated into qq-project, custom project commands moved to qq-project-custom
+* qq-notes updated with more features
+* New qq-kali namespace added with system commands
+* qq-install refactored to include custom installers
+* New qq-exploit namespace added  
+* New qq-enum-* namespaces added for more services
 
 ## 0.16 3/28/2020
 

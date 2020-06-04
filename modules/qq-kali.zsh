@@ -45,6 +45,8 @@ qq-kali-file-dos-to-unix:     convert file with dos endings to unix
 qq-kali-file-unix-to-dos:     convert file with unix endings to dos
 qq-kali-file-sort-uniq:       sort a file uniq in place 
 qq-kali-file-sort-uniq-ip:    sort a file of IP addresses uniq in place
+qq-kali-sudoers-easy:         removes the requirment for sudo for common commands like nmap
+qq-kali-sudoers-harden:       removes sudo exclusions
 
 DOC
 }
@@ -150,3 +152,14 @@ qq-kali-file-sort-uniq-ip() {
     [[ -z "${file}" ]] && __askpath file FILE $(pwd)
     print -z "cat ${file} | sort -u | sort -V -o ${file}"
 }
+
+qq-kali-sudoers-easy() {
+    __warn "This is dangerous for OPSEC! Remove when done."
+    print -z "echo \"$USER ALL=(ALL:ALL) NOPASSWD: /usr/bin/nmap, /usr/bin/masscan, /usr/sbin/tcpdump\" | sudo tee /etc/sudoers.d/$USER"
+}
+alias easymode="qq-bounty-sudoers-easy"
+
+qq-kali-sudoers-harden() {
+    print -z "sudo rm /etc/sudoers.d/$USER"
+}
+alias hardmode="qq-bounty-sudoers-harden"

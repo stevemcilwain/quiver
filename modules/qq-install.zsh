@@ -63,8 +63,6 @@ qq-install-all() {
     if __check-proceed
     then
         __info "Installing all modules..."
-        #qq-aliases-install
-        qq-bounty-install
         #qq-encoding-install
         qq-enum-dhcp-install
         qq-enum-dns-install
@@ -89,10 +87,12 @@ qq-install-all() {
         qq-enum-web-php-install
         qq-enum-web-ssl-install
         qq-enum-web-install
+        qq-exploit-install
+        #qq-kali-install
         qq-notes-install
         qq-log-install
-        qq-exploit-install
         qq-pivot-install
+        qq-project-install
         qq-recon-domains-install
         qq-recon-github-install
         qq-recon-networks-install
@@ -100,7 +100,7 @@ qq-install-all() {
         qq-recon-subs-install
         qq-shell-handlers-msf-install
         qq-shell-handlers-install
-        #qq-shell-handlers-tty-install
+        #qq-shell-tty-install
         qq-srv-install
         __info "Install finished"
     fi
