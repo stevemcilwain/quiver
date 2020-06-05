@@ -28,11 +28,12 @@ qq-pivot-install() {
 }
 
 qq-pivot-mount-remote-sshfs() { 
-    local lm && __askpath lm LMOUNT /mnt
-    local rm && __askvar rm RMOUNT
     __check-user
+    local lm && __askpath lm LMOUNT /mnt
+    local rm && __askvar rm RMOUNT /
     qq-vars-set-rhost
-    print -z "sshfs ${__USER}@${__RHOST}:/${rm} /mnt/${lm}" 
+    mkdir -p ${lm}
+    print -z "sshfs ${__USER}@${__RHOST}:${rm} ${lm}" 
 }
 
 qq-pivot-ssh-dynamic-proxy() {

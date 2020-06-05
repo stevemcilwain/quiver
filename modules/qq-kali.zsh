@@ -75,7 +75,7 @@ qq-kali-fs-large() { print -z "sudo find / -type f -size +1G" }
 
 qq-kali-mem-top10() { print -z "sudo ps aux | sort -rk 4,4 | head -n 10 | awk '{print \$4,\$11}' " }
 
-qq-kali-mem-free() { print -z "free -mt" }
+qq-kali-mem-free() { print -z "free -th" }
 
 qq-kali-disk-top10() { print -z "sudo du -sk ./* | sort -r -n | head -10" }
 
@@ -94,9 +94,9 @@ qq-kali-ps-dtach() {
 
 qq-kali-net-watch() { print -z "sudo watch -n 0.3 'netstat -pantlu4 | grep \"ESTABLISHED\|LISTEN\"' " }
 
-qq-kali-net-open4() { print z "sudo netstat -pantlu4"}
+qq-kali-net-open4() { print -z "sudo netstat -pantlu4"}
 
-qq-kali-net-open6() { print z "sudo netstat -pantlu6"}
+qq-kali-net-open6() { print -z "sudo netstat -pantlu6"}
 
 qq-kali-net-routes() { print -z "netstat -r --numeric-hosts" }
 
@@ -126,7 +126,7 @@ qq-kali-file-replace() {
     local replace && __askvar replace REPLACE
     local with && __askvar with WITH
     local file && __askpath file FILE $(pwd)
-    print -z "sed 's/${replace}/${with}/g' ${file}"
+    print -z "sed 's/${replace}/${with}/g' ${file} > ${file}"
 } 
 
 qq-kali-file-dos-to-unix() { 
@@ -155,11 +155,11 @@ qq-kali-file-sort-uniq-ip() {
 
 qq-kali-sudoers-easy() {
     __warn "This is dangerous for OPSEC! Remove when done."
-    print -z "echo \"$USER ALL=(ALL:ALL) NOPASSWD: /usr/bin/nmap, /usr/bin/masscan, /usr/sbin/tcpdump\" | sudo tee /etc/sudoers.d/$USER"
+    print -z "echo \"$USER ALL=(ALL:ALL) NOPASSWD: /usr/bin/nmap, /usr/bin/masscan, /usr/sbin/tcpdump\" | sudo tee /etc/sudoers.d/$(whoami)"
 }
 alias easymode="qq-bounty-sudoers-easy"
 
 qq-kali-sudoers-harden() {
-    print -z "sudo rm /etc/sudoers.d/$USER"
+    print -z "sudo rm /etc/sudoers.d/$(whoami)"
 }
 alias hardmode="qq-bounty-sudoers-harden"

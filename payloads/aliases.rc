@@ -11,7 +11,7 @@ alias ldir='ls -d */'
 #sys
 alias mounted="sudo mount | column -t"
 alias df="df -mTh --total"
-alias free="free -mt"
+alias free="free -th"
 alias ps="ps auxf"
 alias psg="ps aux | grep -v grep | grep -i -e VSZ -e "
 
@@ -31,9 +31,6 @@ alias pvs="sudo protonvpn status"
 alias zprc="cat ~/.zshrc"
 alias zerc="nano ~/.zshrc"
 alias zsrc="source ~/.zshrc"
-
-#git
-alias gacp="qq-aliases-git-add-commit-push"
 
 # files and directory
 alias linestocsv="paste -s -d, -"

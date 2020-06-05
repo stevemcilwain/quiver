@@ -146,10 +146,10 @@ qq-install-essentials(){
 qq-install-golang() {
     __pkgs golang
 
-    if [[ -z "GOPATH" ]]
+    if [[ -z "$(echo $GOPATH)" ]]
     then
-        echo "export GOPATH=\$HOME/go" | tee -a .zshrc
-        echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" | tee -a .zshrc
+        echo "export GOPATH=\$HOME/go" | tee -a $HOME/.zshrc
+        echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" | tee -a $HOME/.zshrc
         export GOPATH=$HOME/go
         export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     fi 
