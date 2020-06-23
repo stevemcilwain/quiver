@@ -14,12 +14,13 @@ __err() echo "$fg[red][!] $@ $reset_color"
 # Recon
 #############################################################
 
-[[ -z $1 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
-[[ -z $2 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org>" && exit
+[[ -z $1 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org> <outdir>" && exit
+[[ -z $2 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org> <outdir>" && exit
+[[ -z $3 ]] && __err "Missing argument.\nUsage: zsh $0 <domain> <org> <outdir>" && exit
 
 export DOMAIN=$1
 export ORG=$2
-export DIR=$(pwd)
+export DIR=$3
 export UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 
 export F_ASN="${DIR}/asn.txt"

@@ -4,127 +4,426 @@
 # qq-install
 #############################################################
 
-qq-install(){
+qq-install-help() {
+    cat << "DOC"
 
-  __info "Installing apt packages... "
+qq-install
+----------
+The qq-install namespace provides commands that assist with installing
+packages, repos and tools used in quiver.
 
-  __pkgs rlwrap jq curl wget netcat pigz fonts-powerline unzip asciinema dnsutils tmux dtach sshfs tree
+Commands
+--------
+qq-install-all:                Installs all dependecies in all modules, calling qq-*-install 
+qq-install-git-pull-tools:     Updates all install tools that are git repos
+qq-install-dev:                Installs pyhton3, php, npm and libraries
+qq-install-essentials:         Installs useful utilities
+qq-install-golang:             Installs golang and environment variables needed for "go get"
 
-  __pkgs python python3 python-pip python3-pip python-smb python3-pyftpdlib php php-curl libldns-dev libssl-dev libcurl4-openssl-dev 
-  
-  __pkgs jsbeautifier npm
+Tools
+-----
+These installers are for individual tools.
 
-  __pkgs nmap masscan tcpdump awscli exiftool tftp ftp lftp whois 
+qq-install-wordlist-commonspeak
+qq-install-wordlist-nerdlist
+qq-install-massdns
+qq-install-github-search
+qq-install-s3scanner
+qq-install-git-secrets
+qq-install-gitrob
+qq-install-pentest-tools
+qq-install-protonvpn
+qq-install-nmap-elasticsearch-nse
+qq-install-link-finder
+qq-install-bat
 
-  __pkgs whatweb gobuster wpscan wafw00f hydra nikto padbuster parsero dirb 
-
-  __pkgs metagoofil cewl john theharvester eyewitness amass sublist3r dnsrecon 
-
-  __pkgs impacket-scripts atftpd wordlists seclists 
-
-  __pkgs metasploit-framework exploitdb
-
-  __info "Installing node packages"
-
-  sudo npm install --global n
-  sudo npm install --global eslint
-
-  __info "Installing python packages... "
-
-  sudo pip install py-altdns
-  sudo pip install wfuzz
-  sudo pip install shodan
-  sudo pip3 install updog
-
-  __info "Installing golang and packages... "
-
-  __install_golang
-  go get -v -u github.com/projectdiscovery/subfinder/cmd/subfinder 
-  go get -v -u github.com/charmbracelet/glow
-  go get -v -u github.com/tomnomnom/httprobe
-  go get -v -u github.com/michenriksen/gitrob
-  go get -v -u github.com/ffuf/ffuf
-  go get -v -u github.com/root4loot/rescope
-  go get -v -u github.com/tomnomnom/waybackurls
-
-  __info "Installing wordlist repos... "
-
-  sudo git clone https://github.com/chrislockard/api_wordlist.git /opt/words/api_wordlist
-  sudo git clone https://github.com/assetnote/commonspeak2-wordlists.git /opt/words/commonspeak2-wordlists
-  sudo git clone https://github.com/tarahmarie/nerdlist.git /opt/words/nerdlist
-  sudo wget -nd -P /opt/words/nullenc https://gist.github.com/stevemcilwain/f875b42ddb51c6eec5207f21a92cdceb/raw/146f367110973250785ced348455dc5173842ee4/content_discovery_nullenc0de.txt
-  sudo wget -nd -P /opt/words/all https://gist.githubusercontent.com/jhaddix/f64c97d0863a78454e44c2f7119c2a6a/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt
-  sudo gunzip -q -k /usr/share/wordlists/rockyou.txt.gz
-
-  __info "Installing recon repos... "
-
-  sudo git clone https://github.com/blechschmidt/massdns.git /opt/recon/massdns
-  cd /opt/recon/massdns
-  sudo make
-  cd -
-
-  sudo git clone https://github.com/gwen001/github-search.git /opt/recon/github-search
-  cd /opt/recon/github-search
-  sudo pip3 install -r requirements.txt
-  cd -
-
-  sudo git clone https://github.com/guelfoweb/knock.git /opt/recon/knock
-  cd /opt/recon/knock
-  sudo python setup.py install
-  cd -
-
-  __info "Installing enum repos... "
-
-  sudo git clone https://github.com/tarunkant/EndPoint-Finder.git /opt/enum/Endpoint-Finder
-
-  sudo git clone https://github.com/sa7mon/S3Scanner.git /opt/enum/S3Scanner
-  cd /opt/enum/S3Scanner
-  sudo pip install -r requirements.txt
-  cd -
-
-  sudo git clone https://github.com/guelfoweb/knock.git /opt/recon/knock
-  cd /opt/recon/knock
-  sudo python setup.py install
-  cd -
-
-  sudo git clone https://github.com/blechschmidt/massdns.git /opt/recon/massdns
-  cd /opt/recon/massdns
-  sudo make
-  cd -
-
-  sudo git clone https://github.com/gwen001/github-search.git /opt/recon/github-search
-  cd /opt/recon/github-search
-  sudo pip3 install -r requirements.txt
-  cd -
-
-  sudo git clone https://github.com/GerbenJavado/LinkFinder.git /opt/enum/LinkFinder
-  cd /opt/enum/LinkFinder
-  sudo python setup.py install
-  
-  __info "Installation completed "
-
+DOC
 }
 
-# helpers
+##### Helpers
+
+__addpath() {
+    echo "export PATH=\$PATH:$1" | tee -a ~/.zshrc
+    export PATH=$PATH:$1
+}
 
 __pkgs(){
-  echo "  [+] check for and installing dependencies..."
-  for pkg in "$@"
-  do
-      dpkg -l | grep -qw $pkg || sudo apt-get -y install $pkg
-  done 
+    __info "checking for and installing dependencies..."
+    for pkg in "$@"
+    do
+    __info "$pkg"
+        dpkg -l | grep -qw $pkg && __warn "already installed" || sudo apt-get -y install $pkg
+    done 
 }
 
-__install_golang() {
+qq-install-all() {
+    __cyan "This will install/update all modules."
+    __cyan "Ensure you have free disk space before proceeding."
+    __ask "CONTINUE?"
+    if __check-proceed
+    then
+        __info "Installing all modules..."
+        #qq-encoding-install
+        qq-enum-dhcp-install
+        qq-enum-dns-install
+        qq-enum-ftp-install
+        qq-enum-host-install
+        qq-enum-kerb-install
+        qq-enum-ldap-install
+        qq-enum-mssql-install
+        qq-enum-mysql-install
+        qq-enum-network-install
+        qq-enum-nfs-install
+        qq-enum-oracle-install
+        qq-enum-pop3-install
+        qq-enum-rdp-install
+        qq-enum-smb-install
+        qq-enum-web-aws-install
+        qq-enum-web-dirs-install
+        qq-enum-web-elastic-install
+        qq-enum-web-fuzz-install
+        qq-enum-web-js-install
+        qq-enum-web-vuln-install
+        qq-enum-web-php-install
+        qq-enum-web-ssl-install
+        qq-enum-web-install
+        qq-exploit-install
+        #qq-kali-install
+        qq-notes-install
+        qq-log-install
+        qq-pivot-install
+        qq-project-install
+        qq-recon-domains-install
+        qq-recon-github-install
+        qq-recon-networks-install
+        qq-recon-org-install
+        qq-recon-subs-install
+        qq-shell-handlers-msf-install
+        qq-shell-handlers-install
+        #qq-shell-tty-install
+        qq-srv-install
+        __info "Install finished"
+    fi
+}
 
-  sudo apt-get install golang -y
+qq-install-git-pull-tools() {
+    __cyan "This will git-pull all repos in ${__TOOLS}."
+    __ask "CONTINUE?"
+    if __check-proceed
+    then
+    cd ${__TOOLS}
+    for d in $(ls -d */)
+    do 
+        cd $d
+        __ok "Pulling ${d}"
+        git pull 
+        cd -
+    done
+    cd ${__TOOLS}
+    fi
+}
 
-  echo "export GOPATH=\$HOME/go" | tee -a .zshrc
-  echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" | tee -a .zshrc
-  echo "export GO111MODULE=on" | tee -a .zshrc
+qq-install-dev(){
+    __cyan "This will python3, php, npm and libraries."
+    __ask "CONTINUE?"
+    if __check-proceed
+    then
+        __pkgs python3 python3-pip php php-curl libldns-dev libssl-dev libcurl4-openssl-dev npm
+    fi
+}
 
-  export GOPATH=$HOME/go
-  export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+qq-install-essentials(){
+    __cyan "This common utilities such as jq, tmux, tree, dtach and more."
+    __ask "CONTINUE?"
+    if __check-proceed
+    then
+        __pkgs jq pigz fonts-powerline unzip tmux dtach tree
+    fi
+}
 
+##### Individual Tools
+
+qq-install-golang() {
+    __pkgs golang
+
+    if [[ -z "$(echo $GOPATH)" ]]
+    then
+        echo "export GOPATH=\$HOME/go" | tee -a $HOME/.zshrc
+        echo "export PATH=\$PATH:/usr/local/go/bin:\$GOPATH/bin" | tee -a $HOME/.zshrc
+        export GOPATH=$HOME/go
+        export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    fi 
+}
+
+qq-install-node() {
+    __pkgs nodejs npm
+
+    cd $HOME
+    mkdir -p $HOME/.npm-global
+    npm config set prefix '~/.npm-global'
+
+    if ! $(echo $PATH | grep -q "npm-global")
+    then
+        echo "export PATH=\$PATH:\$HOME/.npm-global" | tee -a $HOME/.zshrc
+        export PATH=$PATH:$HOME/.npm-global
+    fi
+}
+
+qq-install-wordlist-commonspeak() {
+    local name="commonspeak2"
+    local url="https://github.com/assetnote/commonspeak2-wordlists.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        popd
+    fi
+}
+
+qq-install-wordlist-nerdlist() {
+    local name="nerdlist"
+    local url="https://github.com/tarahmarie/nerdlist.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        popd
+    fi
+}
+
+qq-install-massdns() {
+    local name="massdns"
+    local url="https://github.com/blechschmidt/massdns.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        pushd $p
+        make
+        popd
+        __addpath $p/bin
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        make
+        popd
+    fi
+}
+
+qq-install-github-search() {
+    local name="github-search"
+    local url="https://github.com/gwen001/github-search.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        pushd $p
+        pip3 install -r requirements.txt
+        popd
+        __addpath $p
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        pip3 install -r requirements.txt
+        popd
+    fi
+}
+
+qq-install-s3scanner() {
+    local name="S3Scanner"
+    local url="https://github.com/sa7mon/S3Scanner.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        pushd $p
+        pip3 install -r requirements.txt
+        popd
+        __addpath $p
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        pip3 install -r requirements.txt
+        popd
+    fi
+}
+
+qq-install-gf() {
+    local name="gf"
+
+    __info "$name"
+
+    go get -u github.com/tomnomnom/gf
+    echo "source \$GOPATH/src/github.com/tomnomnom/gf/gf-completion.zsh" >> $HOME/.zshrc
+    cp -r $GOPATH/src/github.com/tomnomnom/gf/examples $HOME/.gf
+
+}
+
+qq-install-git-secrets() {
+    local name="git-secrets"
+    local url="https://github.com/awslabs/git-secrets.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then 
+        git clone $url $p
+
+        #after commands
+        pushd $p
+        sudo make install
+        popd
+        __addpath $p
+
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        sudo make install
+        popd
+    fi
+}
+
+qq-install-gitrob() {
+
+    local name="gitrob"
+
+    __info "$name"
+
+    go get -u github.com/golang/dep/cmd/dep
+    go get -u github.com/codeEmitter/gitrob
+    pushd ~/go/src/github.com/codeEmitter/gitrob
+    dep ensure
+    go build
+    popd
+
+}
+
+qq-install-pentest-tools() {
+    local name="pentest-tools"
+    local url="https://github.com/gwen001/pentest-tools.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        __addpath $p
+
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        popd
+    fi
+}
+
+qq-install-protonvpn() {
+    local name="protonvpn"
+    __info "$name"
+
+    sudo apt install -y openvpn dialog python3-pip python3-setuptools
+    sudo pip3 install protonvpn-cli
+    __warn "ProtonVPN username and password required"
+    print -z "sudo protonvpn init"
+}
+
+qq-install-nmap-elasticsearch-nse() {
+    local name="nmap-elasticsearch-nse"
+    local url="https://github.com/theMiddleBlue/nmap-elasticsearch-nse.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        pushd $p
+        sudo cp elasticsearch.nse /usr/share/nmap/scripts/
+        popd
+
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        sudo cp elasticsearch.nse /usr/share/nmap/scripts/
+        popd
+    fi
+}
+
+qq-install-link-finder() {
+    local name="LinkFinder"
+    local url="https://github.com/GerbenJavado/LinkFinder.git"
+    local p="$__TOOLS/$name"
+
+    __info "$name"
+
+    if [[ ! -d $p ]]
+    then
+        git clone $url $p
+
+        #after commands
+        pushd $p 
+        sudo python3 setup.py install
+        pip3 install -r requirements.txt 
+        popd
+
+    else
+        __warn "already installed in $p"
+        pushd $p 
+        git pull
+        python3 setup.py install
+        pip3 install -r requirements.txt 
+        popd
+    fi
+}
+
+qq-install-bat() {
+    local name="bat"
+    __info "$name"
+
+    cd $HOME
+    wget https://github.com/sharkdp/bat/releases/download/v0.15.0/bat_0.15.0_amd64.deb 
+    sudo dpkg -i bat_0.15.0_amd64.deb
+    rm bat_0.15.0_amd64.deb
+    cd -
 }
 

@@ -1,0 +1,52 @@
+
+#nav
+alias cd..="cd ../"
+alias cls="clear"
+alias path="echo -e \${PATH//:/\\n}"
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias lf="ls -l | egrep -v '^d'"
+alias ldir='ls -d */'
+
+#sys
+alias mounted="sudo mount | column -t"
+alias df="df -mTh --total"
+alias free="free -th"
+alias ps="ps auxf"
+alias psg="ps aux | grep -v grep | grep -i -e VSZ -e "
+
+#network
+alias pcap="sudo tcpdump -r"
+alias myip="curl icanhazip.com"
+alias grip="grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'"
+
+#proton vpn
+alias pv-check="sudo pip3 install protonvpn-cli --upgrade"
+alias pvt="sudo protonvpn c -f"
+alias pvu="sudo protonvpn c -f -p udp"
+alias pvd="sudo protonvpn disconnect"
+alias pvs="sudo protonvpn status"
+
+#zsh
+alias zprc="cat ~/.zshrc"
+alias zerc="nano ~/.zshrc"
+alias zsrc="source ~/.zshrc"
+
+# files and directory
+alias linestocsv="paste -s -d, -"
+alias csvtolines="tr ',' '\n'"
+alias sfu="sort -u "
+alias sfip="sort -u | sort -V "
+alias sfuc="sort | uniq -c | sort -n"
+alias dos2unix="tr -d '\015' "
+alias unix2dos="sed -e 's/$/\r/'"
+
+# out
+
+alias trim1="sed 's/.$//'"
+alias trim2="sed 's/..$//'"
+alias trim3="sed 's/...$//'"
+alias trim4="sed 's/....$//'"
+
+# tools
+alias hp="httprobe -t 3000 -c 50 "

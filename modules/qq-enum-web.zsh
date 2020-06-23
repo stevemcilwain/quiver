@@ -4,72 +4,110 @@
 # qq-enum-web
 #############################################################
 
-qq-enum-web-sweep-nmap() {
-  qq-vars-set-network
-  print -z "sudo nmap -n -Pn -sS -p80,443,8080 ${__NETWORK} -oA $(__netpath)/web-sweep"
+qq-enum-web-help() {
+    cat << "DOC"
+
+qq-enum-web
+-----------
+The qq-enum-web namespace contains commands for scanning and enumerating
+http services.
+
+Commands
+--------
+qq-enum-web-install:                installs dependencies
+qq-enum-web-tcpdump:                capture traffic to and from a host
+qq-enum-web-nmap-sweep:             nmap sweep scan to discover web servers on a network
+qq-enum-web-whatweb:                enumerate web server and platform information
+qq-enum-web-waf:                    enumerate WAF information
+qq-enum-web-vhosts-gobuster:        brute force for virtual hosts
+qq-enum-web-eyewitness:             scrape screenshots from target URL
+qq-enum-web-wordpress:              enumerate Wordpress information
+qq-enum-web-headers:                grab headers from a target url using curl
+qq-enum-web-mirror:                 mirrors the target website locally
+
+DOC
+}
+
+qq-enum-web-install() {
+    __info "Running $0..."
+    __pkgs tcpdump nmap whatweb wafw00f gobuster eyewitness wpscan wget curl seclists wordlists 
+    go get -u github.com/jaeles-project/gospider
+    go get -u github.com/hakluke/hakrawler
+}
+
+qq-enum-web-nmap-sweep() {
+    __check-project
+    qq-vars-set-network
+    print -z "sudo nmap -n -Pn -sS -p80,443,8080 ${__NETWORK} -oA $(__netpath)/web-sweep"
 }
 
 qq-enum-web-tcpdump() {
-  qq-vars-set-iface
-  qq-vars-set-rhost
-  print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 80 -w $(__hostpath)/web.pcap"
+    __check-project
+    qq-vars-set-iface
+    qq-vars-set-rhost
+    print -z "sudo tcpdump -i ${__IFACE} host ${__RHOST} and tcp port 80 -w $(__hostpath)/web.pcap"
 }
 
 qq-enum-web-whatweb() {
-  local s && read "s?$fg[cyan]SEARCH(url,host,ip range):$reset_color "
-  print -z "whatweb ${s} -a 3"
+    __check-project
+    qq-vars-set-url
+    print -z "whatweb ${__URL} -a 3 | tee $(__urlpath)/whatweb.txt"
 }
 
 qq-enum-web-waf() {
-  qq-vars-set-url
-  print -z "wafw00f ${__URL} "
+    __check-project
+    qq-vars-set-url
+    print -z "wafw00f ${__URL} -o $(__urlpath)/waf.txt"
 }
 
 # vhosts
 
 qq-enum-web-vhosts-gobuster() {
-  qq-vars-set-url
-  print -z "gobuster vhost -u ${__URL} -w /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt -a \"${__UA}\" -t1"
+    __check-project
+    qq-vars-set-url
+    local w && __askpath w FILE /usr/share/seclists/Discovery/DNS/subdomains-top1mil-20000.txt
+    __check-threads
+    print -z "gobuster vhost -u ${__URL} -w ${w} -a \"${__UA}\" -t ${__THREADS} -o $(__urlpath)/vhosts.txt"
 }
 
 # screens
 
-qq-enum-web-screens-eyewitness() {
-  local f=$(rlwrap -S "$fg[cyan]FILE(URLs):$reset_color " -e '' -c -o cat)
-  local d=$(rlwrap -S "$fg[cyan]DIR(output):$reset_color " -e '' -c -o cat)
-  print -z "eyewitness --web -f ${f} -d ${d} --user-agent \"${__UA}\" "
+qq-enum-web-eyewitness() {
+    __check-project
+    qq-vars-set-url
+    mkdir -p $(__urlpath)/screens
+    print -z "eyewitness --web --no-dns --no-prompt --single ${__URL} -d $(__urlpath)/screens --user-agent \"${__UA}\" "
 }
 
 # apps
 
-qq-enum-web-app-wordpress() {
-  qq-vars-set-url
-  print -z "wpscan --url ${__URL} --enumerate tt,vt,u,vp"
+qq-enum-web-wordpress() {
+    __check-project
+    qq-vars-set-url
+    print -z "wpscan --ua \"${__UA}\" --url ${__URL} --enumerate tt,vt,u,vp -o $(__urlpath)/wpscan.txt"
 }
 
-# elastic search
-
-qq-enum-web-app-elastic-health() {
-  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
-  print -z "curl -XGET ${u}:9200/_cluster/health?pretty"
+qq-enum-web-headers() {
+    __check-project
+    qq-vars-set-url
+    print -z "curl -s -X GET -I -L -A \"${__UA}\" \"${__URL}\" | tee $(__urlpath)/headers.txt"
 }
 
-qq-enum-web-app-elastic-indices() {
-  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
-  print -z "curl -XGET ${u}:9200/_cat/indices?v"
+qq-enum-web-mirror() {
+    __warn "The destination site will be mirrored in the current directory"
+    qq-vars-set-url
+    print -z "wget -mkEpnp ${__URL} "
 }
 
-qq-enum-web-app-elastic-search() {
-  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
-  local index && read "index?$fg[cyan]INDEX:$reset_color "
-  __info "example query: *:password"
-  local query && read "query?$fg[cyan]QUERY:$reset_color "
-  print -z "curl -XGET ${u}:9200/${index}/_search?q=${query}&size=10&pretty"
+qq-enum-web-gospider() {
+    __check-project
+    qq-vars-set-url
+    print -z "gospider -s "${__URL}" -o $(__urlpath)/spider.txt"
 }
 
-qq-enum-web-app-elastic-all() {
-  local u && read "u?$fg[cyan]URL(:9200):$reset_color "
-  local index && read "index?$fg[cyan]INDEX:$reset_color "
-  print -z "curl -XGET ${u}:9200/${index}/_search?size=1000 > documents.json"
+qq-enum-web-hakrawler() {
+    __check-project
+    qq-vars-set-url
+    local d && __askvar d DEPTH
+    print -z "hakrawler -url  "${__URL}" -depth ${d} -linkfinder -usewayback | tee $(__urlpath)/hakrawler.txt"
 }
-

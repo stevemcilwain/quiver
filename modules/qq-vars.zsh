@@ -4,216 +4,326 @@
 # qq-vars
 #############################################################
 
-export __OUTPUT=""
-export __IFACE=""
-export __DOMAIN=""
-export __NETWORK=""
-export __RHOST=""
-export __LHOST=""
-export __URL=""
-export __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-export __WORDLIST=""
-export __PASSLIST="/usr/share/wordlists/rockyou.txt"
+qq-vars-help() {
+  cat << "DOC"
 
-# hard coded
+qq-vars
+-------
+The vars namespace manages environment variables used in other functions. These
+variables are set per session, but can be saved with qq-vars-save and reloaded
+with qq-vars-load. The values are stored as files in .quiver/vars.
 
-export __EXT_PHP=".php,.phtml,.pht,.xml,.inc,.log,.sql,.cgi"
-export __IMPACKET="/usr/share/doc/python3-impacket/examples/"
+The menu options for some of the variables can be set using qq-vars-global, such
+as the list of favorite user-agents or wordlists (qq-vars-global-help).
 
-# set
+Variables
+---------
+__PROJECT:     the root directory used for all output, ex: /projects/example
+__LOGBOOK:     the logbook.md markdown file used in qq-log commands 
+__IFACE:       the interface to use for commands, ex: eth0
+__DOMAIN:      the domain to use for commands, ex: example.org
+__NETWORK:     the subnet to use for commands, ex: 10.1.2.0/24
+__RHOST:       the remote host or target, ex: 10.1.2.3, example: target.example.org
+__RPORT:       the remote port; ex: 80
+__LHOST:       the accessible local IP address, ex: 10.1.2.3
+__LPORT:       the accessible local PORT, ex: 4444
+__URL:         a target URL, example: https://target.example.org
+__UA:          the user agent to use for commands, ex: googlebot
+__WORDLIST:    path to a wordlist file, ex: /usr/share/wordlists/example.txt
+__PASSLIST:    path to a wordlist for password brute forcing, ex: /usr/share/wordlists/rockyou.txt
 
-qq-vars-set-domain() __DOMAIN=$(rlwrap -S "$fg[cyan]DOMAIN: $reset_color" -P "${__DOMAIN}" -e '' -o cat)
-alias var-domain="qq-vars-set-domain"
+Commands
+--------
+qq-vars:           alias qv, list all current variable values
+qq-vars-save:      alias qvs, save all current variable values ($HOME/.quiver)
+qq-vars-load:      alias qvl, restores all current variable values ($HOME/.quiver)
+qq-vars-clear:     clears all current variable values
+qq-vars-set-*:     used to set each individual variable
 
-qq-vars-set-network() __NETWORK=$(rlwrap -S "$fg[cyan]NETWORK: $reset_color" -P "${__NETWORK}" -e '' -o cat)
-alias var-network="qq-vars-set-network"
-
-qq-vars-set-rhost() __RHOST=$(rlwrap -S "$fg[cyan]RHOST: $reset_color" -P "${__RHOST}" -e '' -o cat)
-alias var-rhost="qq-vars-set-rhost"
-
-qq-vars-set-url() __URL=$(rlwrap -S "$fg[cyan]URL: $reset_color" -P "${__URL}" -e '' -o cat)
-alias var-url="qq-vars-set-url"
-
-qq-vars-set-output() {
-  local relative=$(rlwrap -S "$fg[cyan]OUTPUT: $reset_color" -P "${__OUTPUT}" -e '' -c -o cat)
-  [[ "$relative" == "~"* ]] && __warn "~ not allowed" && return
-  __OUTPUT=$(__abspath $relative)
+DOC
 }
-alias var-out="qq-vars-set-output"
-
-qq-vars-set-wordlist() {
-    [[ -z $__WORDLIST ]] && __ask "Choose a wordlist: " && __menu-wordlist-fav && return
-    __WORDLIST=$(rlwrap -S "$fg[cyan]WORDLIST: $reset_color" -P "${__WORDLIST}" -e '' -o cat)
-}
-alias var-words="qq-vars-set-wordlist"
-
-qq-vars-set-lhost() {
-    [[ -z $__LHOST ]] && __ask "Choose a local IP address: " && __menu-lhost && return
-    __LHOST=$(rlwrap -S "$fg[cyan]LHOST: $reset_color" -P "${__LHOST}" -e '' -o cat)
-}
-alias var-lhost="qq-vars-set-lhost"
-
-qq-vars-set-iface() {
-    [[ -z $__IFACE ]] && __ask "Choose an interface: " && __menu-iface && return
-    __IFACE=$(rlwrap -S "$fg[cyan]IFACE: $reset_color" -P "${__IFACE}" -e '' -o cat)
-}
-alias var-iface="qq-vars-set-iface"
-
-# all settings
-
-qq-vars-clear() {
-    __OUTPUT=""
-    __IFACE=""
-    __DOMAIN=""
-    __NETWORK=""
-    __RHOST=""
-    __LHOST=""
-    __URL=""
-    __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-    __WORDLIST=""
-    __PASSLIST=""
-}
-alias varcls="qq-vars-clear"
 
 qq-vars() {
-    echo "$fg[cyan] __OUTPUT:$reset_color ${__OUTPUT}"
-    echo "$fg[cyan] __IFACE:$reset_color ${__IFACE}"
-    echo "$fg[cyan] __DOMAIN:$reset_color ${__DOMAIN}"
-    echo "$fg[cyan] __NETWORK:$reset_color ${__NETWORK}"
-    echo "$fg[cyan] __RHOST:$reset_color ${__RHOST}"
-    echo "$fg[cyan] __LHOST:$reset_color ${__LHOST}"
-    echo "$fg[cyan] __URL:$reset_color ${__URL}"
-    echo "$fg[cyan] __WORDLIST:$reset_color ${__WORDLIST}"
-    echo "$fg[cyan] __PASSLIST:$reset_color ${__PASSLIST}"
+  echo "$(__cyan __PROJECT: ) ${__PROJECT}"
+  echo "$(__cyan __LOGBOOK: ) ${__LOGBOOK}"
+  echo "$(__cyan __IFACE: ) ${__IFACE}"
+  echo "$(__cyan __DOMAIN: ) ${__DOMAIN}"
+  echo "$(__cyan __NETWORK: ) ${__NETWORK}"
+  echo "$(__cyan __RHOST: ) ${__RHOST}"
+  echo "$(__cyan __RPORT: ) ${__RPORT}"
+  echo "$(__cyan __LHOST: ) ${__LHOST}"
+  echo "$(__cyan __LPORT: ) ${__LPORT}"
+  echo "$(__cyan __URL: ) ${__URL}"
+  echo "$(__cyan __UA: ) ${__UA}"
+  echo "$(__cyan __WORDLIST: ) ${__WORDLIST}"
+  echo "$(__cyan __PASSLIST: ) ${__PASSLIST}"
 }
-alias var="qq-vars"
+alias qv="qq-vars"
+
+qq-vars-clear() {
+  __PROJECT=""
+  __LOGBOOK=""
+  __IFACE=""
+  __DOMAIN=""
+  __NETWORK=""
+  __RHOST=""
+  __RPORT=""
+  __LHOST=""
+  __LPORT=""
+  __URL=""
+  __UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+  __WORDLIST=""
+  __PASSLIST=""
+}
 
 qq-vars-save() {
-    local vars="$HOME/.quiver/vars"
-    mkdir -p $vars
-
-    echo "${__OUTPUT}" > $vars/OUTPUT
-    echo "${__IFACE}" > $vars/IFACE
-    echo "${__DOMAIN}" > $vars/DOMAIN
-    echo "${__NETWORK}" > $vars/NETWORK
-    echo "${__RHOST}" > $vars/RHOST
-    echo "${__LHOST}" > $vars/LHOST
-    echo "${__URL}" > $vars/URL
-    echo "${__UA}" > $vars/UA
-    echo "${__WORDLIST}" > $vars/WORDLIST
-    echo "${__PASSLIST}" > $vars/PASSLIST
+  echo "${__PROJECT}" > $__VARS/PROJECT
+  echo "${__LOGBOOK}" > $__VARS/LOGBOOK
+  echo "${__IFACE}" > $__VARS/IFACE
+  echo "${__DOMAIN}" > $__VARS/DOMAIN
+  echo "${__NETWORK}" > $__VARS/NETWORK
+  echo "${__RHOST}" > $__VARS/RHOST
+  echo "${__RPORT}" > $__VARS/RPORT
+  echo "${__LHOST}" > $__VARS/LHOST
+  echo "${__LPORT}" > $__VARS/LPORT
+  echo "${__URL}" > $__VARS/URL
+  echo "${__UA}" > $__VARS/UA
+  echo "${__WORDLIST}" > $__VARS/WORDLIST
+  echo "${__PASSLIST}" > $__VARS/PASSLIST
+  qq-vars
 }
-alias varsav="qq-vars-save"
+alias qvs="qq-vars-save"
 
 qq-vars-load() {
-    local vars="$HOME/.quiver/vars"
-    __OUTPUT=$(cat $vars/OUTPUT) 
-    __IFACE=$(cat $vars/IFACE)
-    __DOMAIN=$(cat $vars/DOMAIN)
-    __NETWORK=$(cat $vars/NETWORK)
-    __RHOST=$(cat $vars/RHOST)
-    __LHOST=$(cat $vars/LHOST)
-    __URL=$(cat $vars/URL)
-    __UA=$(cat $vars/UA)
-    __WORDLIST=$(cat $vars/WORDLIST)
-    __PASSLIST=$(cat $vars/PASSLIST)
-    qq-vars-print
+    __PROJECT=$(cat $__VARS/PROJECT) 
+    __LOGBOOK=$(cat $__VARS/LOGBOOK)
+    __IFACE=$(cat $__VARS/IFACE)
+    __DOMAIN=$(cat $__VARS/DOMAIN)
+    __NETWORK=$(cat $__VARS/NETWORK)
+    __RHOST=$(cat $__VARS/RHOST)
+    __RPORT=$(cat $__VARS/RPORT)
+    __LHOST=$(cat $__VARS/LHOST)
+    __LPORT=$(cat $__VARS/LPORT)
+    __URL=$(cat $__VARS/URL)
+    __UA=$(cat $__VARS/UA)
+    __WORDLIST=$(cat $__VARS/WORDLIST)
+    __PASSLIST=$(cat $__VARS/PASSLIST)
+    qq-vars
 }
-alias varload="qq-vars-load"
+alias qvl="qq-vars-load"
+
+
+########## __PROJECT
+
+export __PROJECT=""
+
+qq-vars-set-project() {
+  __ask "Set the full path to the project root directory where all command output will be directed"
+  
+  local d && __askpath d "PROJECT DIR" ${__PROJECT}
+  [[ "$d" == "~"* ]] && __err "~ not allowed, use the full path" && return
+
+  __PROJECT=$d
+  mkdir -p ${__PROJECT}
+  
+}
+
+__check-project() { [[ -z "${__PROJECT}" ]] && qq-vars-set-project }
+
+########## __LOGBOOK
+
+export __LOGBOOK=""
+
+qq-vars-set-logbook() {
+  __ask "Set the full path to the directory of the logbook file (filename not included)."
+  
+  local d=$(__askpath DIR $HOME)
+  [[ "$d" == "~"* ]] && __err "~ not allowed, use the full path" && return
+
+  mkdir -p $d
+
+  __LOGBOOK="${d}/logbook.md"
+  
+  if [[ -f "${__LOGBOOK}" ]]; then
+      __warn "${__LOGBOOK} already exists, set as active log"
+  else
+      touch ${__LOGBOOK}
+      echo "# Logbook" >> ${__LOGBOOK}
+      echo " " >> ${__LOGBOOK}
+      __ok "${__LOGBOOK} created."
+  fi
+}
+
+__check-logbook() { [[ -z "${__LOGBOOK}" ]] && qq-vars-set-logbook }
+
+########## __IFACE
+
+export __IFACE=""
+
+qq-vars-set-iface() {
+  if [[ -z "${__IFACE}" ]]
+  then
+    __ask "Choose an interface: "
+    __IFACE=$(__menu $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}')) 
+  else
+    __prefill __IFACE IFACE ${__IFACE}
+  fi
+
+}
+
+__check-iface() { [[ -z "${__IFACE}" ]] && qq-vars-set-iface }
+
+########## __DOMAIN
+
+export __DOMAIN=""
+
+qq-vars-set-domain() { __prefill __DOMAIN DOMAIN ${__DOMAIN} }
+
+__check-domain() { [[ -z "${__DOMAIN}" ]] && qq-vars-set-domain }
+
+
+########## __NETWORK
+
+export __NETWORK=""
+
+qq-vars-set-network() { __prefill __NETWORK NETWORK ${__NETWORK} }
+
+__check-network() { [[ -z "${__NETWORK}" ]] && qq-vars-set-network }
+
+########## __RHOST
+
+export __RHOST=""
+
+qq-vars-set-rhost() { __prefill __RHOST RHOST ${__RHOST} }
+
+########## __RPORT
+
+export __RPORT=""
+
+qq-vars-set-rport() { __prefill __RPORT RPORT ${__RPORT} }
+
+########## __LHOST
+
+export __LHOST=""
+
+qq-vars-set-lhost() {
+  if [[ -z $__LHOST ]]
+  then
+    __ask "Choose a local IP address: " 
+    __LHOST=$(__menu $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
+  else
+    __prefill __LHOST LHOST ${__LHOST}
+  fi
+}
+
+########## __LPORT
+
+export __LPORT=""
+
+qq-vars-set-lport() { __prefill __LPORT LPORT ${__LPORT} }
+
+
+########## __URL
+
+export __URL=""
+
+qq-vars-set-url() { 
+  local u && __prefill u URL ${__URL}
+  __URL=$(echo ${u} | sed 's/\/$//')
+}
+
+########## __UA
+
+export __UA="Mozilla/5.0"
+
+qq-vars-set-ua() {
+  IFS=$'\n'
+  __ask "Choose a user agent: " 
+  __UA=$(__menu $(cat  ${__MNU_UA}))
+}
+
+__check-ua() { [[ -z "${__UA}" ]] && qq-vars-set-ua }
+
+########## __WORDLIST
+
+export __WORDLIST=""
+
+qq-vars-set-wordlist() {
+  if [[ -z $__WORDLIST ]]
+  then
+    __ask "Choose a wordlist: "
+    __WORDLIST=$(__menu $(cat  ${__MNU_WORDLISTS}))
+  else
+
+    __WORDLIST= __prefill __WORDLIST WORDLIST ${__WORDLIST}
+  fi
+}
+
+qq-vars-set-wordlist-web() {
+  __ask "Choose a wordlist: "
+  __WORDLIST=$(__menu $(find  /usr/share/seclists/Discovery/Web-Content | sort))
+}
+
+qq-vars-set-wordlist-dns() {
+  __ask "Choose a wordlist: "
+  __WORDLIST=$(__menu $(find  /usr/share/seclists/Discovery/DNS | sort))
+}
+
+########## __PASSLIST
+
+export __PASSLIST="/usr/share/wordlists/rockyou.txt"
+
+qq-vars-set-passlist() {
+  __ask "Choose a passlist: "
+  __PASSLIST=$(__menu $(find  /usr/share/seclists/Passwords | sort))
+}
+
 
 # helpers
 
-__abspath() {
-    # Thanks to: https://stackoverflow.com/questions/3915040/bash-fish-command-to-print-absolute-path-to-a-file/23002317#23002317
-    # generate absolute path from relative path
-    # $1     : relative filename
-    # return : absolute path
+export __THREADS
+__check-threads() { __askvar __THREADS THREADS }
 
-    if [ -d "$1" ]; then
-        # dir
-        (cd "$1"; pwd)
-    elif [ -f "$1" ]; then
-        # file
-        if [[ $1 = /* ]]; then
-            echo "$1"
-        elif [[ $1 == */* ]]; then
-            echo "$(cd "${1%/*}"; pwd)/${1##*/}"
-        else
-            echo "$(pwd)/$1"
-        fi
-    fi
-}
+export __USER
+__check-user() { __askvar __USER USER }
+
+export __SHARE
+__check-share() { __askvar __SHARE SHARE }
+
+export __ORG
+__check-org() { __askvar __ORG ORG }
+
+export __ASN
+__check-asn() { __askvar __ASN ASN }
+
 
 __netpath() { 
-  qq-vars-set-output
-  local net=$(echo ${__NETWORK} | cut -d'/' -f1)
-  local result=${__OUTPUT}/networks/${net}
-  mkdir -p "${result}"
-  echo  "${result}"
+    __check-project
+    local net=$(echo ${__NETWORK} | cut -d'/' -f1)
+    local result=${__PROJECT}/networks/${net}
+    mkdir -p "${result}"
+    echo  "${result}"
 }
 
 __hostpath() { 
-  qq-vars-set-output
-  local result=${__OUTPUT}/hosts/${__RHOST}
-  mkdir -p "${result}"
-  echo  "${result}"
+    __check-project
+    local result=${__PROJECT}/hosts/${__RHOST}
+    mkdir -p "${result}"
+    echo  "${result}"
 }
 
 __urlpath() { 
-  qq-vars-set-output
-  local host=$(echo ${__URL} | cut -d'/' -f3)
-  local result=${__OUTPUT}/hosts/${host}
-  mkdir -p "${result}"
-  echo  "${result}"
+    __check-project
+    local host=$(echo ${__URL} | cut -d'/' -f3)
+    local result=${__PROJECT}/hosts/${host}
+    mkdir -p "${result}"
+    echo  "${result}"
 }
 
-__rand() {
-    if [ "$#" -eq  "1" ]
-    then
-        head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 ; echo ''
-    else
-        head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16 ; echo ''
-    fi  
-}
-
-__menu-helper() {
-  PS3="$fg[cyan][#]:$reset_color "
-  COLUMNS=6
-  select o in $@; do break; done
-  echo ${o}
-}
-
-__menu-ua() {
-  __UA=$(__menu-helper \
-  "Googlebot/2.1 (+http://www.google.com/bot.html)"\
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"\
-  "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"\
-  )
-}
-
-__menu-iface() {
-  __IFACE=$(__menu-helper $(ip addr list | awk -F': ' '/^[0-9]/ {print $2}'))
-}
-
-__menu-lhost() {
-  __LHOST=$(__menu-helper $(ip addr list | grep -e "inet " | cut -d' ' -f6 | cut -d'/' -f1))
-}
-
-__menu-wordlist-fav() {
-  __WORDLIST=$(__menu-helper \
-  "/usr/share/seclists/Discovery/Web-Content/quickhits.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/common.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/raft-large-words.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/raft-large-files.txt"\
-  "/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt"\
-  "/opt/words/all/all.txt"\
-  "/opt/words/nullenc/null.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/swagger.txt"\
-  "/usr/share/seclists/Discovery/Web-Content/graphql.txt"\
-  )
-}
-
-__menu-wordlist-web() {
-  __WORDLIST=$(__menu-helper $(find  /usr/share/seclists/Discovery/Web-Content | sort))
+__dompath() { 
+    __check-project
+    local result=${__PROJECT}/domains/${__DOMAIN}
+    mkdir -p "${result}"
+    echo  "${result}"
 }
 

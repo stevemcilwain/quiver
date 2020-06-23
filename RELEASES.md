@@ -1,5 +1,22 @@
 # Releases
 
+## 1.0 6/4/2020
+
+Complete refactor and reorganization, including:
+
+* Added qq-<namespace>-help commands to all modules
+* Added qq-<namespace>-install commands to all modules
+* More variables that auto-populate in qq-vars
+* Persistent variables in qq-vars-global for customization of settings
+* New qq-shell namespaces
+* Better organization in qq-recon namespaces
+* qq-bounty consolidated into qq-project, custom project commands moved to qq-project-custom
+* qq-notes updated with more features
+* New qq-kali namespace added with system commands
+* qq-install refactored to include custom installers
+* New qq-exploit namespace added  
+* New qq-enum-* namespaces added for more services
+
 ## 0.16 3/28/2020
 
 * Fixed qq-bounty.zsh
