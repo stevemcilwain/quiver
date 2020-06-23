@@ -31,6 +31,8 @@ DOC
 qq-enum-web-install() {
     __info "Running $0..."
     __pkgs tcpdump nmap whatweb wafw00f gobuster eyewitness wpscan wget curl seclists wordlists 
+    go get -u github.com/jaeles-project/gospider
+    go get -u github.com/hakluke/hakrawler
 }
 
 qq-enum-web-nmap-sweep() {
@@ -95,4 +97,17 @@ qq-enum-web-mirror() {
     __warn "The destination site will be mirrored in the current directory"
     qq-vars-set-url
     print -z "wget -mkEpnp ${__URL} "
+}
+
+qq-enum-web-gospider() {
+    __check-project
+    qq-vars-set-url
+    print -z "gospider -s "${__URL}" -o $(__urlpath)/spider.txt"
+}
+
+qq-enum-web-hakrawler() {
+    __check-project
+    qq-vars-set-url
+    local d && __askvar d DEPTH
+    print -z "hakrawler -url  "${__URL}" -depth ${d} -linkfinder -usewayback | tee $(__urlpath)/hakrawler.txt"
 }

@@ -26,6 +26,8 @@ DOC
 qq-enum-web-js-install() {
     __info "Running $0..."
     __pkgs jsbeautifier qq-install-link-finder
+    qq-install-node
+    npm i -g eslint
 }
 
 qq-enum-web-js-beautify() {

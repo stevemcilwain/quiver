@@ -155,6 +155,20 @@ qq-install-golang() {
     fi 
 }
 
+qq-install-node() {
+    __pkgs nodejs npm
+
+    cd $HOME
+    mkdir -p $HOME/.npm-global
+    npm config set prefix '~/.npm-global'
+
+    if ! $(echo $PATH | grep -q "npm-global")
+    then
+        echo "export PATH=\$PATH:\$HOME/.npm-global" | tee -a $HOME/.zshrc
+        export PATH=$PATH:$HOME/.npm-global
+    fi
+}
+
 qq-install-wordlist-commonspeak() {
     local name="commonspeak2"
     local url="https://github.com/assetnote/commonspeak2-wordlists.git"
